@@ -3,12 +3,15 @@
 // import viteLogo from '/vite.svg';
 import './App.css';
 // import Header from './components/Header';
+import SignIn from './auth/signin/index';
+import SignUp from './auth/signup/index';
 
 
 function App() {
   return (
-    <div className="app">
-      <h1>Hello</h1>
+    <div>
+      <SignUp />
+
     </div>
   );
 }
