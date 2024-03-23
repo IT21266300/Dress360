@@ -9,6 +9,11 @@ import dotenv from 'dotenv';
 ======== import your router set here ========
 */
 import admin from './routes/admin.js';
+import orderRouter from './routes/orderRouter.js';
+// import userRouter from './routes/userRouter.js';
+
+
+
 
 
 
@@ -39,6 +44,8 @@ app.use(allowCrossDomain);
   ===== config your APIs here =====
 */
 app.use('/api/admin', admin);
+app.use('/api/order', orderRouter);
+// app.use('/api/user', userRouter);
 
 
 
