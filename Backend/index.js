@@ -1,29 +1,52 @@
-const express = require('express');
+// dependencies
+import express from 'express'
+import mongoose from 'mongoose'; 
+import dotenv from 'dotenv';
+
+
+/* 
+============== routers set ================== 
+======== import your router set here ========
+*/
+import admin from './routes/admin.js';
+
+
+
+
+// backend configs
 const app = express();
-const mongoose = require('mongoose');
-const admin = require('./routes/admin');
+app.use(express.json());
+dotenv.config();
+
+// connect with Mongo Database
+mongoose
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to database successfully 🧲'))
+  .catch((err) => console.error('Error while connecting to database💩'));
+
+// ????????
+var allowCrossDomain = function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+};
+app.use(allowCrossDomain);
 
 
-mongoose.connect('mongodb+srv://vihi:vihi@itpcluster.bhmi6vu.mongodb.net/Dress360?retryWrites=true&w=majority')
- .then(() => console.log('Connect to MongoDB...'))
- .catch(err => console.error('Could not connect to MongoDB..'))
+/* 
+  ========= APIs config ===========
+  ===== config your APIs here =====
+*/
+app.use('/api/admin', admin);
 
- app.use(express.json());
 
 
- var allowCrossDomain = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "*");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-  }
+const PORT = parseInt(process.env.PORT);
+const port = process.env.PORT || 4000;
+app.listen(port, () => console.log(`Server running on port ${port} 🚚`));
 
-  app.use(allowCrossDomain);
-  app.use('/api/admin', admin);
-  
-  
-
-  const PORT = parseInt(process.env.PORT);
-const port = process.env.PORT || 5030;
-app.listen(port, () => console.log('Listening on port ${port}'));
-console.log(port);
+// errors config
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: err.message });
+});
