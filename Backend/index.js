@@ -1,17 +1,15 @@
 // dependencies
-import express from 'express'
-import mongoose from 'mongoose'; 
+import express from 'express';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
 
 /* 
 ============== routers set ================== 
 ======== import your router set here ========
 */
 import admin from './routes/admin.js';
-
-
-
+import ProductRouter from './routes/productRoutes.js';
+import {errorHandler} from './middleware/errorHandler.js'
 
 // backend configs
 const app = express();
@@ -33,20 +31,16 @@ var allowCrossDomain = function (req, res, next) {
 };
 app.use(allowCrossDomain);
 
-
 /* 
   ========= APIs config ===========
   ===== config your APIs here =====
 */
 app.use('/api/admin', admin);
-
-
+app.use('/api/product', ProductRouter);
 
 const PORT = parseInt(process.env.PORT);
 const port = process.env.PORT || 4000;
 app.listen(port, () => console.log(`Server running on port ${port} 🚚`));
 
-// errors config
-app.use((err, req, res, next) => {
-  res.status(500).send({ message: err.message });
-});
+// error handler
+app.use(errorHandler);

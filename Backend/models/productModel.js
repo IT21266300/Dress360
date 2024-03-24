@@ -24,15 +24,28 @@ const productSchema = new mongoose.Schema(
         type: String,
       },
     ],
-    stock: {
-      type: Number,
-      default: 0,
-    },
+    colors: [
+      {
+        colorName: {
+          type: String,
+        },
+        colorStock: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+    size: [
+      {
+        type: String,
+      },
+    ],
     reviews: [
       {
         userId: {
           // type: mongoose.Schema.Types.ObjectId, === should be change to objectid ===
           type: String,
+          // ref: 'User'
         },
         rating: {
           type: Number,
