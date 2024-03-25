@@ -6,6 +6,7 @@ import { ToastContainer } from 'react-toastify';
 import routesConfig from './components/Routers';
 
 function App() {
+
   return (
     <div>
       <BrowserRouter>
