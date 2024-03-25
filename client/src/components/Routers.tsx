@@ -14,6 +14,7 @@ import Categories from '../pages/Custom/Categories';
 import Item from '../pages/Custom/Item';
 import Showroom from '../pages/Custom/showroom';
 
+
 const isAdmin: boolean = false;
 
 const routesConfig = isAdmin ? [
@@ -52,6 +53,7 @@ const routesConfig = isAdmin ? [
         path: '/home',
         element: <Home />,
       },
+
       {
         path: '/categories',
         element: <Categories />,
