@@ -1,49 +1,36 @@
 export const colorPalette = {
-  header: {
-    100: '#fef5df',
-    200: '#fdebbf',
-    300: '#fce09f',
-    400: '#fbd67f',
-    500: '#facc5f',
-    600: '#c8a34c',
-    700: '#967a39',
-    800: '#645226',
-    900: '#322913',
+  base: {
+    100: '#ffffff',
+    200: '#ffffff',
+    300: '#ffffff',
+    400: '#ffffff',
+    500: '#ffffff',
+    600: '#cccccc',
+    700: '#999999',
+    800: '#666666',
+    900: '#333333',
   },
-
-  body: {
-    100: '#fefdfb',
-    200: '#fcfaf7',
-    300: '#fbf8f4',
-    400: '#f9f5f0',
-    500: '#f8f3ec',
-    600: '#c6c2bd',
-    700: '#95928e',
-    800: '#63615e',
-    900: '#32312f',
+  accent1: {
+    100: '#dcf1e7',
+    200: '#bae2cf',
+    300: '#97d4b8',
+    400: '#75c5a0',
+    500: '#52b788',
+    600: '#42926d',
+    700: '#316e52',
+    800: '#214936',
+    900: '#10251b',
   },
-
-  txt: {
-    100: '#d6d6d5',
-    200: '#aeadac',
-    300: '#858382',
-    400: '#5d5a59',
-    500: '#34312f',
-    600: '#2a2726',
-    700: '#1f1d1c',
-    800: '#151413',
-    900: '#0a0a09',
-  },
-  headers: {
-    100: '#ede1ff',
-    200: '#dcc2ff',
-    300: '#caa4ff',
-    400: '#b985ff',
-    500: '#a767ff',
-    600: '#8652cc',
-    700: '#643e99',
-    800: '#432966',
-    900: '#211533',
+  accent2: {
+    100: '#d6d6d6',
+    200: '#adadad',
+    300: '#858585',
+    400: '#5c5c5c',
+    500: '#333333',
+    600: '#292929',
+    700: '#1f1f1f',
+    800: '#141414',
+    900: '#0a0a0a',
   },
 };
 
@@ -52,11 +39,11 @@ import { createTheme } from '@mui/material';
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: colorPalette.headers[500],
+      main: colorPalette.base[500],
     },
     secondary: {
-      main: colorPalette.body[500],
-    }
+      main: colorPalette.accent1[600],
+    },
   },
   typography: {
     fontFamily: ['Inter', 'sans-serif'].join(','),
