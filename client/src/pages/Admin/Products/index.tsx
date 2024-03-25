@@ -13,13 +13,14 @@ import {
   GridColDef,
 } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import FlexBetween from '../../../components/FlexBetween';
 import Search from './autocomplete';
+import ProductsLoader from './Preloaders/productsLoader'
+import { useNavigate } from 'react-router-dom';
 
 export default function Products() {
+  const navigate = useNavigate();
+
   const productData = useSelector(
     (state: RootState) => state.products.productData
   );
@@ -108,7 +109,9 @@ export default function Products() {
     category: product.category,
   }));
 
-  return (
+  return loading ? (
+    <ProductsLoader/>
+  ) : (
     <Box width="100%" sx={{ margin: '1rem 0' }}>
       <Box
         sx={{
@@ -137,6 +140,9 @@ export default function Products() {
               },
             }}
             startIcon={<AddIcon />}
+            onClick={() => {
+              navigate(`/addProduct`)
+            }}
           >
             Add New Product
           </Button>
