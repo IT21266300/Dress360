@@ -1,6 +1,9 @@
 import { Navigate } from 'react-router-dom';
 
 // import views
+import Signin from '../auth/signin/index';
+import Signup from '../auth/signup/index';
+
 import Home from '../pages/Custom/Home';
 import Products from '../pages/Admin/Products';
 import Overview from '../pages/Admin/Overview';
@@ -11,7 +14,7 @@ import Categories from '../pages/Custom/Categories';
 import Item from '../pages/Custom/Item';
 import Showroom from '../pages/Custom/showroom';
 
-const isAdmin: boolean = true;
+const isAdmin: boolean = false;
 
 const routesConfig = isAdmin ? [
   {
@@ -20,7 +23,7 @@ const routesConfig = isAdmin ? [
     children: [
       {
         path: '/',
-        element:  <Navigate to="/overview" replace />
+        element: <Navigate to="/overview" replace />
       },
       {
         path: '/overview',
@@ -39,11 +42,11 @@ const routesConfig = isAdmin ? [
 ] : [
   {
     path: '/',
-    element: <LayoutCustomer/>,
+    element: <LayoutCustomer />,
     children: [
       {
         path: '/',
-        element:  <Navigate to="/home" replace />
+        element: <Navigate to="/home" replace />
       },
       {
         path: '/home',
@@ -62,7 +65,13 @@ const routesConfig = isAdmin ? [
         element: <Showroom />,
       },
     ],
-  },
+  },{
+    path: '/signin',
+    element: <Signin />,
+  },{
+    path: '/signup',
+    element: <Signup />,
+  }
 ];
 
 export default routesConfig;
