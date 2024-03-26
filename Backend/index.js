@@ -9,7 +9,8 @@ import dotenv from 'dotenv';
 */
 import admin from './routes/admin.js';
 import ProductRouter from './routes/productRoutes.js';
-import {errorHandler} from './middleware/errorHandler.js'
+import {errorHandler} from './middleware/errorHandler.js';
+import userRouter from './routes/userRoutes.js';
 
 // backend configs
 const app = express();
@@ -37,6 +38,8 @@ app.use(allowCrossDomain);
 */
 app.use('/api/admin', admin);
 app.use('/api/product', ProductRouter);
+
+app.use('/api/user',userRouter);
 
 const PORT = parseInt(process.env.PORT);
 const port = process.env.PORT || 4000;
