@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Box,
   Button,
+  Chip,
+  CircularProgress,
   FormControl,
   IconButton,
   InputAdornment,
@@ -22,6 +25,10 @@ import { commonSizes } from '../Data/sizes';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../state/store';
+import { uploadImage } from '../../../../state/products/ProductSlice';
+import CloudDoneIcon from '@mui/icons-material/CloudDone';
 
 export default function AddProduct() {
   const [discount, setDiscount] = useState('');
@@ -29,16 +36,23 @@ export default function AddProduct() {
   const [previewSource, setPreviewSource] = useState();
   const [selectedFile, setSelectedFile] = useState();
 
+  const imageID = useSelector((state: RootState) => state.products.imageID);
+  const loading = useSelector((state: RootState) => state.products.loading);
+  const uploadState = useSelector(
+    (state: RootState) => state.products.uploadState
+  );
+  const dispatch = useDispatch<AppDispatch>();
+
   const handleChange = (event: SelectChangeEvent) => {
     setDiscount(event.target.value as string);
   };
 
-  const handleFileInputChange = (e: any) => {
+  const handleFileInputChange = (e: unknown) => {
     const file = e.target.files[0];
     previewFile(file);
   };
 
-  const previewFile = (file: any) => {
+  const previewFile = (file: unknown) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -46,31 +60,11 @@ export default function AddProduct() {
     };
   };
 
-  const handleSubmitFile = (e: any) => {
-    e.preventDefault();
+  const handleSubmitFile = (e: { preventDefault: () => void }) => {
+    // e.preventDefault();
     if (!previewSource) return;
-    uploadImage(previewSource);
-  };
-
-  const uploadImage = async (base64EncodedImage: never) => {
-    console.log(base64EncodedImage);
-    try {
-      const res = await axios.post(
-        'http://localhost:4000/api/product/uploadImage',
-        {
-          data: base64EncodedImage,
-        },
-        {
-          headers: {
-            'Content-type': 'application/json',
-          },
-        }
-      );
-      const img = res.data;
-      localStorage.setItem('imgId', img.public_id);
-    } catch (error) {
-      console.error(error);
-    }
+    // uploadImage(previewSource);
+    dispatch(uploadImage(previewSource));
   };
 
   return (
@@ -305,7 +299,7 @@ export default function AddProduct() {
                       sx={{
                         width: '100%',
                         position: 'relative',
-                        marginBottom: '1.5rem',
+                        marginBottom: '1rem',
                       }}
                     >
                       <img
@@ -315,43 +309,69 @@ export default function AddProduct() {
                         height="200"
                         style={{ objectFit: 'contain' }}
                       />
-                      <IconButton
-                        aria-label="delete"
-                        size="small"
+                      {!uploadState && (
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          sx={{
+                            color: colorPalette.base[500],
+                            position: 'absolute',
+                            top: 0,
+                            right: 0,
+                            zIndex: 100,
+                            background: '#f50057',
+                            '&:hover': {
+                              background: '#f06292',
+                            },
+                          }}
+                          onClick={() => {
+                            setPreviewSource(null);
+                          }}
+                        >
+                          <DeleteIcon sx={{ fontSize: '1rem' }} />
+                        </IconButton>
+                      )}
+                    </Box>
+                    {uploadState ? (
+                      <Box
                         sx={{
-                          color: colorPalette.accent2[100],
-                          position: 'absolute',
-                          top: 0,
-                          right: 0,
-                          zIndex: 100,
-                          background: '#f50057',
-                          '&:hover': {
-                            background: '#f06292',
-                          },
-                        }}
-                        onClick={() => {
-                          setPreviewSource(null);
+                          width: '100%',
+                          height: 'auto',
+                          fontSize: '3rem',
                         }}
                       >
-                        <CloseIcon sx={{ fontSize: '1.2rem' }} />
-                      </IconButton>
-                    </Box>
-                    <Button
-                      component="label"
-                      variant="contained"
-                      tabIndex={-1}
-                      startIcon={<CloudUploadIcon />}
-                      sx={{
-                        background: colorPalette.accent1[500],
-                        color: colorPalette.base[500],
-                        '&:hover': {
-                          background: colorPalette.accent1[400],
-                        },
-                      }}
-                      onClick={handleSubmitFile}
-                    >
-                      Upload image
-                    </Button>
+                        <Button
+                          variant="outlined"
+                          startIcon={<CloudDoneIcon />}
+                        >
+                          Image Uploaded
+                        </Button>
+                      </Box>
+                    ) : loading ? (
+                      <CircularProgress
+                        sx={{
+                          color: colorPalette.accent1[500],
+                          fontSize: '5rem',
+                        }}
+                      />
+                    ) : (
+                      <Button
+                        component="label"
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        sx={{
+                          background: colorPalette.accent1[500],
+                          color: colorPalette.base[500],
+                          '&:hover': {
+                            background: colorPalette.accent1[400],
+                          },
+                        }}
+                        onClick={handleSubmitFile}
+                      >
+                        Upload image
+                      </Button>
+                    )}
                   </Box>
                 ) : (
                   <Box

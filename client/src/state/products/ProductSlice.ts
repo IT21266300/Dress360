@@ -6,12 +6,16 @@ interface CounterState {
   loading: boolean;
   productData: [];
   productCount: number;
+  imageID : string;
+  uploadState: boolean;
 }
 const initialState: CounterState = {
   totalStock: 0,
   loading: false,
   productData: [],
   productCount: 0,
+  imageID: '',
+  uploadState: false,
 };
 
 const counterSlice = createSlice({
@@ -30,9 +34,12 @@ const counterSlice = createSlice({
       })
       .addCase(uploadImage.pending, (state) => {
         state.loading = true;
+        state.uploadState = false;
       })
-      .addCase(uploadImage.fulfilled, (state) => {
+      .addCase(uploadImage.fulfilled, (state, action: PayloadAction<string>) => {
         state.loading = false;
+        state.imageID = action.payload;
+        state.uploadState = true;
       });
   },
 });
@@ -52,11 +59,11 @@ export const fetchProducts = createAsyncThunk(
 );
 
 export const uploadImage = createAsyncThunk(
-  'product/fetchProducts',
+  'product/uploadImage',
   async (base64EncodedImage) => {
     try {
-      await axios.post(
-        'http://localhost:4000/api/product/uploadImage',
+      const response = await axios.post(
+        `http://localhost:4000/api/product/uploadImage`,
         {
           data: base64EncodedImage,
         },
@@ -66,6 +73,7 @@ export const uploadImage = createAsyncThunk(
           },
         }
       );
+      return response.data.public_id
     } catch (error) {
       console.error(error);
     }
