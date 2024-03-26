@@ -14,32 +14,25 @@ const productSchema = new mongoose.Schema(
       required: true,
     },
     category: {
-      // type: mongoose.Schema.Types.ObjectId, === should be change to objectid ===
       type: String,
-      // ref: 'Category',
       required: true,
     },
-    image: [
-      {
-        type: String,
-      },
-    ],
+    image: {
+      type: String,
+    },
     colors: [
       {
         colorName: {
           type: String,
         },
-        colorStock: {
-          type: Number,
-          default: 0,
+        hexCode: {
+          type: String,
         },
       },
     ],
-    size: [
-      {
-        type: String,
-      },
-    ],
+    size: {
+      type: String,
+    },
     reviews: [
       {
         userId: {
@@ -49,7 +42,7 @@ const productSchema = new mongoose.Schema(
         },
         rating: {
           type: Number,
-          required: true,
+          // required: true,
           min: 0,
           max: 5,
         },

@@ -15,7 +15,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import FlexBetween from '../../../components/FlexBetween';
 import Search from './autocomplete';
-import ProductsLoader from './Preloaders/productsLoader'
+import ProductsLoader from './Preloaders/productsLoader';
 import { useNavigate } from 'react-router-dom';
 
 export default function Products() {
@@ -89,6 +89,7 @@ export default function Products() {
           <Button
             sx={{
               background: colorPalette.accent1[500],
+              color: colorPalette.base[500],
               '&:hover': {
                 background: colorPalette.accent1[400],
               },
@@ -110,7 +111,7 @@ export default function Products() {
   }));
 
   return loading ? (
-    <ProductsLoader/>
+    <ProductsLoader />
   ) : (
     <Box width="100%" sx={{ margin: '1rem 0' }}>
       <Box
@@ -135,13 +136,14 @@ export default function Products() {
             size="large"
             sx={{
               background: colorPalette.accent1[500],
+              color: colorPalette.base[500],
               '&:hover': {
                 background: colorPalette.accent1[400],
               },
             }}
             startIcon={<AddIcon />}
             onClick={() => {
-              navigate(`/addProduct`)
+              navigate(`/addProduct`);
             }}
           >
             Add New Product

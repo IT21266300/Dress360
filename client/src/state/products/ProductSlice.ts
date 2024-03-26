@@ -27,6 +27,12 @@ const counterSlice = createSlice({
         state.productData = action.payload;
         state.productCount = action.payload.length;
         state.loading = false;
+      })
+      .addCase(uploadImage.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(uploadImage.fulfilled, (state) => {
+        state.loading = false;
       });
   },
 });
@@ -35,10 +41,33 @@ export const fetchProducts = createAsyncThunk(
   'product/fetchProducts',
   async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/product/getProducts`);
+      const response = await axios.get(
+        `http://localhost:4000/api/product/getProducts`
+      );
       return response.data;
     } catch (error) {
       return error;
+    }
+  }
+);
+
+export const uploadImage = createAsyncThunk(
+  'product/fetchProducts',
+  async (base64EncodedImage) => {
+    try {
+      await axios.post(
+        'http://localhost:4000/api/product/uploadImage',
+        {
+          data: base64EncodedImage,
+        },
+        {
+          headers: {
+            'Content-type': 'application/json',
+          },
+        }
+      );
+    } catch (error) {
+      console.error(error);
     }
   }
 );

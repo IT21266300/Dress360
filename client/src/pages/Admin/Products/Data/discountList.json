@@ -1,0 +1,38 @@
+[
+    {
+        "key": 1,
+        "type": "Buy one, get one free Discount"
+    },
+    {
+        "key": 2,
+        "type": "Percentage Sales"
+    },
+    {
+        "key": 3,
+        "type": "Early payment Discount"
+    },
+    {
+        "key": 4,
+        "type": "Overstock Sales"
+    },
+    {
+        "key": 5,
+        "type": "Free shipping Discount"
+    },
+    {
+        "key": 6,
+        "type": "Bulk Discount"
+    },
+    {
+        "key": 7,
+        "type": "Seasonal Discount"
+    },
+    {
+        "key": 8,
+        "type": "Email subscription Discount"
+    },
+    {
+        "key": 9,
+        "type": "Trade-in Credits"
+    }
+]

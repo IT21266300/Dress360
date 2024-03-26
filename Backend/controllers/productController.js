@@ -1,5 +1,6 @@
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
+import { cloudinary } from '../utils/cloudinary.js';
 
 // Add a new product
 export const createProduct = expressAsyncHandler(async (req, res, next) => {
@@ -87,7 +88,6 @@ export const deleteProduct = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-
 // update product
 export const updateProduct = expressAsyncHandler(async (req, res, next) => {
   try {
@@ -132,39 +132,89 @@ export const updateProduct = expressAsyncHandler(async (req, res, next) => {
   }
 });
 
-
 // get total ratings count
-export const calculateTotalRating = expressAsyncHandler(async (req, res, next) => {
-  try {
-    const productId = req.params.productId;
-    const product = await Product.findById(productId);
-    if (product) {
-      const calRating = product.reviews.reduce((acc, review) => acc + review.rating, 0);
-      let totalRatings = calRating / product.reviews.length;
-      res.send({message: `Total Ratings`, totalRatings})
-    } else {
-      res.status(404).send({ message: `Product not found` });
-      error.status = 404;
+export const calculateTotalRating = expressAsyncHandler(
+  async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const product = await Product.findById(productId);
+      if (product) {
+        const calRating = product.reviews.reduce(
+          (acc, review) => acc + review.rating,
+          0
+        );
+        let totalRatings = calRating / product.reviews.length;
+        res.send({ message: `Total Ratings`, totalRatings });
+      } else {
+        res.status(404).send({ message: `Product not found` });
+        error.status = 404;
+        next(error);
+      }
+    } catch (error) {
       next(error);
     }
-  } catch (error) {
-    next(error);
   }
-});
+);
 
-
-export const calculateTotalStock  = expressAsyncHandler(async (req, res, next) => {
-  try {
-    const productId = req.params.productId;
-    const product = await Product.findById(productId);
-    if (product) {
-      const totalStock = product.colors.reduce((acc, color) => acc + color.colorStock, 0);
-      res.send({message: `Total Stock`, totalStock})
-    } else {
-      res.status(404).send({ message: `Product not found` });
+// fetch total stock
+export const calculateTotalStock = expressAsyncHandler(
+  async (req, res, next) => {
+    try {
+      const productId = req.params.productId;
+      const product = await Product.findById(productId);
+      if (product) {
+        const totalStock = product.colors.reduce(
+          (acc, color) => acc + color.colorStock,
+          0
+        );
+        res.send({ message: `Total Stock`, totalStock });
+      } else {
+        res.status(404).send({ message: `Product not found` });
+      }
+    } catch (error) {
+      next(error);
     }
-  } catch (error) {
-    next(error);
   }
+);
+
+// fetch * images
+export const getAllImages = expressAsyncHandler(async (req, res) => {
+  const { resources } = await cloudinary.search
+    .expression('folder:dress_360')
+    .sort_by('public_id', 'desc')
+    .max_results(30)
+    .execute();
+
+  const publicIds = resources.map((file) => file.public_id);
+  console.log(publicIds);
+  res.send(publicIds);
 });
 
+// fetch single image
+export const getImage = expressAsyncHandler(async (req, res) => {
+  const imgId = req.params.imgId;
+  const { resources } = await cloudinary.search
+    .expression(`folder:dress_360 AND public_id:dress_360/${imgId}`)
+    .sort_by('public_id', 'desc')
+    .max_results(30)
+    .execute();
+
+  const publicIds = resources.map((file) => file.public_id);
+  res.send(publicIds);
+
+});
+
+// add new image
+export const uploadImage = expressAsyncHandler(async (req, res) => {
+  try {
+    const fileStr = req.body.data;
+    const uploadResponse = await cloudinary.uploader.upload(fileStr, {
+      upload_preset: 'dress_360',
+    });
+    console.log(uploadResponse);
+    res.json(uploadResponse);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ err: 'Something went wrong!' });
+  }
+});

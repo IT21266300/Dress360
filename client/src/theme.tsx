@@ -39,10 +39,10 @@ import { createTheme } from '@mui/material';
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: colorPalette.base[500],
+      main: colorPalette.accent1[500],
     },
     secondary: {
-      main: colorPalette.accent1[600],
+      main: colorPalette.base[500],
     },
   },
   typography: {
