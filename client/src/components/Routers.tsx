@@ -1,8 +1,9 @@
 import { Navigate } from 'react-router-dom';
 
 // import views
-import Signin from '../auth/signin/index';
+import Signin from '../auth/signin';
 import Signup from '../auth/signup/index';
+import Profile from '../pages/userLayouts';
 
 import Home from '../pages/Custom/Home';
 import Products from '../pages/Admin/Products';
@@ -63,6 +64,10 @@ const routesConfig = isAdmin ? [
       {
         path: '/showroom',
         element: <Showroom />,
+      },
+      {
+        path: '/userProfile',
+        element: <Profile />,
       },
     ],
   },{
