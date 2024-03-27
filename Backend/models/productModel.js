@@ -8,6 +8,7 @@ const productSchema = new mongoose.Schema(
     },
     description: {
       type: String,
+      required: true,
     },
     price: {
       type: Number,
@@ -20,37 +21,50 @@ const productSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    colors: [
-      {
-        colorName: {
-          type: String,
-        },
-        hexCode: {
-          type: String,
-        },
-      },
-    ],
     size: {
       type: String,
+      require: true,
     },
-    reviews: [
-      {
-        userId: {
-          // type: mongoose.Schema.Types.ObjectId, === should be change to objectid ===
-          type: String,
-          // ref: 'User'
-        },
-        rating: {
-          type: Number,
-          // required: true,
-          min: 0,
-          max: 5,
-        },
-        comment: {
-          type: String,
-        },
-      },
-    ],
+    quantity: {
+      type: Number,
+      require: true,
+    },
+    sku: {
+      type: Number,
+      require: true,
+    },
+    barcode: {
+      type: Number,
+      require: true,
+    },
+    tags: { 
+      type: String 
+    },
+    discount: {
+      type: Number,
+      default: 0,
+    },
+    discountType: {
+      type: String,
+    },
+    // reviews: [
+    //   {
+    //     userId: {
+    //       // type: mongoose.Schema.Types.ObjectId, === should be change to objectid ===
+    //       type: String,
+    //       // ref: 'User'
+    //     },
+    //     rating: {
+    //       type: Number,
+    //       // required: true,
+    //       min: 0,
+    //       max: 5,
+    //     },
+    //     comment: {
+    //       type: String,
+    //     },
+    //   },
+    // ],
   },
   {
     timestamps: true,

@@ -5,21 +5,23 @@ import { cloudinary } from '../utils/cloudinary.js';
 // Add a new product
 export const createProduct = expressAsyncHandler(async (req, res, next) => {
   try {
-    const name = req.body.name;
-    const description = req.body.description;
-    const price = req.body.price;
-    const category = req.body.category;
-    const image = req.body.image;
-    const colors = req.body.colors.map((color) => ({
-      colorName: color.colorName,
-      colorStock: color.colorStock,
-    }));
-    const size = req.body.size;
-    const reviews = req.body.reviews.map((review) => ({
-      userId: review.userId,
-      rating: review.rating,
-      comment: review.comment,
-    }));
+    const name = req.body.inputName;
+    const description = req.body.inputDescription;
+    const price = req.body.inputPrice;
+    const category = req.body.inputCategory;
+    const image = req.body.inputImage;
+    const size = req.body.inputSize;
+    const quantity = req.body.inputQuantity;
+    const sku = req.body.inputSKU;
+    const barcode= req.body.inputBarcode;
+    const tags = req.body.inputTags;
+    const discount = req.body.inputDiscount;
+    const discountType = req.body.inputDiscountType;
+    // const reviews = req.body.reviews.map((review) => ({
+    //   userId: review.userId,
+    //   rating: review.rating,
+    //   comment: review.comment,
+    // }));
 
     const newProduct = new Product({
       name,
@@ -27,9 +29,14 @@ export const createProduct = expressAsyncHandler(async (req, res, next) => {
       price,
       category,
       image,
-      colors,
       size,
-      reviews,
+      quantity,
+      sku,
+      barcode,
+      tags,
+      discount,
+      discountType,
+      // reviews,
     });
     await newProduct.save();
     res.send({ message: `New Product Added..!`, newProduct });

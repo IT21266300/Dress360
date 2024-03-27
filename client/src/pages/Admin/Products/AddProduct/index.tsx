@@ -6,6 +6,7 @@ import {
   CircularProgress,
   FormControl,
   IconButton,
+  Input,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -29,29 +30,37 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../state/store';
 import { uploadImage } from '../../../../state/products/ProductSlice';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
+import { useNavigate } from 'react-router-dom';
 
 export default function AddProduct() {
-  const [discount, setDiscount] = useState('');
+  const navigate = useNavigate();
+
+  // * states
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState();
-  const [selectedFile, setSelectedFile] = useState();
+  const [inputName, setInputName] = useState('');
+  const [inputDescription, setInputDescription] = useState('');
+  const [inputPrice, setInputPrice] = useState(0);
+  const [inputDiscount, setInputDiscount] = useState(0);
+  const [inputDiscountType, setInputDiscountType] = useState('');
+  const [inputSKU, setInputSKU] = useState(0);
+  const [inputBarcode, setInputBarCode] = useState(0);
+  const [inputQuantity, setInputQuantity] = useState(0);
+  const [inputCategory, setInputCategory] = useState('');
+  const [inputSize, setInputSize] = useState('');
+  const [inputTags, setInputTags] = useState('');
 
-  const imageID = useSelector((state: RootState) => state.products.imageID);
+  const inputImage = useSelector((state: RootState) => state.products.imageID);
   const loading = useSelector((state: RootState) => state.products.loading);
   const uploadState = useSelector(
     (state: RootState) => state.products.uploadState
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setDiscount(event.target.value as string);
-  };
-
-  const handleFileInputChange = (e: unknown) => {
+  const handleFileInputChange = (e: SelectChangeEvent) => {
     const file = e.target.files[0];
     previewFile(file);
   };
-
   const previewFile = (file: unknown) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -59,54 +68,95 @@ export default function AddProduct() {
       setPreviewSource(reader.result);
     };
   };
-
-  const handleSubmitFile = (e: { preventDefault: () => void }) => {
-    // e.preventDefault();
+  const handleImageSubmit = (e: { preventDefault: () => void }) => {
     if (!previewSource) return;
-    // uploadImage(previewSource);
     dispatch(uploadImage(previewSource));
   };
 
+  const submitHandler = async (e) => {  
+    e.preventDefault();
+    try {
+      await axios.post('http://localhost:4000/api/product/addProduct', {
+        inputName,
+        inputDescription,
+        inputPrice,
+        inputDiscount,
+        inputDiscountType,
+        inputSKU,
+        inputBarcode,
+        inputQuantity,
+        inputImage,
+        inputCategory,
+        inputSize,
+        inputTags,
+      });
+      toast.success('New data has been created successfully!',
+        { position: 'top-center' },
+      );
+      navigate('/products');
+      window.location.reload();
+    } catch (error) {
+      toast.error('Data with same date and time already exists',
+        { position: 'bottom-right' },
+      );
+      console.log(error);
+    }
+  }
+
+  const handleChangeDiscountType = (e: SelectChangeEvent) => {
+    setInputDiscountType(e.target.value as string);
+  };
+
+  const handleChangeCategory = (e: SelectChangeEvent) => {
+    setInputCategory(e.target.value as string);
+  };
+
+  const handleChangeSize = (e: SelectChangeEvent) => {
+    setInputSize(e.target.value as string);
+  };
+
   return (
-    <Box width={`100%`} sx={{ margin: '1rem 0' }}>
-      <FlexBetween
-        sx={{
-          boxShadow: 2,
-          padding: '1rem',
-          marginBottom: '2rem',
-        }}
-        flexDirection={{ xs: 'row' }}
-      >
-        <Box>
-          <Typography variant="h3">Add New Product</Typography>
-        </Box>
-        <Box
+    <Box sx={{ width: '100%' }}>
+      <form onSubmit={submitHandler}>
+      <Box width={`100%`} sx={{ margin: '1rem 0' }}>
+        <FlexBetween
           sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '1rem',
+            boxShadow: 2,
+            padding: '1rem',
+            marginBottom: '2rem',
           }}
+          flexDirection={{ xs: 'row' }}
         >
-          <Button variant="outlined" color="error">
-            Discard Product
-          </Button>
-          <Button
-            variant="contained"
+          <Box>
+            <Typography variant="h3">Add New Product</Typography>
+          </Box>
+          <Box
             sx={{
-              background: colorPalette.accent1[500],
-              color: colorPalette.base[500],
-              '&:hover': {
-                background: colorPalette.accent1[400],
-              },
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: '1rem',
             }}
           >
-            Add Product
-          </Button>
-        </Box>
-      </FlexBetween>
+            <Button variant="outlined" color="error" type="reset" onClick={() => navigate("/products")}>
+              Discard Product
+            </Button>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{
+                background: colorPalette.accent1[500],
+                color: colorPalette.base[500],
+                '&:hover': {
+                  background: colorPalette.accent1[400],
+                },
+              }}
+            >
+              Add Product
+            </Button>
+          </Box>
+        </FlexBetween>
 
-      <form>
         <Box
           width="100%"
           sx={{
@@ -135,22 +185,28 @@ export default function AddProduct() {
               <Box sx={{ fontSize: '2rem' }}>
                 <Box sx={{ marginBottom: '2rem' }}>
                   <TextField
-                    id="filled-basic"
+                    required
                     label="Product Name"
                     variant="filled"
                     fullWidth
-                    name="name"
+                    name="inputName"
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value as string)}
                   />
                 </Box>
                 <Box>
                   <TextField
-                    id="standard-multiline-static"
+                    required
                     label="Product Description"
                     multiline
                     rows={5}
                     fullWidth
-                    name="description"
+                    name="inputDescription"
                     variant="filled"
+                    value={inputDescription}
+                    onChange={(e) =>
+                      setInputDescription(e.target.value as string)
+                    }
                   />
                 </Box>
               </Box>
@@ -170,38 +226,47 @@ export default function AddProduct() {
               <Box sx={{ fontSize: '2rem' }}>
                 <Box sx={{ marginBottom: '2rem' }}>
                   <TextField
+                    required
                     type="number"
-                    id="filled-basic"
-                    label="Base Price"
+                    label="Price"
+                    value={inputPrice}
                     variant="filled"
                     fullWidth
-                    name="price"
+                    name="inputPrice"
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">LKR.</InputAdornment>
                       ),
                     }}
+                    onChange={(e) => setInputPrice(e.target.value)}
                   />
                 </Box>
-                <Box sx={{ width: '100%', display: 'flex', gap: '2rem' }}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    gap: '2rem',
+                    textAlign: 'left',
+                  }}
+                >
                   <TextField
-                    id="standard-multiline-static"
+                    type="number"
                     label="Discount (%)"
                     fullWidth
-                    name="discount"
-                    defaultValue="0%"
+                    name="inputDiscount"
+                    defaultValue="0"
                     variant="filled"
+                    value={inputDiscount}
+                    onChange={(e) => setInputDiscount(e.target.value)}
                   />
                   <FormControl fullWidth variant="filled">
                     <InputLabel id="demo-simple-select-label">
                       Discount Type
                     </InputLabel>
                     <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={discount}
+                      value={inputDiscountType}
                       label="Discount Type"
-                      onChange={handleChange}
+                      onChange={handleChangeDiscountType}
                     >
                       {DiscountList.map((discount) => (
                         <MenuItem key={discount.key} value={discount.type}>
@@ -235,30 +300,38 @@ export default function AddProduct() {
               >
                 <Box>
                   <TextField
-                    id="filled-basic"
-                    label="Product Name"
+                    required
+                    type="number"
+                    label="SKU"
                     variant="filled"
                     fullWidth
-                    name="name"
+                    name="inputSKU"
+                    value={inputSKU}
+                    onChange={(e) => setInputSKU(e.target.value)}
                   />
                 </Box>
                 <Box>
                   <TextField
-                    id="standard-multiline-static"
-                    label="Product Description"
+                    required
+                    type="number"
+                    label="Barcode"
                     fullWidth
-                    name="description"
+                    name="inputBarcode"
                     variant="filled"
+                    value={inputBarcode}
+                    onChange={(e) => setInputBarCode(e.target.value)}
                   />
                 </Box>
                 <Box>
                   <TextField
                     type="number"
-                    id="standard-multiline-static"
+                    required
                     label="Quantity"
                     fullWidth
-                    name="quantity"
+                    name="inputQuantity"
                     variant="filled"
+                    value={inputQuantity}
+                    onChange={(e) => setInputQuantity(e.target.value)}
                   />
                 </Box>
               </Box>
@@ -367,7 +440,7 @@ export default function AddProduct() {
                             background: colorPalette.accent1[400],
                           },
                         }}
-                        onClick={handleSubmitFile}
+                        onClick={handleImageSubmit}
                       >
                         Upload image
                       </Button>
@@ -385,7 +458,7 @@ export default function AddProduct() {
                     }}
                   >
                     <Button sx={{ color: colorPalette.accent1[200] }}>
-                      <label for="img-upload">
+                      <label htmlFor="img-upload">
                         <Box
                           sx={{
                             width: '80px',
@@ -437,15 +510,12 @@ export default function AddProduct() {
               >
                 {/* item sub 01 */}
                 <FormControl fullWidth variant="filled">
-                  <InputLabel id="demo-simple-select-label">
-                    Category
-                  </InputLabel>
+                  <InputLabel>Category</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={discount}
+                    required
+                    value={inputCategory}
                     label="Category"
-                    onChange={handleChange}
+                    onChange={handleChangeCategory}
                   >
                     {DiscountList.map((discount) => (
                       <MenuItem key={discount.key} value={discount.type}>
@@ -456,13 +526,12 @@ export default function AddProduct() {
                 </FormControl>
                 {/* item sub 02 */}
                 <FormControl fullWidth variant="filled">
-                  <InputLabel id="demo-simple-select-label">Size</InputLabel>
+                  <InputLabel>Size</InputLabel>
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={discount}
+                    required
+                    value={inputSize}
                     label="Size"
-                    onChange={handleChange}
+                    onChange={handleChangeSize}
                   >
                     {commonSizes.map((size) => (
                       <MenuItem key={size.key} value={size.size}>
@@ -478,14 +547,17 @@ export default function AddProduct() {
                     label="Tags"
                     variant="filled"
                     fullWidth
-                    name="tags"
+                    name="inputTags"
+                    value={inputTags}
+                    onChange={(e) => setInputTags(e.target.value as string)}
                   />
                 </Box>
               </Box>
             </Box>
           </Box>
         </Box>
-      </form>
+      </Box>
+    </form>
     </Box>
   );
 }

@@ -17,6 +17,7 @@ import FlexBetween from '../../../components/FlexBetween';
 import Search from './autocomplete';
 import ProductsLoader from './Preloaders/productsLoader';
 import { useNavigate } from 'react-router-dom';
+import ActionMenu from '../../../components/Products/ActionMenu';
 
 export default function Products() {
   const navigate = useNavigate();
@@ -32,10 +33,15 @@ export default function Products() {
 
   interface Product {
     name: string;
-    description: string;
-    image: [];
+    image: string;
     price: number;
+    barcode: number;
     category: string;
+    size: string;
+    quantity: number;
+    discount: number;
+    discountType: string;
+    sku: number;
   }
 
   React.useEffect(() => {
@@ -53,22 +59,9 @@ export default function Products() {
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'image',
-      headerName: 'Product Image',
-      flex: 1,
-      headerClassName: 'super-app-theme--header',
-    },
-    {
       field: 'name',
       headerName: 'Product Name',
       flex: 1,
-      headerClassName: 'super-app-theme--header',
-    },
-    {
-      field: 'price',
-      headerName: 'Product Price',
-      flex: 1,
-      // valueFormatter: (params) => params.value.toFixed(2),
       headerClassName: 'super-app-theme--header',
     },
     {
@@ -78,9 +71,39 @@ export default function Products() {
       headerClassName: 'super-app-theme--header',
     },
     {
+      field: 'price',
+      headerName: 'Product Price',
+      flex: 0.8,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: 'barcode',
+      headerName: 'Bar Code',
+      flex: 1,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: 'sku',
+      headerName: 'SKU',
+      flex: 1,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: 'size',
+      headerName: 'Size',
+      flex: 0.6,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: 'quantity',
+      headerName: 'Quantity',
+      flex: 0.6,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
       field: 'action',
       headerName: 'Actions',
-      flex: 0.5,
+      flex: 0.6,
       sortable: false,
       filterable: false,
       headerClassName: 'super-app-theme--header',
@@ -94,6 +117,10 @@ export default function Products() {
                 background: colorPalette.accent1[400],
               },
             }}
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
           >
             Actions
           </Button>
@@ -104,11 +131,24 @@ export default function Products() {
 
   const productRows = productData.map((product: Product, index) => ({
     id: index + 1,
-    image: product.image,
     name: product.name,
-    price: product.price,
     category: product.category,
+    price: product.price,
+    barcode: product.barcode,
+    sku: product.sku,
+    size: product.size,
+    quantity: product.quantity,
   }));
+
+  // handle actions here
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return loading ? (
     <ProductsLoader />
@@ -186,6 +226,7 @@ export default function Products() {
       >
         <Box style={{ height: '600px', width: '100%' }}>
           <DataGrid
+            autoHeight
             rows={productRows}
             columns={productColumns}
             pageSize={10}
@@ -205,6 +246,14 @@ export default function Products() {
           />
         </Box>
       </Box>
+      <ActionMenu
+        anchorEl={anchorEl}
+        open={open}
+        handleClose={handleClose}
+        // handleUpdate={handleUpdate}
+        // funcs={'Transport'}
+        // handleClickOpenAlert={handleClickOpenAlert}
+      />
     </Box>
   );
 }
