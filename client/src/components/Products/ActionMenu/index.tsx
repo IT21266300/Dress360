@@ -4,7 +4,14 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { colorPalette } from '../../../theme';
 
-export default function ActionMenu({ anchorEl, open, handleClose }) {
+interface Props {
+  anchorEl: HTMLElement | null;
+  open: boolean;
+  handleClose: () => void;
+  handleClickOpenAlert: () => void;
+}
+
+export default function ActionMenu({ anchorEl, open, handleClose, handleClickOpenAlert, handleClickOpenDialog, handleCloseDialog }: Props) {
   return (
     <Menu
       id="basic-menu"
@@ -16,7 +23,7 @@ export default function ActionMenu({ anchorEl, open, handleClose }) {
       }}
     >
       <MenuItem
-        onClick={handleClose}
+        onClick={handleClickOpenDialog}
         sx={{
           gap: '0.5rem',
           fontSize: '0.9rem',
@@ -38,7 +45,7 @@ export default function ActionMenu({ anchorEl, open, handleClose }) {
         Update
       </MenuItem>
       <MenuItem
-        onClick={handleClose}
+        onClick={handleClickOpenAlert}
         sx={{
           gap: '0.5rem',
           fontSize: '0.9rem',

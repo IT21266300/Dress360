@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../state/store';
-import { fetchProducts } from '../../../state/products/ProductSlice';
-import React from 'react';
+import {
+  deleteProduct,
+  fetchProducts,
+} from '../../../state/products/ProductSlice';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { colorPalette } from '../../../theme';
 import {
@@ -18,9 +21,35 @@ import Search from './autocomplete';
 import ProductsLoader from './Preloaders/productsLoader';
 import { useNavigate } from 'react-router-dom';
 import ActionMenu from '../../../components/Products/ActionMenu';
+import { toast } from 'react-toastify';
+import axios from 'axios';
+import ActionButton from '../../../components/Products/ActionButton';
+import DeleteAlertBox from '../../../components/Products/DeleteAlertBox';
+import ViewProduct from '../../../components/Products/ViewProduct';
 
 export default function Products() {
   const navigate = useNavigate();
+
+  const [selectedRow, setSelectedRow] = useState({} as unknown);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const handleClickOpenAlert = () => {
+    setOpenAlert(true);
+    setAnchorEl(null);
+  };
+
+  const handleCloseAlert = () => {
+    setOpenAlert(false);
+  };
+
+  const handleClickOpenDialog = () => {
+    setOpenDialog(true);
+    setAnchorEl(null);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   const productData = useSelector(
     (state: RootState) => state.products.productData
@@ -33,6 +62,8 @@ export default function Products() {
 
   interface Product {
     name: string;
+    _id: string;
+    mongoID: string;
     image: string;
     price: number;
     barcode: number;
@@ -56,6 +87,12 @@ export default function Products() {
       field: 'id',
       headerName: 'ID',
       flex: 0.3,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
+      field: 'mongoID',
+      headerName: 'MID',
+      flex: 0,
       headerClassName: 'super-app-theme--header',
     },
     {
@@ -109,21 +146,7 @@ export default function Products() {
       headerClassName: 'super-app-theme--header',
       renderCell: (params) => (
         <Box>
-          <Button
-            sx={{
-              background: colorPalette.accent1[500],
-              color: colorPalette.base[500],
-              '&:hover': {
-                background: colorPalette.accent1[400],
-              },
-            }}
-            aria-controls={open ? 'basic-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-            onClick={handleClick}
-          >
-            Actions
-          </Button>
+          <ActionButton handleClick={handleClick} params={params} open={open} />
         </Box>
       ),
     },
@@ -131,6 +154,7 @@ export default function Products() {
 
   const productRows = productData.map((product: Product, index) => ({
     id: index + 1,
+    mongoID: product._id,
     name: product.name,
     category: product.category,
     price: product.price,
@@ -143,11 +167,27 @@ export default function Products() {
   // handle actions here
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, params) => {
     setAnchorEl(event.currentTarget);
+    setSelectedRow(params.row);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDelete = async () => {
+    setAnchorEl(null);
+    setOpenAlert(false);
+    try {
+      await dispatch(deleteProduct(selectedRow.mongoID)).unwrap();
+      toast.success('Data successfully deleted!', { position: 'top-center' });
+      window.location.reload();
+    } catch (err) {
+      toast.success(err.message, { position: 'bottom-right' });
+      console.log(err);
+    }
   };
 
   return loading ? (
@@ -229,6 +269,14 @@ export default function Products() {
             autoHeight
             rows={productRows}
             columns={productColumns}
+            initialState={{
+              columns: {
+                columnVisibilityModel: {
+                  mongoID: false,
+                },
+              },
+              // sorting: { sortModel: [{field: 'date', sort: 'asc'}]}
+            }}
             pageSize={10}
             sx={{ fontSize: '0.9rem' }}
             components={{
@@ -251,8 +299,22 @@ export default function Products() {
         open={open}
         handleClose={handleClose}
         // handleUpdate={handleUpdate}
-        // funcs={'Transport'}
-        // handleClickOpenAlert={handleClickOpenAlert}
+        handleClickOpenAlert={handleClickOpenAlert}
+        handleClickOpenDialog={handleClickOpenDialog}
+        handleCloseDialog={handleCloseDialog}
+      />
+
+      <ViewProduct
+        handleClickOpenDialog={handleClickOpenDialog}
+        handleCloseDialog={handleCloseDialog}
+        openDialog={openDialog}
+        mongoID={selectedRow.mongoID}
+      />
+
+      <DeleteAlertBox
+        openAlert={openAlert}
+        handleCloseAlert={handleCloseAlert}
+        handleDelete={handleDelete}
       />
     </Box>
   );

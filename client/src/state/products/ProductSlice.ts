@@ -40,6 +40,15 @@ const counterSlice = createSlice({
         state.loading = false;
         state.imageID = action.payload;
         state.uploadState = true;
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(deleteProduct.rejected, (state) => {
+        state.loading = false;
       });
   },
 });
@@ -79,5 +88,14 @@ export const uploadImage = createAsyncThunk(
     }
   }
 );
+
+
+export const deleteProduct = createAsyncThunk(
+  'product/deleteProduct',
+  async (productId: string) => {
+    await axios.delete(`http://localhost:4000/api/product/deleteProduct/${productId}`);
+  }
+);
+
 
 export default counterSlice.reducer;
