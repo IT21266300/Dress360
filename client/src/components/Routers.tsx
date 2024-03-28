@@ -12,71 +12,75 @@ import LayoutAdmin from '../pages/adminLayouts';
 import LayoutCustomer from '../pages/customerLayouts';
 import Categories from '../pages/Custom/Categories';
 import Item from '../pages/Custom/Item';
-import AddProduct from '../pages/Admin/Products/AddProduct'
+import AddProduct from '../pages/Admin/Products/AddProduct';
 import Showroom from '../pages/Custom/showroom';
 
-const isAdmin: boolean = true;
+const isAdmin: boolean = false;
 
-const routesConfig = isAdmin ? [
-  {
-    path: '/',
-    element: <LayoutAdmin />,
-    children: [
+const routesConfig = isAdmin
+  ? [
       {
         path: '/',
-        element: <Navigate to="/overview" replace />
+        element: <LayoutAdmin />,
+        children: [
+          {
+            path: '/',
+            element: <Navigate to="/overview" replace />,
+          },
+          {
+            path: '/overview',
+            element: <Overview />,
+          },
+          {
+            path: '/products',
+            element: <Products />,
+          },
+          {
+            path: '/manageCategories',
+            element: <ManageCategories />,
+          },
+          {
+            path: '/addProduct',
+            element: <AddProduct />,
+          },
+        ],
       },
-      {
-        path: '/overview',
-        element: <Overview />,
-      },
-      {
-        path: '/products',
-        element: <Products />,
-      },
-      {
-        path: '/manageCategories',
-        element: <ManageCategories />,
-      },
-      {
-        path: '/addProduct',
-        element: <AddProduct />,
-      },
-    ],
-  },
-] : [
-  {
-    path: '/',
-    element: <LayoutCustomer />,
-    children: [
+    ]
+  : [
       {
         path: '/',
-        element: <Navigate to="/home" replace />
+        element: <LayoutCustomer />,
+        children: [
+          {
+            path: '/',
+            element: <Navigate to="/home" replace />,
+          },
+          {
+            path: '/home',
+            element: <Home />,
+          },
+          {
+            path: '/categories',
+            element: <Categories />,
+          },
+          {
+            path: '/item',
+            element: <Item />,
+          },
+          {
+            path: '/showroom',
+            element: <Showroom />,
+          },
+        ],
       },
       {
-        path: '/home',
-        element: <Home />,
+        path: '/signin',
+        element: <Signin />,
       },
       {
-        path: '/categories',
-        element: <Categories />,
+        path: '/signup',
+        element: <Signup />,
       },
-      {
-        path: '/item',
-        element: <Item />,
-      },
-      {
-        path: '/showroom',
-        element: <Showroom />,
-      },
-    ],
-  },{
-    path: '/signin',
-    element: <Signin />,
-  },{
-    path: '/signup',
-    element: <Signup />,
-  }
-];
+    ];
 
 export default routesConfig;

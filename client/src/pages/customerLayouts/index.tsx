@@ -6,10 +6,21 @@ import Header from '../../components/Header';
 const LayoutCustomer = () => {
   return (
     <Box minWidth="100%" height="100%">
-      <Header />
+      <Header children={undefined} />
       {/* <Box sx={{ m: '3rem' }}>
       </Box> */}
+      {/* <Outlet /> */}
+
+      <Box
+        sx={{
+          width: '100%',
+          marginTop: '4rem',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Outlet />
+      </Box>
     </Box>
   );
 };
