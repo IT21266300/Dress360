@@ -26,7 +26,7 @@ function App() {
               </Route>
             ))}
           </Routes>
-          {/* <Home/> */}
+          
         </ThemeProvider>
       </BrowserRouter>
     </div>

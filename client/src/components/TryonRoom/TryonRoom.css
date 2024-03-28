@@ -1,0 +1,18 @@
+.tryon-room{
+display: flex;
+height: 10cm;
+width:5cm;
+
+}
+
+.tryon-room-top{
+display: flex;
+flex-direction: column;
+gap: 10px;
+height:fit-content;
+width: auto;
+}
+.tryon-room-top img{
+    height: 20px;
+    width: 20px;
+}

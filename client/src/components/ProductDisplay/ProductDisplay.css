@@ -1,0 +1,131 @@
+.productdisplay{
+    display:flex ;
+margin: 0px 170px;
+margin-bottom: 70px;
+}
+.productdisplay-left{
+display:flex;
+gap: 17px;
+}
+.productdisplay-img-list{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding-top: 10px;
+}
+.productdisplay-img-list img{
+    height: 100px;
+    
+}
+.productdisplay-main-img{
+width: 350px;
+height: 450px;
+}
+
+.productdisplay-img{
+display:flex;
+flex-direction: row;
+padding-top: 10px;
+
+}
+.try-on-button{
+    background-color: #ffffff; 
+    color: rgb(0, 0, 0);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;         
+    border-radius: 60px;   
+    cursor: pointer;
+    position: relative;
+    right: 75px;
+    top: 5px;
+    height: 60px;
+    width: 60px;
+    
+}
+
+
+.productdisply-right{
+margin: 0px 70px;
+display: flex;
+flex-direction: column;
+
+}
+.productdisplay-right h1{
+color: #3d3d3d;
+font-size: 40px;
+font-weight: 700;
+}
+.productdisplay-right-stars{
+    display: flex;
+    align-items: center;
+    margin-top: 13px;
+    gap: 5px;
+    color: #1c1c1c;
+    font-size: 16px;
+}
+.productdisplay-right-prices{
+    display: flex;
+    margin: 40px 0px;
+    gap: 30px;
+    
+    font-size: 24px;
+    font-weight: 700;
+}
+.productdisplay-right-price-old{
+    color: #8c8c8c;
+    text-decoration: line-through;
+}
+.productdisplay-right-price-new{
+    color: #b12704;
+}
+.productdisplay-right-size h1{
+    margin-top: 55px;
+color: #656565;
+font-size: 20px;
+font-weight: 600;
+}
+.productdisplay-right-sizes{
+    display: flex;
+margin: 30px 0px;
+gap: 20px;
+}
+.productdisplay-right-sizes div {
+    padding: 18px 24px;
+    background: #fbfbfb;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.productdisplay-right-sizes div:hover {
+    background: #ebebeb;
+transition: all 0.3s ease-in-out;
+}
+.productdisply-right button{
+padding: 20px 40px;
+width: 200px;
+font-size: 16px;
+font-weight: 600;
+color: white;
+background: #FF4141;
+margin-bottom: 40px;
+border: none;
+outline: none;
+cursor: pointer;
+
+}
+.productdisplay-right-category{
+    margin-top: 10px;
+
+}
+.productdisplay-right-category span{
+    font-weight: 600;
+}
+.productdisplay-right-description{
+    margin-top: 10px;
+    color: #656565;
+    font-size: 16px;
+    font-weight: 600;
+}
+
