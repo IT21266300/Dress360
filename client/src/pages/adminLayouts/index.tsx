@@ -6,9 +6,20 @@ import Sidebar from '../../components/Drawer';
 const LayoutAdmin = () => {
   // const isDesktop = useMediaQuery('(min-width: 600px)');
   return (
-    <Box minWidth="100%" height="100%" >
+    <Box
+      minWidth="100%"
+      height="100%"
+      sx={{ display: 'flex', justifyContent: 'center' }}
+    >
       <Sidebar />
-      <Box sx={{ m: '3rem' }}>
+      <Box
+        sx={{
+          width: '100%',
+          marginTop: '3rem',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Outlet />
       </Box>
     </Box>

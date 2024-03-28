@@ -29,6 +29,12 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import FaceIcon from '@mui/icons-material/Face';
+import CategoryIcon from '@mui/icons-material/Category';
+import { colorPalette } from '../theme';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 // Nav bar configurations
 const Search = styled('div')(({ theme }) => ({
@@ -144,6 +150,14 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export default function MiniDrawer() {
+  const { pathname } = useLocation();
+  const [active, setActive] = React.useState('');
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    setActive(pathname.substring(1));
+  }, [pathname]);
+
   // Nav bar actions
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -255,32 +269,53 @@ export default function MiniDrawer() {
     setOpen(false);
   };
 
+  const navItems = [
+    {
+      text: 'Overview',
+      op: 'overview',
+      icon: <DashboardIcon />,
+    },
+    {
+      text: 'Products',
+      op: 'products',
+      icon: <InventoryIcon />,
+    },
+    {
+      text: 'Categories',
+      op: 'manageCategories',
+      icon: <CategoryIcon />,
+    },
+  ];
 
-  // const drawerItems = [
-  //   {
-  //     key: 1,
-  //     name: "Products",
-  //     icon: 
-  //   }
-  // ]
+  React.useEffect(() => {
+    setActive(pathname.substring(1));
+  }, [pathname]);
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       {/* start of nav bar */}
       <AppBar open={open}>
-        <Toolbar>
+        <Toolbar
+          sx={{
+            boxShadow: 0,
+            background: colorPalette.base[500],
+          }}
+        >
           <IconButton
             color="secondary"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
             sx={{
+              boxShadow: 0,
               marginRight: 5,
               ...(open && { display: 'none' }),
             }}
           >
-            <MenuIcon />
+            <MenuIcon
+              sx={{ fontSize: '1.6rem', color: colorPalette.accent1[500] }}
+            />
           </IconButton>
           <Typography variant="h3" noWrap component="div">
             Dress360
@@ -299,7 +334,7 @@ export default function MiniDrawer() {
             <IconButton
               size="large"
               aria-label="show 4 new mails"
-              color="inherit"
+              sx={{ color: colorPalette.accent1[500] }}
             >
               <Badge badgeContent={4} color="error">
                 <MailIcon />
@@ -308,7 +343,7 @@ export default function MiniDrawer() {
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
-              color="inherit"
+              sx={{ color: colorPalette.accent1[500] }}
             >
               <Badge badgeContent={17} color="error">
                 <NotificationsIcon />
@@ -321,7 +356,7 @@ export default function MiniDrawer() {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="inherit"
+              sx={{ color: colorPalette.accent1[500] }}
             >
               <AccountCircle />
             </IconButton>
@@ -357,13 +392,26 @@ export default function MiniDrawer() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {navItems.map(({ text, op, icon }) => (
             <ListItem key={text} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
+                onClick={() => {
+                  navigate(`/${op}`);
+                  setActive(op);
+                }}
                 sx={{
+                  '&:hover': {
+                    background: active === op && colorPalette.accent1[400],
+                  },
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2.5,
+                  backgroundColor:
+                    active === op ? colorPalette.accent1[500] : 'transparent',
+                  color:
+                    active === op
+                      ? colorPalette.base[100]
+                      : colorPalette.base[900],
                 }}
               >
                 <ListItemIcon
@@ -371,34 +419,13 @@ export default function MiniDrawer() {
                     minWidth: 0,
                     mr: open ? 3 : 'auto',
                     justifyContent: 'center',
+                    color:
+                      active === op
+                        ? colorPalette.base[100]
+                        : colorPalette.accent2[300],
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
-                >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {icon}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>

@@ -9,7 +9,7 @@ import dotenv from 'dotenv';
 */
 import admin from './routes/admin.js';
 import ProductRouter from './routes/productRoutes.js';
-import {errorHandler} from './middleware/errorHandler.js'
+import { errorHandler } from './middleware/errorHandler.js';
 
 // backend configs
 const app = express();
@@ -21,6 +21,9 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to database successfully 🧲'))
   .catch((err) => console.error('Error while connecting to database💩'));
+
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // ????????
 var allowCrossDomain = function (req, res, next) {
