@@ -299,6 +299,7 @@ export default function MiniDrawer() {
         <Toolbar
           sx={{
             boxShadow: 0,
+            background: colorPalette.base[500],
           }}
         >
           <IconButton
@@ -312,7 +313,9 @@ export default function MiniDrawer() {
               ...(open && { display: 'none' }),
             }}
           >
-            <MenuIcon sx={{ fontSize: '1.6rem' }} />
+            <MenuIcon
+              sx={{ fontSize: '1.6rem', color: colorPalette.accent1[500] }}
+            />
           </IconButton>
           <Typography variant="h3" noWrap component="div">
             Dress360
