@@ -98,4 +98,18 @@ export const deleteProduct = createAsyncThunk(
 );
 
 
+// export const fetchItemData = createAsyncThunk() 
+
+// async () => {
+//   try {
+//     const response = await axios.get(
+//       `http://localhost:4000/api/product/getProduct/${mongoID}`
+//     );
+//     setItemData(response.data)
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
 export default counterSlice.reducer;

@@ -309,6 +309,10 @@ export default function Products() {
         handleCloseDialog={handleCloseDialog}
         openDialog={openDialog}
         mongoID={selectedRow.mongoID}
+        handleClickOpenAlert={handleClickOpenAlert}
+        openAlert={openAlert}
+        handleCloseAlert={handleCloseAlert}
+        handleDelete={handleDelete}
       />
 
       <DeleteAlertBox
