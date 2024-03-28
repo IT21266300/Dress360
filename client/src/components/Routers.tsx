@@ -12,9 +12,10 @@ import LayoutAdmin from '../pages/adminLayouts';
 import LayoutCustomer from '../pages/customerLayouts';
 import Categories from '../pages/Custom/Categories';
 import Item from '../pages/Custom/Item';
+import AddProduct from '../pages/Admin/Products/AddProduct'
 import Showroom from '../pages/Custom/showroom';
 
-const isAdmin: boolean = false;
+const isAdmin: boolean = true;
 
 const routesConfig = isAdmin ? [
   {
@@ -36,6 +37,10 @@ const routesConfig = isAdmin ? [
       {
         path: '/manageCategories',
         element: <ManageCategories />,
+      },
+      {
+        path: '/addProduct',
+        element: <AddProduct />,
       },
     ],
   },
