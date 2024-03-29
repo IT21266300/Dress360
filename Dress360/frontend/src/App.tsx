@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react';
 import {
   Badge,
   Button,
@@ -10,64 +10,67 @@ import {
   Nav,
   Navbar,
   NavDropdown,
-} from 'react-bootstrap'
-import { Link, Outlet } from 'react-router-dom'
-import { LinkContainer } from 'react-router-bootstrap'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-import { Store } from './Store'
-import { useGetCategoriesQuery } from './hooks/productHooks'
-import LoadingBox from './components/LoadingBox'
-import MessageBox from './components/MessageBox'
-import { getError } from './utils'
-import { ApiError } from './types/ApiError'
-import SearchBox from './components/SearchBox'
+} from 'react-bootstrap';
+import { Link, Outlet } from 'react-router-dom';
+import { LinkContainer } from 'react-router-bootstrap';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Store } from './Store';
+import { useGetCategoriesQuery } from './hooks/productHooks';
+import LoadingBox from './components/LoadingBox';
+import MessageBox from './components/MessageBox';
+import { getError } from './utils';
+import { ApiError } from './types/ApiError';
+import SearchBox from './components/SearchBox';
+import DressTimeReward from'./pages/DressTimeReward';
 
 function App() {
   const {
     state: { mode, cart, userInfo },
     dispatch,
-  } = useContext(Store)
+  } = useContext(Store);
 
   useEffect(() => {
-    document.body.setAttribute('data-bs-theme', mode)
-  }, [mode])
+    document.body.setAttribute('data-bs-theme', mode);
+  }, [mode]);
 
   const switchModeHandler = () => {
-    dispatch({ type: 'SWITCH_MODE' })
-  }
+    dispatch({ type: 'SWITCH_MODE' });
+  };
   const signoutHandler = () => {
-    dispatch({ type: 'USER_SIGNOUT' })
-    localStorage.removeItem('userInfo')
-    localStorage.removeItem('cartItems')
-    localStorage.removeItem('shippingAddress')
-    localStorage.removeItem('paymentMethod')
-    window.location.href = '/signin'
-  }
+    dispatch({ type: 'USER_SIGNOUT' });
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('paymentMethod');
+    window.location.href = '/signin';
+  };
 
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false)
+  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
 
-  const { data: categories, isLoading, error } = useGetCategoriesQuery()
+  const { data: categories, isLoading, error } = useGetCategoriesQuery();
 
   return (
     <div className="d-flex flex-column vh-100">
       <ToastContainer position="bottom-center" limit={1} />
       <header>
         <Navbar
-          className="d-flex flex-column align-items-stretch p-2 pb-0 mb-3"
-          bg="dark"
+          className="d-flex flex-column align-items-stretch p-2 pb-0 mb-3 nav"
+          // bg="dark"
           variant="dark"
           expand="lg"
         >
           <div className="d-flex justify-content-between align-items-center">
             <LinkContainer to="/" className="header-link">
-              <Navbar.Brand>amazona</Navbar.Brand>
+
+              <Navbar.Brand>Dress360</Navbar.Brand>
+
             </LinkContainer>
             <SearchBox />
 
             <Navbar.Collapse>
               <Nav className="w-100 justify-content-end">
-                <Link
+                {/* <Link
                   to="#"
                   className="nav-link header-link"
                   onClick={switchModeHandler}
@@ -76,7 +79,7 @@ function App() {
                     className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}
                   ></i>{' '}
                   {mode === 'light' ? 'Light' : 'Dark'}
-                </Link>
+                </Link> */}
 
                 {userInfo ? (
                   <NavDropdown
@@ -89,6 +92,9 @@ function App() {
                     <LinkContainer to="/orderhistory">
                       <NavDropdown.Item>Order History</NavDropdown.Item>
                     </LinkContainer>
+                    <Link to="/dress-time-reward" className="nav-link header-link">
+                Dress Time Reward
+                </Link>
                     <NavDropdown.Divider />
                     <Link
                       className="dropdown-item"
@@ -108,6 +114,9 @@ function App() {
                 )}
                 <Link to="/orderhistory" className="nav-link header-link">
                   Orders
+                </Link>
+                <Link to="/dress-time-reward" className="nav-link header-link">
+                Dress Time Reward
                 </Link>
                 <Link to="/cart" className="nav-link header-link p-0">
                   {
@@ -217,7 +226,7 @@ function App() {
         <div className="text-center">All rights reserved</div>
       </footer>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

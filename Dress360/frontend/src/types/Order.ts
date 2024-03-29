@@ -15,5 +15,6 @@ export type Order = {
   itemsPrice: number
   shippingPrice: number
   taxPrice: number
+  dressTimeReward: number
   totalPrice: number
 }
