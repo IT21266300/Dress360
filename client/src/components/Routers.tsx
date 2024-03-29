@@ -15,7 +15,7 @@ import Item from '../pages/Custom/Item';
 import AddProduct from '../pages/Admin/Products/AddProduct';
 import Showroom from '../pages/Custom/showroom';
 
-const isAdmin: boolean = false;
+const isAdmin: boolean = true;
 
 const routesConfig = isAdmin
   ? [
