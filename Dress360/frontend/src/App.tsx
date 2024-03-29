@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from "react";
 import {
   Badge,
   Button,
@@ -10,19 +10,19 @@ import {
   Nav,
   Navbar,
   NavDropdown,
-} from 'react-bootstrap';
-import { Link, Outlet } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Store } from './Store';
-import { useGetCategoriesQuery } from './hooks/productHooks';
-import LoadingBox from './components/LoadingBox';
-import MessageBox from './components/MessageBox';
-import { getError } from './utils';
-import { ApiError } from './types/ApiError';
-import SearchBox from './components/SearchBox';
-import DressTimeReward from'./pages/DressTimeReward';
+} from "react-bootstrap";
+import { Link, Outlet } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Store } from "./Store";
+import { useGetCategoriesQuery } from "./hooks/productHooks";
+import LoadingBox from "./components/LoadingBox";
+import MessageBox from "./components/MessageBox";
+import { getError } from "./utils";
+import { ApiError } from "./types/ApiError";
+import SearchBox from "./components/SearchBox";
+import DressTimeReward from "./pages/DressTimeReward";
 
 function App() {
   const {
@@ -31,19 +31,19 @@ function App() {
   } = useContext(Store);
 
   useEffect(() => {
-    document.body.setAttribute('data-bs-theme', mode);
+    document.body.setAttribute("data-bs-theme", mode);
   }, [mode]);
 
   const switchModeHandler = () => {
-    dispatch({ type: 'SWITCH_MODE' });
+    dispatch({ type: "SWITCH_MODE" });
   };
   const signoutHandler = () => {
-    dispatch({ type: 'USER_SIGNOUT' });
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('cartItems');
-    localStorage.removeItem('shippingAddress');
-    localStorage.removeItem('paymentMethod');
-    window.location.href = '/signin';
+    dispatch({ type: "USER_SIGNOUT" });
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("paymentMethod");
+    window.location.href = "/signin";
   };
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -62,9 +62,7 @@ function App() {
         >
           <div className="d-flex justify-content-between align-items-center">
             <LinkContainer to="/" className="header-link">
-
               <Navbar.Brand>Dress360</Navbar.Brand>
-
             </LinkContainer>
             <SearchBox />
 
@@ -92,17 +90,20 @@ function App() {
                     <LinkContainer to="/orderhistory">
                       <NavDropdown.Item>Order History</NavDropdown.Item>
                     </LinkContainer>
-                    <Link to="/dress-time-reward" className="nav-link header-link">
-                Dress Time Reward
-                </Link>
+                    <Link
+                      to="/dress-time-reward"
+                      className="nav-link header-link"
+                    >
+                      Dress Time Reward
+                    </Link>
                     <NavDropdown.Divider />
                     <Link
                       className="dropdown-item"
                       to="#signout"
                       onClick={signoutHandler}
                     >
-                      {' '}
-                      Sign Out{' '}
+                      {" "}
+                      Sign Out{" "}
                     </Link>
                   </NavDropdown>
                 ) : (
@@ -116,7 +117,7 @@ function App() {
                   Orders
                 </Link>
                 <Link to="/dress-time-reward" className="nav-link header-link">
-                Dress Time Reward
+                  Dress Time Reward
                 </Link>
                 <Link to="/cart" className="nav-link header-link p-0">
                   {
@@ -146,7 +147,7 @@ function App() {
               >
                 <i className="fas fa-bars"></i> All
               </Link>
-              {['Todays Deal', 'Gifts', 'On Sale'].map((x) => (
+              {["Todays Deal", "Gifts", "On Sale"].map((x) => (
                 <Link
                   key={x}
                   className="nav-link header-link p-1 px-3"
@@ -170,8 +171,8 @@ function App() {
       <div
         className={
           sidebarIsOpen
-            ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
-            : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
+            ? "active-nav side-navbar d-flex justify-content-between flex-wrap flex-column"
+            : "side-navbar d-flex justify-content-between flex-wrap flex-column"
         }
       >
         <ListGroup variant="flush">
@@ -206,7 +207,7 @@ function App() {
             categories!.map((category) => (
               <ListGroup.Item action key={category}>
                 <LinkContainer
-                  to={{ pathname: '/search', search: `category=${category}` }}
+                  to={{ pathname: "/search", search: `category=${category}` }}
                   onClick={() => setSidebarIsOpen(false)}
                 >
                   <Nav.Link>{category}</Nav.Link>
