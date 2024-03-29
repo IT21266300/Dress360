@@ -1,26 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, useRef } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { Canvas } from '@react-three/fiber';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'; // Import OBJLoader
+import { OrbitControls } from '@react-three/drei';
+import './TryonRoom.css';
 
 const TryonRoom = ({ handleClose, show }: { handleClose: any, show: any }) => {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const mesh = useRef<any>(null); // Ref for the loaded mesh
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
+    const fetchModel = async () => {
       try {
-        const response = await fetch('http://localhost:4000/api/tryon'); // Change the URL to match your backend endpoint
-        const jsonData = await response.json();
-        setData(jsonData);
+        const response = await fetch('/api/tryon'); // Fetch 3D model from backend API
+        const data = await response.json();
+        
+        const loader = new OBJLoader(); // Use OBJLoader to load OBJ files
+        loader.load(data.path, (loadedMesh) => {
+          mesh.current = loadedMesh;
+          console.log(mesh.current); 
+          setModelLoaded(true);
+        });
       } catch (error) {
-        setError('Error fetching data from the server.');
-      } finally {
-        setLoading(false);
+        console.error('Error fetching 3D model:', error);
       }
     };
 
-    fetchData();
+    fetchModel();
   }, []);
 
   return (
@@ -29,14 +35,18 @@ const TryonRoom = ({ handleClose, show }: { handleClose: any, show: any }) => {
         <Modal.Title>Try Your Clothes</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-        {data && (
-          <div className="tryon-room">
-            {/* Render the data here */}
-            <img src={data.imageUrl} alt="3D Model" />
-          </div>
-        )}
+        <div className="tryon-room">
+          <Canvas>
+            <ambientLight />
+            <pointLight position={[10, 10, 10]} />
+            {modelLoaded && (
+              <Suspense fallback={null}>
+                <primitive object={mesh.current} />
+              </Suspense>
+            )}
+            <OrbitControls />
+          </Canvas>
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

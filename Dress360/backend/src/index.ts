@@ -8,6 +8,7 @@ import { orderRouter } from './routers/orderRouter'
 import { productRouter } from './routers/productRouter'
 import { seedRouter } from './routers/seedRouter'
 import { userRouter } from './routers/userRouter'
+import { threeDModelRouter } from './routers/3dRouters';
 
 dotenv.config()
 
@@ -15,13 +16,7 @@ const MONGODB_URI =
   process.env.MONGODB_URI || 'mongodb://localhost/tsmernamazonadb'
 mongoose.set('strictQuery', true)
 mongoose
-  .connect(MONGODB_URI
-  //   ,{
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true,
-  //   useCreateIndex: true,
-  // } as any
-  )
+  .connect(MONGODB_URI)
 
   .then(() => {
     console.log('connected to mongodb')
@@ -46,6 +41,7 @@ app.use('/api/users', userRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/seed', seedRouter)
 app.use('/api/keys', keyRouter)
+app.use('/api/3dmodel', threeDModelRouter); // Include the new router
 
 app.use(express.static(path.join(__dirname, '../../frontend/dist')))
 app.get('*', (req: Request, res: Response) =>

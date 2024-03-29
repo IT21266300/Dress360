@@ -1,25 +1,15 @@
-// src/models/3DModel.ts
+// models/3dModel.ts
 
-import { prop, getModelForClass } from '@typegoose/typegoose';
+import mongoose, { Document } from 'mongoose';
 
-export class ThreeDModel {
-  @prop({ required: true })
-  public name!: string;
-
-  @prop({ required: true })
-  public path!: string; // Path to the 3D model file in your server
-
-  @prop({ required: true })
-  public description!: string;
-
-  // Add more properties as needed
-
-  // Timestamps
-  @prop()
-  public createdAt?: Date;
-
-  @prop()
-  public updatedAt?: Date;
+export interface ThreeDModel extends Document {
+  name: string;
+  path: string;
 }
 
-export const ThreeDModelModel = getModelForClass(ThreeDModel);
+const threeDModelSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  path: { type: String, required: true }
+});
+
+export const ThreeDModel = mongoose.model<ThreeDModel>('ThreeDModel', threeDModelSchema);
