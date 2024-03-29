@@ -5,7 +5,11 @@ import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { colorPalette } from '../../../theme';
 
-export default function Content({ mongoID, handleClickOpenAlert, handleCloseDialog }: props) {
+export default function Content({
+  mongoID,
+  handleClickOpenAlert,
+  handleCloseDialog,
+}: props) {
   const [currentImage, setCurrentImg] = useState('');
   const [itemData, setItemData] = useState();
 
@@ -36,23 +40,33 @@ export default function Content({ mongoID, handleClickOpenAlert, handleCloseDial
     >
       <Box
         sx={{
-          width: '50%',
+          width: '40%',
           display: 'flex',
-          justifyContent: 'center',
+          justifyContent: 'space-around',
           alignItems: 'center',
+          gap: 2,
         }}
       >
         <Image
           cloudName="dypvbk20u"
           publicId={currentImage}
-          width="500"
+          width="400"
           height="500"
           crop="scale"
           alt="img"
           className="rounded-full"
           sx={{ objectFit: 'content' }}
         />
-        <Divider orientation="vertical" flexItem />
+      </Box>
+      <Box sx={{ width: '5%' }}>
+        <Box
+          sx={{
+            width: '1px',
+            height: '100%',
+            background: colorPalette.accent2[200],
+            margin: '0 2rem',
+          }}
+        ></Box>
       </Box>
       <Box
         sx={{

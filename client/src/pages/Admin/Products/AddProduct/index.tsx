@@ -22,6 +22,7 @@ import { colorPalette } from '../../../../theme';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import DiscountList from '../Data/discountList.json';
+import CategoriesList from '../Data/categories.json';
 import { commonSizes } from '../Data/sizes';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
@@ -40,12 +41,12 @@ export default function AddProduct() {
   const [previewSource, setPreviewSource] = useState();
   const [inputName, setInputName] = useState('');
   const [inputDescription, setInputDescription] = useState('');
-  const [inputPrice, setInputPrice] = useState(0);
-  const [inputDiscount, setInputDiscount] = useState(0);
+  const [inputPrice, setInputPrice] = useState();
+  const [inputDiscount, setInputDiscount] = useState();
   const [inputDiscountType, setInputDiscountType] = useState('');
-  const [inputSKU, setInputSKU] = useState(0);
-  const [inputBarcode, setInputBarCode] = useState(0);
-  const [inputQuantity, setInputQuantity] = useState(0);
+  const [inputSKU, setInputSKU] = useState();
+  const [inputBarcode, setInputBarCode] = useState();
+  const [inputQuantity, setInputQuantity] = useState();
   const [inputCategory, setInputCategory] = useState('');
   const [inputSize, setInputSize] = useState('');
   const [inputTags, setInputTags] = useState('');
@@ -96,7 +97,7 @@ export default function AddProduct() {
       navigate('/products');
       window.location.reload();
     } catch (error) {
-      toast.error('Data with same date and time already exists', {
+      toast.error(error, {
         position: 'bottom-right',
       });
       console.log(error);
@@ -259,7 +260,6 @@ export default function AddProduct() {
                       label="Discount (%)"
                       fullWidth
                       name="inputDiscount"
-                      defaultValue="0"
                       variant="filled"
                       value={inputDiscount}
                       onChange={(e) => setInputDiscount(e.target.value)}
@@ -381,8 +381,14 @@ export default function AddProduct() {
                       <Box
                         sx={{
                           width: '100%',
+                          height: '200px',
                           position: 'relative',
                           marginBottom: '1rem',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          overflow: 'hidden',
                         }}
                       >
                         <img
@@ -421,6 +427,8 @@ export default function AddProduct() {
                             width: '100%',
                             height: 'auto',
                             fontSize: '3rem',
+                            display: 'flex',
+                            justifyContent: 'center',
                           }}
                         >
                           <Button
@@ -431,12 +439,20 @@ export default function AddProduct() {
                           </Button>
                         </Box>
                       ) : loading ? (
-                        <CircularProgress
+                        <Box
                           sx={{
-                            color: colorPalette.accent1[500],
-                            fontSize: '5rem',
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
                           }}
-                        />
+                        >
+                          <CircularProgress
+                            sx={{
+                              color: colorPalette.accent1[500],
+                              fontSize: '5rem',
+                            }}
+                          />
+                        </Box>
                       ) : (
                         <Button
                           component="label"
@@ -444,6 +460,9 @@ export default function AddProduct() {
                           tabIndex={-1}
                           startIcon={<CloudUploadIcon />}
                           sx={{
+                            width: '100%',
+                            display: 'flex',
+                            justifyContent: 'center',
                             background: colorPalette.accent1[500],
                             color: colorPalette.base[500],
                             '&:hover': {
@@ -527,9 +546,9 @@ export default function AddProduct() {
                       label="Category"
                       onChange={handleChangeCategory}
                     >
-                      {DiscountList.map((discount) => (
-                        <MenuItem key={discount.key} value={discount.type}>
-                          {discount.type}
+                      {CategoriesList.map((category) => (
+                        <MenuItem key={category.key} value={category.type}>
+                          {category.type}
                         </MenuItem>
                       ))}
                     </Select>

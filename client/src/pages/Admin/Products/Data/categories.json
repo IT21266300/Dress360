@@ -1,0 +1,30 @@
+[
+    {
+        "key": 1,
+        "type": "Tops"
+    },
+    {
+        "key": 2,
+        "type": "Bottoms"
+    },
+    {
+        "key": 3,
+        "type": "OuterWare"
+    },
+    {
+        "key": 4,
+        "type": "SleepWare"
+    },
+    {
+        "key": 5,
+        "type": "FootWare"
+    },
+    {
+        "key": 6,
+        "type": "Accessories"
+    },
+    {
+        "key": 7,
+        "type": "Other"
+    }
+]
