@@ -58,10 +58,12 @@ function App() {
           // bg="dark"
           variant="dark"
           expand="lg"
-        >
+        
           <div className="d-flex justify-content-between align-items-center">
             <LinkContainer to="/" className="header-link">
-              <Navbar.Brand>Dres360</Navbar.Brand>
+
+              <Navbar.Brand>Dress360</Navbar.Brand>
+
             </LinkContainer>
             <SearchBox />
 
