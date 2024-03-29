@@ -22,6 +22,7 @@ import MessageBox from './components/MessageBox';
 import { getError } from './utils';
 import { ApiError } from './types/ApiError';
 import SearchBox from './components/SearchBox';
+import DressTimeReward from'./pages/DressTimeReward';
 
 function App() {
   const {
@@ -91,6 +92,9 @@ function App() {
                     <LinkContainer to="/orderhistory">
                       <NavDropdown.Item>Order History</NavDropdown.Item>
                     </LinkContainer>
+                    <Link to="/dress-time-reward" className="nav-link header-link">
+                Dress Time Reward
+                </Link>
                     <NavDropdown.Divider />
                     <Link
                       className="dropdown-item"
@@ -110,6 +114,9 @@ function App() {
                 )}
                 <Link to="/orderhistory" className="nav-link header-link">
                   Orders
+                </Link>
+                <Link to="/dress-time-reward" className="nav-link header-link">
+                Dress Time Reward
                 </Link>
                 <Link to="/cart" className="nav-link header-link p-0">
                   {

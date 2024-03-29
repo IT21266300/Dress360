@@ -1,4 +1,6 @@
 import React from 'react';
+import dressTimeReward from '../../public/images/DressTimeReward.png';
+
 
 interface DressTimeRewardProps {
   timeSpent: number;
@@ -35,7 +37,7 @@ const DressTimeReward: React.FC<DressTimeRewardProps> = ({
         </div>
         <div className="col-md-6 text-center">
           <img
-            src="path/to/loyalty-rewards-image.png"
+            src={dressTimeReward}
             alt="Loyalty Rewards Program"
             className="img-fluid"
           />
