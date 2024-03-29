@@ -23,6 +23,7 @@ export default function PlaceOrderPage() {
   )
   cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10)
   cart.taxPrice = round2(0.15 * cart.itemsPrice)
+  cart.dressTimeReward = round2(0.01 * cart.itemsPrice)
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice
 
   const { mutateAsync: createOrder, isLoading } = useCreateOrderMutation()
@@ -36,6 +37,7 @@ export default function PlaceOrderPage() {
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
         taxPrice: cart.taxPrice,
+        dressTimeReward: cart.dressTimeReward,
         totalPrice: cart.totalPrice,
       })
       dispatch({ type: 'CART_CLEAR' })
@@ -132,6 +134,12 @@ export default function PlaceOrderPage() {
                   <Row>
                     <Col>Tax</Col>
                     <Col>${cart.taxPrice.toFixed(2)}</Col>
+                  </Row>
+                </ListGroup.Item>
+                <ListGroup.Item>
+                  <Row>
+                    <Col>Dress Time Reward</Col>
+                    <Col>${cart.dressTimeReward.toFixed(2)}</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
