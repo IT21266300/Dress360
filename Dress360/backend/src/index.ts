@@ -1,7 +1,7 @@
 import cors from 'cors'
 import dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 import path from 'path'
 import { keyRouter } from './routers/keyRouter'
 import { orderRouter } from './routers/orderRouter'
@@ -15,7 +15,14 @@ const MONGODB_URI =
   process.env.MONGODB_URI || 'mongodb://localhost/tsmernamazonadb'
 mongoose.set('strictQuery', true)
 mongoose
-  .connect(MONGODB_URI)
+  .connect(MONGODB_URI
+  //   ,{
+  //   useNewUrlParser: true,
+  //   useUnifiedTopology: true,
+  //   useCreateIndex: true,
+  // } as any
+  )
+
   .then(() => {
     console.log('connected to mongodb')
   })
