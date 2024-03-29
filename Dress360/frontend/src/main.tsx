@@ -26,6 +26,7 @@ import OrderPage from './pages/OrderPage'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import OrderHistoryPage from './pages/OrderHistoryPage'
 import ProfilePage from './pages/ProfilePage'
+import DressTimeReward from './pages/DressTimeReward'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,6 +43,11 @@ const router = createBrowserRouter(
         <Route path="/order/:id" element={<OrderPage />} />
         <Route path="/orderhistory" element={<OrderHistoryPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/dress-time-reward" element={<DressTimeReward
+  timeSpent={5}
+  totalEarnedPoints={20}
+  claimedPoints={5}
+/>} />
       </Route>
 
       {/* <Route path="dashboard" element={<Dashboard />} /> */}
