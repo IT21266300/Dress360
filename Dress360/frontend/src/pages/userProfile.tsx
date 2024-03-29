@@ -8,6 +8,7 @@ import { Store } from "../Store";
 import { ApiError } from "../types/ApiError";
 import { getError } from "../utils";
 import "./userProfile.css";
+//import 'bootstrap/dist/css/bootstrap.css';
 
 export default function userProfile() {
   const { state, dispatch } = useContext(Store);
@@ -39,6 +40,10 @@ export default function userProfile() {
     }
   };
 
+  const handleClick = () => {
+    window.location.href = '/measurements'; 
+  };
+
   return (
     <div className="container">
       <h2>User Profile</h2>
@@ -55,11 +60,10 @@ export default function userProfile() {
                     width="150"
                   />
                   <div className="mt-3">
-                    <h4>John Doe</h4>
                     {/* <p className="text-secondary mb-1">Full Stack Developer</p> */}
 
                     {/* <button className="btn btn-primary">Follow</button> */}
-                    <button className="btn btn-outline-primary mx-3 mb-3">
+                    <button className="btn btn-outline-primary mx-3 mb-3" onClick={handleClick}>
                       Add Body measurements
                     </button>
                   </div>
@@ -163,7 +167,7 @@ export default function userProfile() {
                         type="submit"
                         className="btn btn-info "
                       >
-                        Edit
+                        Update Details
                       </Button>
                     </div>
                     {isLoading && <LoadingBox></LoadingBox>}
