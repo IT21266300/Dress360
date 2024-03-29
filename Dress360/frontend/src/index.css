@@ -32,8 +32,8 @@ img.thumbnail {
   color: #a0a0a0;
 }
 .checkout-steps > div.active {
-  border-bottom: 0.2rem solid #f08000;
-  color: #f08000;
+  border-bottom: 0.2rem solid #52b788;
+  color: #52b788;
 }
 
 .dropdown-menu[data-bs-popper] {
@@ -42,8 +42,8 @@ img.thumbnail {
 }
 .btn-primary,
 .btn-outline-primary {
-  background-color: #f0c040;
-  color: #000000;
+  background-color: #52b788;
+  color: #fff;
 }
 
 /* header */
@@ -55,9 +55,9 @@ img.thumbnail {
 
 a.header-link,
 .header-link > a {
-  border: 1px rgb(33, 37, 41) solid;
+  /* border: 1px rgb(33, 37, 41) solid; */
   border-radius: 2px;
-  color: white !important;
+  color: #52b788 !important;
   font-weight: bold;
 }
 
@@ -76,12 +76,13 @@ a.header-link:hover,
   border: 1px rgb(33, 37, 41) solid;
 }
 .sub-header {
-  background-color: #232f3e;
+  border-top: 1px #52b788 solid;
+  background-color: #fff;
 }
 
 .cart-badge {
   position: absolute;
-  color: #f08000;
+  color: #52b788;
   font-weight: bold;
   margin-left: 16px;
   margin-top: -3px;
@@ -114,7 +115,7 @@ a.header-link:hover,
 }
 
 .side-navbar-user {
-  background-color: #232f3e !important;
+  background-color: #52b788 !important;
   color: white;
   font-weight: bold;
 }
