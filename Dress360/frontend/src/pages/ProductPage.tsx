@@ -1,5 +1,5 @@
-import { useContext } from 'react'
-import { Badge, Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
+import { useContext ,useState} from 'react'
+import { Badge, Button, Card, Col, ListGroup, Row ,Modal } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -10,8 +10,15 @@ import { useGetProductDetailsBySlugQuery } from '../hooks/productHooks'
 import { Store } from '../Store'
 import { ApiError } from '../types/ApiError'
 import { convertProductToCartItem, getError } from '../utils'
+import TryonRoom from '../components/TryonRoom/TryonRoom'
 
 export default function ProductPage() {
+
+  const [showPopup, setShowPopup] = useState(false);
+  const togglePopup = () => {
+    setShowPopup(!showPopup);
+  };
+
   const params = useParams()
   const { slug } = params
   const {
@@ -50,6 +57,16 @@ export default function ProductPage() {
       <Row>
         <Col md={6}>
           <img className="large" src={product.image} alt={product.name}></img>
+          <Button className="try-on-btn" onClick={togglePopup}>Try on</Button>
+          {showPopup && <TryonRoom handleClose={togglePopup} show={showPopup} />}
+          {/* <Modal show={showPopup} onHide={togglePopup} centered> */}
+            {/* <Modal.Header closeButton>
+              <Modal.Title>Try on Your Clothes</Modal.Title>
+            </Modal.Header> */}
+            {/* <Modal.Body> */}
+              {/* <TryonRoom handleClose={togglePopup} show={showPopup} /> */}
+            {/* </Modal.Body> */}
+          {/* </Modal> */}
         </Col>
         <Col md={3}>
           <ListGroup variant="flush">
