@@ -1,15 +1,15 @@
-import React, { useState } from 'react'
-import { Button, Form, FormControl, InputGroup } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 export default function SearchBox() {
-  const navigate = useNavigate()
-  const [query, setQuery] = useState('')
+  const navigate = useNavigate();
+  const [query, setQuery] = useState('');
 
   const submitHandler = (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    navigate(query ? `/search?query=${query}` : '/search')
-  }
+    e.preventDefault();
+    navigate(query ? `/search?query=${query}` : '/search');
+  };
   return (
     <Form className="flex-grow-1 d-flex me-auto" onSubmit={submitHandler}>
       <InputGroup>
@@ -27,5 +27,5 @@ export default function SearchBox() {
         </Button>
       </InputGroup>
     </Form>
-  )
+  );
 }
