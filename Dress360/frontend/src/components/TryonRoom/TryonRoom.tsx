@@ -24,7 +24,7 @@ const TryonRoom: React.FC<TryonRoomProps> = ({ handleClose, show }) => {
 
     const loader = new OBJLoader();
     loader.load(
-      '../../../public/3Dmodel/FinalBaseMesh.obj',
+      '/3Dmodel/FinalBaseMesh.obj',
       (object) => {
         scene.add(object);
       },
