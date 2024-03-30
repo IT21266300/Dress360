@@ -27,7 +27,7 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js'
 import OrderHistoryPage from './pages/OrderHistoryPage'
 import ProfilePage from './pages/ProfilePage'
 import UserProfile from './pages/userProfile'
-import Measurements from './pages/InsertMesurement'
+import Measurements from './pages/BodyMeasurement'
 import DressTimeReward from './pages/DressTimeReward'
 
 const router = createBrowserRouter(
