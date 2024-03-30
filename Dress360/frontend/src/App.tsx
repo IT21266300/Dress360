@@ -68,7 +68,7 @@ function App() {
 
             <Navbar.Collapse>
               <Nav className="w-100 justify-content-end">
-                {/* <Link
+                 <Link
                   to="#"
                   className="nav-link header-link"
                   onClick={switchModeHandler}
@@ -77,7 +77,7 @@ function App() {
                     className={mode === 'light' ? 'fa fa-sun' : 'fa fa-moon'}
                   ></i>{' '}
                   {mode === 'light' ? 'Light' : 'Dark'}
-                </Link> */}
+                </Link> 
 
                 {userInfo ? (
                   <NavDropdown

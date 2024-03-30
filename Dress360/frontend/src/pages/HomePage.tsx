@@ -16,7 +16,7 @@ export default function HomePage() {
   ) : (
     <Row>
       <Helmet>
-        <title>TS Amazona</title>
+        <title>Dress 360</title>
       </Helmet>
       {products!.map((product) => (
         <Col key={product.slug} sm={6} md={4} lg={3}>
