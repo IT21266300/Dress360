@@ -85,7 +85,7 @@ export default function Products() {
   const productColumns: GridColDef[] = [
     {
       field: 'id',
-      headerName: 'ID',
+      headerName: '#',
       flex: 0.3,
       headerClassName: 'super-app-theme--header',
     },
@@ -140,7 +140,7 @@ export default function Products() {
     {
       field: 'action',
       headerName: 'Actions',
-      flex: 0.6,
+      flex: 0.8,
       sortable: false,
       filterable: false,
       headerClassName: 'super-app-theme--header',
