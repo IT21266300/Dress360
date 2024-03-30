@@ -25,15 +25,15 @@ export default function measurements() {
       <div className="main-body">
         <div className="row gutters-sm">
           <div className="col-md-6 mb-3">
-            <div className="card">
+            <div className="card" style={{ height: "500px" }}>
               <div className="card-body">
                 <div className="d-flex flex-column align-items-center text-center">
                   <img
                     src="https://raw.githubusercontent.com/vcarlosrb/3d-body-measurements/main/images/measurements.png"
                     alt="Prototype"
                     className="rounded-circle"
-                    width="200"
-                    height="300"
+                    width="250"
+                    height="450"
                   />
                   <div className="mt-3">
                     {/* <p className="text-secondary mb-1">Full Stack Developer</p> */}
