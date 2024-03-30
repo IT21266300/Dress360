@@ -21,7 +21,7 @@ export default function measurements() {
 
   return (
     <div className="container">
-      <h2>Body Measurement</h2>
+      <h2>Body Measurements</h2>
       <div className="main-body">
         <div className="row gutters-sm">
           <div className="col-md-6 mb-3">

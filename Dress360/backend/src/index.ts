@@ -8,6 +8,7 @@ import { orderRouter } from './routers/orderRouter'
 import { productRouter } from './routers/productRouter'
 import { seedRouter } from './routers/seedRouter'
 import { userRouter } from './routers/userRouter'
+import { MeasurementRouter } from './routers/measurementsRouter'
 
 dotenv.config()
 
@@ -39,6 +40,7 @@ app.use('/api/users', userRouter)
 app.use('/api/orders', orderRouter)
 app.use('/api/seed', seedRouter)
 app.use('/api/keys', keyRouter)
+app.use('/api/measurements', MeasurementRouter)
 
 app.use(express.static(path.join(__dirname, '../../frontend/dist')))
 app.get('*', (req: Request, res: Response) =>

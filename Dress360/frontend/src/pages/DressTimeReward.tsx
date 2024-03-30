@@ -20,7 +20,7 @@ const DressTimeReward: React.FC<DressTimeRewardProps> = ({
       <div className="row">
         <div className="col-md-6">
           <h2 className="text-center">DressTime Reward</h2>
-          <ul className="list-group">
+          <ul className="list-group mt-5">
             <li className="list-group-item">
               Time Spent on Dress360: {timeSpent} hr
             </li>
