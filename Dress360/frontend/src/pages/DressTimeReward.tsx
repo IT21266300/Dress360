@@ -1,6 +1,5 @@
-import React from 'react';
-import dressTimeReward from '../../public/images/DressTimeReward.png';
-
+import React from "react";
+import dressTimeReward from "../../public/images/DressTimeReward.png";
 
 interface DressTimeRewardProps {
   timeSpent: number;
@@ -20,8 +19,45 @@ const DressTimeReward: React.FC<DressTimeRewardProps> = ({
       <div className="row">
         <div className="col-md-6">
           <h2 className="text-center">DressTime Reward</h2>
+
           <ul className="list-group mt-5">
-            <li className="list-group-item">
+            <div className="row">
+              <div className="col-md-8">
+                <li className="list-group-item">
+                  Time Spent on Dress360
+                </li>
+              </div>
+              <div className="col-md-4"><li className="list-group-item text-center">{timeSpent}hr</li></div>
+            </div>
+            <div className="row">
+              <div className="col-md-8">
+                <li className="list-group-item">
+                Your Total Earned Points
+                </li>
+              </div>
+              <div className="col-md-4"><li className="list-group-item text-center">{totalEarnedPoints}</li></div>
+            </div>
+            <div className="row">
+              <div className="col-md-8">
+                <li className="list-group-item">
+                Your Claimed Points
+                </li>
+              </div>
+              <div className="col-md-4"><li className="list-group-item text-center">{claimedPoints}</li></div>
+            </div>
+            <div className="row">
+              <div className="col-md-8">
+                <li className="list-group-item">
+                Your Available Points
+                </li>
+              </div>
+              <div className="col-md-4"><li className="list-group-item text-center">{availablePoints}</li></div>
+            </div>
+
+
+
+
+            {/* <li className="list-group-item">
               Time Spent on Dress360: {timeSpent} hr
             </li>
             <li className="list-group-item">
@@ -32,7 +68,7 @@ const DressTimeReward: React.FC<DressTimeRewardProps> = ({
             </li>
             <li className="list-group-item">
               Your Available Points: {availablePoints}
-            </li>
+            </li> */}
           </ul>
         </div>
         <div className="col-md-6 text-center">
