@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import { Image } from 'cloudinary-react';
 import axios from 'axios';
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { colorPalette } from '../../../theme';
 
@@ -11,7 +12,7 @@ export default function Content({
   handleCloseDialog,
 }: props) {
   const [currentImage, setCurrentImg] = useState('');
-  const [itemData, setItemData] = useState();
+  const [itemData, setItemData] = useState({});
 
   const getItemData = async () => {
     try {
@@ -28,6 +29,8 @@ export default function Content({
   useEffect(() => {
     getItemData();
   }, []);
+
+  const itemSizeSet = itemData.size;
 
   return (
     <Box
@@ -50,7 +53,7 @@ export default function Content({
         <Image
           cloudName="dypvbk20u"
           publicId={currentImage}
-          width="400"
+          width="500"
           height="500"
           crop="scale"
           alt="img"
@@ -144,22 +147,7 @@ export default function Content({
           <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
             Brand:
           </Typography>
-          <Typography sx={{ fontSize: '1rem' }}>Loream</Typography>
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            gap: '0.5rem',
-            alignItems: 'center',
-          }}
-        >
-          <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
-            Size:{' '}
-          </Typography>
-          <Typography sx={{ fontSize: '1.1rem' }}>
-            {itemData && itemData.size}
-          </Typography>
+          <Typography sx={{ fontSize: '1rem' }}>{itemData && itemData.brand}</Typography>
         </Box>
         <Box
           sx={{
@@ -180,21 +168,6 @@ export default function Content({
           </Typography>
           <Typography sx={{ fontSize: '0.9rem' }}>
             {itemData && itemData.discountType}
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            gap: '0.5rem',
-            alignItems: 'center',
-          }}
-        >
-          <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
-            Available Stock:{' '}
-          </Typography>
-          <Typography sx={{ fontSize: '1rem' }}>
-            {itemData && itemData.quantity} Items
           </Typography>
         </Box>
         <Box
@@ -232,9 +205,45 @@ export default function Content({
         <Box
           sx={{
             width: '100%',
+            // display: 'flex',
+            gap: '0.5rem',
+            alignItems: 'center',
+          }}
+        >
+          <Typography sx={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
+            Sizes:
+          </Typography>
+          <TableContainer component={Paper} sx={{ width: '300px' }}>
+            <Table sx={{ width: '100%' }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Size</TableCell>
+                  <TableCell>Quantity</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {itemSizeSet && itemSizeSet.map((row, index: unknown) => (
+                  <TableRow
+                    key={index}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell component="th" scope="row">
+                      {row.sizeType}
+                    </TableCell>
+                    <TableCell>{row.quantity}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
             display: 'flex',
             gap: '1rem',
             alignItems: 'center',
+            marginTop: '1rem'
           }}
         >
           <Button variant="outlined">Update Product</Button>

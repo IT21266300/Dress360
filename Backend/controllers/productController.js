@@ -7,13 +7,16 @@ export const createProduct = expressAsyncHandler(async (req, res, next) => {
   try {
     const name = req.body.inputName;
     const description = req.body.inputDescription;
+    const brand = req.body.inputBrand;
     const price = req.body.inputPrice;
     const category = req.body.inputCategory;
     const image = req.body.inputImage;
-    const size = req.body.inputSize;
-    const quantity = req.body.inputQuantity;
-    const sku = req.body.inputSKU;
-    const barcode= req.body.inputBarcode;
+    // const size = req.body.inputSize;
+    const size = req.body.inputSize.map((size) => ({
+      sizeType: size.sizeType,
+      quantity: size.quantity,
+    }));
+    // const quantity = req.body.inputQuantity;
     const tags = req.body.inputTags;
     const discount = req.body.inputDiscount;
     const discountType = req.body.inputDiscountType;
@@ -26,13 +29,11 @@ export const createProduct = expressAsyncHandler(async (req, res, next) => {
     const newProduct = new Product({
       name,
       description,
+      brand,
       price,
       category,
       image,
       size,
-      quantity,
-      sku,
-      barcode,
       tags,
       discount,
       discountType,
@@ -105,6 +106,8 @@ export const updateProduct = expressAsyncHandler(async (req, res, next) => {
       updatedProduct.name = req.body.name || updatedProduct.name;
       updatedProduct.description =
         req.body.description || updatedProduct.description;
+      updatedProduct.brand =
+        req.body.brand || updatedProduct.brand;
       updatedProduct.price = req.body.price || updatedProduct.price;
       updatedProduct.category = req.body.category || updatedProduct.category;
       updatedProduct.image = req.body.image || updatedProduct.image;
@@ -208,7 +211,6 @@ export const getImage = expressAsyncHandler(async (req, res) => {
 
   const publicIds = resources.map((file) => file.public_id);
   res.send(publicIds);
-
 });
 
 // add new image

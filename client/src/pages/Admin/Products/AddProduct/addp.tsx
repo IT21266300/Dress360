@@ -48,10 +48,12 @@ export default function AddProduct() {
   const [previewSource, setPreviewSource] = useState();
   const [inputName, setInputName] = useState('');
   const [inputDescription, setInputDescription] = useState('');
-  const [inputBrand, setInputBrand] = useState('');
   const [inputPrice, setInputPrice] = useState();
   const [inputDiscount, setInputDiscount] = useState();
   const [inputDiscountType, setInputDiscountType] = useState('');
+  const [inputSKU, setInputSKU] = useState();
+  const [inputBarcode, setInputBarCode] = useState();
+  const [inputQuantity, setInputQuantity] = useState();
   const [inputCategory, setInputCategory] = useState('');
   const [inputSize, setInputSize] = useState([{ sizeType: '', quantity: 0 }]);
   const [inputTags, setInputTags] = useState('');
@@ -107,10 +109,12 @@ export default function AddProduct() {
       await axios.post('http://localhost:4000/api/product/addProduct', {
         inputName,
         inputDescription,
-        inputBrand,
         inputPrice,
         inputDiscount,
         inputDiscountType,
+        inputSKU,
+        inputBarcode,
+        inputQuantity,
         inputImage,
         inputCategory,
         inputSize,
@@ -211,7 +215,7 @@ export default function AddProduct() {
                     marginBottom: '2rem',
                   }}
                 >
-                  <Typography variant="h4">Product Information</Typography>
+                  <Typography variant="h4">General Information</Typography>
                 </Box>
                 <Box sx={{ fontSize: '2rem' }}>
                   <Box sx={{ marginBottom: '2rem' }}>
@@ -225,7 +229,7 @@ export default function AddProduct() {
                       onChange={(e) => setInputName(e.target.value as string)}
                     />
                   </Box>
-                  <Box sx={{ marginBottom: '2rem' }}>
+                  <Box>
                     <TextField
                       required
                       label="Product Description"
@@ -238,17 +242,6 @@ export default function AddProduct() {
                       onChange={(e) =>
                         setInputDescription(e.target.value as string)
                       }
-                    />
-                  </Box>
-                  <Box>
-                    <TextField
-                      required
-                      label="Product Brand"
-                      variant="filled"
-                      fullWidth
-                      name="inputBrand"
-                      value={inputBrand}
-                      onChange={(e) => setInputBrand(e.target.value as string)}
                     />
                   </Box>
                 </Box>
@@ -332,20 +325,10 @@ export default function AddProduct() {
                   <Typography variant="h4">Inventory</Typography>
                 </Box>
                 {inputSize.map((size, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      width: '100%',
-                      display: 'flex',
-                      gap: '2rem',
-                      textAlign: 'left',
-                      marginBottom: '1rem',
-                    }}
-                  >
-                    <FormControl fullWidth>
+                  <Box key={index}>
+                    <FormControl>
                       <InputLabel>Size</InputLabel>
                       <Select
-                        defaultValue={`M`}
                         value={size.sizeType}
                         onChange={(e) =>
                           handleSizeChange(index, e.target.value)
@@ -366,37 +349,12 @@ export default function AddProduct() {
                         handleQuantityChange(index, e.target.value)
                       }
                     />
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      sx={{ width: '100px' }}
-                      onClick={() => handleRemoveSize(index)}
-                    >
+                    <Button onClick={() => handleRemoveSize(index)}>
                       Remove
                     </Button>
                   </Box>
                 ))}
-                <Box
-                  sx={{
-                    width: '100%',
-                    textAlign: 'right',
-                    marginTop: '1.5rem',
-                  }}
-                >
-                  <Button
-                    onClick={handleAddSize}
-                    variant="contained"
-                    sx={{
-                      background: colorPalette.accent1[500],
-                      color: colorPalette.base[500],
-                      '&:hover': {
-                        background: colorPalette.accent1[400],
-                      },
-                    }}
-                  >
-                    Add New Size & Quantity
-                  </Button>
-                </Box>
+                <Button onClick={handleAddSize}>Add Size</Button>
               </Box>
             </Box>
 

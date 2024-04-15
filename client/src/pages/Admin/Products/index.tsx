@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../state/store';
 import {
@@ -68,7 +69,6 @@ export default function Products() {
     price: number;
     barcode: number;
     category: string;
-    size: string;
     quantity: number;
     discount: number;
     discountType: string;
@@ -102,6 +102,12 @@ export default function Products() {
       headerClassName: 'super-app-theme--header',
     },
     {
+      field: 'brand',
+      headerName: 'Product Brand',
+      flex: 1,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
       field: 'category',
       headerName: 'Product Category',
       flex: 1,
@@ -110,7 +116,7 @@ export default function Products() {
     {
       field: 'price',
       headerName: 'Product Price',
-      flex: 0.8,
+      flex: 1,
       headerClassName: 'super-app-theme--header',
     },
     {
@@ -126,21 +132,9 @@ export default function Products() {
       headerClassName: 'super-app-theme--header',
     },
     {
-      field: 'size',
-      headerName: 'Size',
-      flex: 0.6,
-      headerClassName: 'super-app-theme--header',
-    },
-    {
-      field: 'quantity',
-      headerName: 'Quantity',
-      flex: 0.6,
-      headerClassName: 'super-app-theme--header',
-    },
-    {
       field: 'action',
       headerName: 'Actions',
-      flex: 0.8,
+      flex: 1,
       sortable: false,
       filterable: false,
       headerClassName: 'super-app-theme--header',
@@ -156,12 +150,11 @@ export default function Products() {
     id: index + 1,
     mongoID: product._id,
     name: product.name,
+    brand: product.brand,
     category: product.category,
     price: product.price,
     barcode: product.barcode,
     sku: product.sku,
-    size: product.size,
-    quantity: product.quantity,
   }));
 
   // handle actions here

@@ -1,5 +1,9 @@
 import mongoose from 'mongoose';
 
+import AutoIncrementFactory from 'mongoose-sequence';
+
+const AutoIncrement = AutoIncrementFactory(mongoose);
+
 const productSchema = new mongoose.Schema(
   {
     name: {
@@ -9,6 +13,10 @@ const productSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
+    },
+    brand:{
+      type: String,
+      required: true
     },
     price: {
       type: Number,
@@ -21,24 +29,32 @@ const productSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    size: {
-      type: String,
-      require: true,
-    },
-    quantity: {
-      type: Number,
-      require: true,
-    },
+    size: [
+      {
+        sizeType: {
+          type: String,
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
     sku: {
       type: Number,
-      require: true,
+      required: true,
+      unique: true, // Ensure uniqueness
+      default: 0,
     },
     barcode: {
       type: Number,
-      require: true,
+      required: true,
+      unique: true,
+      default: 0,
     },
-    tags: { 
-      type: String 
+    tags: {
+      type: String,
     },
     discount: {
       type: Number,
@@ -70,6 +86,12 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+productSchema.plugin(AutoIncrement, {
+  inc_field: 'barcode',
+  start_seq: 100000,
+});
+productSchema.plugin(AutoIncrement, { inc_field: 'sku', start_seq: 100000 });
 
 const Product = mongoose.model('Product', productSchema);
 export default Product;

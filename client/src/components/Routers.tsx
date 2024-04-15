@@ -13,6 +13,7 @@ import LayoutCustomer from '../pages/customerLayouts';
 import Categories from '../pages/Custom/Categories';
 import Item from '../pages/Custom/Item';
 import AddProduct from '../pages/Admin/Products/AddProduct';
+// import AddProduct from '../pages/Admin/Products/AddProduct/addp';
 import Showroom from '../pages/Custom/showroom';
 
 const isAdmin: boolean = true;
