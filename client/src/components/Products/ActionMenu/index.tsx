@@ -3,6 +3,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { colorPalette } from '../../../theme';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   anchorEl: HTMLElement | null;
@@ -11,7 +12,8 @@ interface Props {
   handleClickOpenAlert: () => void;
 }
 
-export default function ActionMenu({ anchorEl, open, handleClose, handleClickOpenAlert, handleClickOpenDialog, handleCloseDialog }: Props) {
+export default function ActionMenu({ anchorEl, open, handleClose, handleClickOpenAlert, mongoID, handleClickOpenDialog, handleCloseDialog }: Props) {
+  const navigate = useNavigate();
   return (
     <Menu
       id="basic-menu"
@@ -34,7 +36,9 @@ export default function ActionMenu({ anchorEl, open, handleClose, handleClickOpe
         View
       </MenuItem>
       <MenuItem
-        onClick={handleClose}
+        onClick={() => {
+          navigate(`/updateProduct?mongoID=${mongoID}`)
+        }}
         sx={{
           gap: '0.5rem',
           fontSize: '0.9rem',

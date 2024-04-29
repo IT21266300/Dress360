@@ -5,6 +5,7 @@ interface CounterState {
   totalStock: number;
   loading: boolean;
   productData: [];
+  singleProduct:[],
   productCount: number;
   imageID : string;
   uploadState: boolean;
@@ -13,6 +14,7 @@ const initialState: CounterState = {
   totalStock: 0,
   loading: false,
   productData: [],
+  singleProduct: [],
   productCount: 0,
   imageID: '',
   uploadState: false,
@@ -30,6 +32,13 @@ const counterSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<[]>) => {
         state.productData = action.payload;
         state.productCount = action.payload.length;
+        state.loading = false;
+      })
+      .addCase(fetchSingleProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchSingleProduct.fulfilled, (state, action: PayloadAction<[]>) => {
+        state.singleProduct = action.payload;
         state.loading = false;
       })
       .addCase(uploadImage.pending, (state) => {
@@ -61,6 +70,20 @@ export const fetchProducts = createAsyncThunk(
         `http://localhost:4000/api/product/getProducts`
       );
       return response.data;
+    } catch (error) {
+      return error;
+    }
+  }
+);
+
+export const fetchSingleProduct = createAsyncThunk(
+  'product/fetchSingleProduct',
+  async (productId: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/product/getProduct/${productId}`
+      );
+      return response.data.product;
     } catch (error) {
       return error;
     }

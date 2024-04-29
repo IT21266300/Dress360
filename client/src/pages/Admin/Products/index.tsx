@@ -27,6 +27,7 @@ import axios from 'axios';
 import ActionButton from '../../../components/Products/ActionButton';
 import DeleteAlertBox from '../../../components/Products/DeleteAlertBox';
 import ViewProduct from '../../../components/Products/ViewProduct';
+import UpdateProduct from '../../../components/Products/UpdateProduct';
 
 export default function Products() {
   const navigate = useNavigate();
@@ -34,6 +35,7 @@ export default function Products() {
   const [selectedRow, setSelectedRow] = useState({} as unknown);
   const [openDialog, setOpenDialog] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
+
   const handleClickOpenAlert = () => {
     setOpenAlert(true);
     setAnchorEl(null);
@@ -295,6 +297,7 @@ export default function Products() {
         handleClickOpenAlert={handleClickOpenAlert}
         handleClickOpenDialog={handleClickOpenDialog}
         handleCloseDialog={handleCloseDialog}
+        mongoID={selectedRow.mongoID}
       />
 
       <ViewProduct
@@ -307,7 +310,7 @@ export default function Products() {
         handleCloseAlert={handleCloseAlert}
         handleDelete={handleDelete}
       />
-
+      
       <DeleteAlertBox
         openAlert={openAlert}
         handleCloseAlert={handleCloseAlert}

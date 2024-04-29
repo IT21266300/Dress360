@@ -103,19 +103,20 @@ export const updateProduct = expressAsyncHandler(async (req, res, next) => {
     const updatedProduct = await Product.findById(productId);
 
     if (updatedProduct) {
-      updatedProduct.name = req.body.name || updatedProduct.name;
+      updatedProduct.name = req.body.inputName || updatedProduct.name;
       updatedProduct.description =
-        req.body.description || updatedProduct.description;
-      updatedProduct.brand =
-        req.body.brand || updatedProduct.brand;
-      updatedProduct.price = req.body.price || updatedProduct.price;
-      updatedProduct.category = req.body.category || updatedProduct.category;
-      updatedProduct.image = req.body.image || updatedProduct.image;
-      updatedProduct.colors = req.body.colors.map((color) => ({
-        colorName: color.colorName || updatedProduct.colors[0].colorName,
-        colorStock: color.colorStock || updatedProduct.colors[0].colorStock,
+        req.body.inputDescription || updatedProduct.description;
+      updatedProduct.brand = req.body.inputBrand || updatedProduct.brand;
+      updatedProduct.price = req.body.inputPrice || updatedProduct.price;
+      updatedProduct.category = req.body.inputCategory || updatedProduct.category;
+      updatedProduct.image = req.body.inputImage || updatedProduct.image;
+      updatedProduct.size = req.body.inputSize.map((size) => ({
+        sizeType: size.sizeType,
+        quantity: size.quantity,
       }));
-      updatedProduct.size = req.body.size || updatedProduct.size;
+      updatedProduct.tags = req.body.inputTags || updatedProduct.tags;
+      updatedProduct.discount = req.body.inputDiscount || updatedProduct.discount;
+      updatedProduct.discountType = req.body.inputDiscountType || updatedProduct.discountType;
 
       /*
        // reviews allow to update review owner
@@ -126,11 +127,11 @@ export const updateProduct = expressAsyncHandler(async (req, res, next) => {
       }));
       */
 
-      updatedProduct.reviews = req.body.reviews.map((review) => ({
-        userId: review.userId,
-        rating: review.rating,
-        comment: review.comment,
-      }));
+      // updatedProduct.reviews = req.body.reviews.map((review) => ({
+      //   userId: review.userId,
+      //   rating: review.rating,
+      //   comment: review.comment,
+      // }));
 
       await updatedProduct.save();
       res.send({ message: `Product updated..!`, updatedProduct });
