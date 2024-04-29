@@ -5,18 +5,47 @@ import { cloudinary } from '../utils/cloudinary.js';
 // Add a new product
 export const createProduct = expressAsyncHandler(async (req, res, next) => {
   try {
+    const {
+      inputName,
+      inputDescription,
+      inputBrand,
+      inputPrice,
+      inputCategory,
+      inputImage,
+      inputSize,
+    } = req.body;
+    if (
+      !inputName ||
+      !inputDescription ||
+      !inputBrand ||
+      !inputPrice ||
+      !inputCategory ||
+      !inputImage ||
+      !inputSize
+    ) {
+      throw new Error('Missing required fields');
+    }
+
+    // Validate inputSize format
+    if (
+      !Array.isArray(inputSize) ||
+      inputSize.some(
+        (size) => typeof size !== 'object' || !size.sizeType || !size.quantity
+      )
+    ) {
+      throw new Error('Invalid inputSize format');
+    }
+
     const name = req.body.inputName;
     const description = req.body.inputDescription;
     const brand = req.body.inputBrand;
     const price = req.body.inputPrice;
     const category = req.body.inputCategory;
     const image = req.body.inputImage;
-    // const size = req.body.inputSize;
     const size = req.body.inputSize.map((size) => ({
       sizeType: size.sizeType,
       quantity: size.quantity,
     }));
-    // const quantity = req.body.inputQuantity;
     const tags = req.body.inputTags;
     const discount = req.body.inputDiscount;
     const discountType = req.body.inputDiscountType;
@@ -62,6 +91,9 @@ export const getProducts = expressAsyncHandler(async (req, res, next) => {
 export const getSingleProduct = expressAsyncHandler(async (req, res, next) => {
   try {
     const productId = req.params.productId;
+    if (!productId) {
+      throw new Error('Product ID is missing');
+    }
     const product = await Product.findById(productId);
     if (product) {
       res.send({ message: `Product fetched`, product });
@@ -88,6 +120,9 @@ export const getCategories = expressAsyncHandler(async (req, res, next) => {
 export const deleteProduct = expressAsyncHandler(async (req, res, next) => {
   try {
     const productId = req.params.productId;
+    if (!productId) {
+      throw new Error('Product ID is missing');
+    }
     const product = await Product.findByIdAndDelete(productId);
     res.send({ message: `Product deleted..!` });
     console.log(product);
@@ -100,38 +135,41 @@ export const deleteProduct = expressAsyncHandler(async (req, res, next) => {
 export const updateProduct = expressAsyncHandler(async (req, res, next) => {
   try {
     const productId = req.params.productId;
+    if (!productId) {
+      throw new Error('Product ID is missing');
+    }
     const updatedProduct = await Product.findById(productId);
 
     if (updatedProduct) {
+      const inputSize = req.body.inputSize;
+      if (
+        inputSize &&
+        (!Array.isArray(inputSize) ||
+          inputSize.some(
+            (size) =>
+              typeof size !== 'object' || !size.sizeType || !size.quantity
+          ))
+      ) {
+        throw new Error('Invalid inputSize format');
+      }
+
       updatedProduct.name = req.body.inputName || updatedProduct.name;
       updatedProduct.description =
         req.body.inputDescription || updatedProduct.description;
       updatedProduct.brand = req.body.inputBrand || updatedProduct.brand;
       updatedProduct.price = req.body.inputPrice || updatedProduct.price;
-      updatedProduct.category = req.body.inputCategory || updatedProduct.category;
+      updatedProduct.category =
+        req.body.inputCategory || updatedProduct.category;
       updatedProduct.image = req.body.inputImage || updatedProduct.image;
       updatedProduct.size = req.body.inputSize.map((size) => ({
         sizeType: size.sizeType,
         quantity: size.quantity,
       }));
       updatedProduct.tags = req.body.inputTags || updatedProduct.tags;
-      updatedProduct.discount = req.body.inputDiscount || updatedProduct.discount;
-      updatedProduct.discountType = req.body.inputDiscountType || updatedProduct.discountType;
-
-      /*
-       // reviews allow to update review owner
-      updatedProduct.reviews = req.body.reviews.map((review) => ({
-        userId: review.userId || updatedProduct.reviews[0].userId,
-        rating: review.rating || updatedProduct.reviews[0].rating,
-        comment: review.comment || updatedProduct.reviews[0].comment,
-      }));
-      */
-
-      // updatedProduct.reviews = req.body.reviews.map((review) => ({
-      //   userId: review.userId,
-      //   rating: review.rating,
-      //   comment: review.comment,
-      // }));
+      updatedProduct.discount =
+        req.body.inputDiscount || updatedProduct.discount;
+      updatedProduct.discountType =
+        req.body.inputDiscountType || updatedProduct.discountType;
 
       await updatedProduct.save();
       res.send({ message: `Product updated..!`, updatedProduct });
