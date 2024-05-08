@@ -24,6 +24,8 @@
     "bootstrap": "^5.2.3",
     "cloudinary-react": "^1.8.1",
     "fs-extra": "^11.2.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^2.5.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "puppeteer": "^22.8.0",

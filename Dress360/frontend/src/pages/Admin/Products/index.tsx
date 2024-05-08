@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../States/store';
 import { deleteProduct, fetchProducts } from '../../../States/ProductSlice';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import { colorPalette } from '../../../theme';
 import {
@@ -30,6 +30,8 @@ import DownloadReport from './DownloadReport';
 
 export default function Products() {
   const navigate = useNavigate();
+
+  const pdfRef = useRef();
 
   const [selectedRow, setSelectedRow] = useState({} as unknown);
   const [openDialog, setOpenDialog] = useState(false);
@@ -187,7 +189,7 @@ export default function Products() {
   return loading ? (
     <ProductsLoader />
   ) : (
-    <Box width="100%" sx={{ margin: '1rem 0' }}>
+    <Box width="100%" sx={{ margin: '1rem 0' }} ref={pdfRef}>
       <Box
         sx={{
           marginBottom: '2rem',
@@ -231,7 +233,7 @@ export default function Products() {
           </Typography>
         </Box>
         <Box>
-          <DownloadReport/>
+          <DownloadReport pdfRef={pdfRef}/>
         </Box>
       </FlexBetween>
       <Box
