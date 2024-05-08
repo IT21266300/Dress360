@@ -1,32 +1,34 @@
+// productRouter.js
+
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import { ProductModel } from '../models/productModel1'; // Assuming productModel.js is converted
+import Product from '../models/productModel.js'; // Assuming productModel.js is converted
 
-const router = Router();
+const productRouter = Router();
 
 // Get all products
-router.get(
+productRouter.get(
   '/',
   asyncHandler(async (req, res) => {
-    const products = await ProductModel.find();
+    const products = await Product.find({}); 
     res.json(products);
   })
 );
 
 // Get all product categories
-router.get(
+productRouter.get(
   '/categories',
   asyncHandler(async (req, res) => {
-    const categories = await ProductModel.find().distinct('category');
+    const categories = await Product.find().distinct('category');
     res.json(categories);
   })
 );
 
 // Get product by slug
-router.get(
+productRouter.get(
   '/slug/:slug',
   asyncHandler(async (req, res) => {
-    const product = await ProductModel.findOne({ slug: req.params.slug });
+    const product = await Product.findOne({ slug: req.params.slug });
     if (product) {
       res.json(product);
     } else {
@@ -35,4 +37,4 @@ router.get(
   })
 );
 
-export const productRouter = router;
+export default productRouter;

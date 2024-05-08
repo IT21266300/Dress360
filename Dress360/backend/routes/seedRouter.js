@@ -1,20 +1,24 @@
+// seedRouter.js
+
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
-import { sampleProducts, sampleUsers } from '../data'; 
-import { ProductModel } from '../models/productModel1'; 
-import { UserModel } from '../models/userModel'; 
+import { sampleProducts, sampleUsers } from '../data.js'; // Assuming data.js is also converted
+import Product from '../models/productModel.js'; // Assuming productModel.js is converted
+import User from '../models/userModel.js'; // Assuming userModel.js is converted
 
-const router = Router();
+const seedRouter = Router();
 
-router.get(
+seedRouter.get(
   '/',
   asyncHandler(async (req, res) => {
-    await ProductModel.deleteMany({});
-    const createdProducts = await ProductModel.insertMany(sampleProducts);
-    await UserModel.deleteMany({});
-    const createdUsers = await UserModel.insertMany(sampleUsers);
+    await Product.deleteMany({}); // Delete all existing products
+    const createdProducts = await Product.insertMany(sampleProducts); // Insert sample products
+
+    await User.deleteMany({}); // Delete all existing users
+    const createdUsers = await User.insertMany(sampleUsers); // Insert sample users
+
     res.json({ createdProducts, createdUsers });
   })
 );
 
-export const seedRouter = router;
+export default seedRouter; 

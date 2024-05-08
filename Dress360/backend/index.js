@@ -14,8 +14,8 @@ import keyRouter  from './routes/keyRouter.js';
 
 import orderRouter from './routes/orderRouter.js';
 import  productRouter  from './routes/productRouter.js';
-import  seedRouter  from './routes/seedRouter';
-import  userRouter  from './routes/userRouter';
+import  seedRouter  from './routes/seedRouter.js';
+import  userRouter  from './routes/userRouter.js';
 // import MeasurementRouter  from './routes/measurementRouter.js';
 
 // backend configs
