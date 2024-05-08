@@ -77,11 +77,27 @@ export const createProduct = expressAsyncHandler(async (req, res, next) => {
 });
 
 // fetch * products
+// export const getProducts = expressAsyncHandler(async (req, res, next) => {
+//   try {
+//     const products = await Product.find();
+//     res.send(products);
+//     console.log(products);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 export const getProducts = expressAsyncHandler(async (req, res, next) => {
   try {
     const products = await Product.find();
-    res.send(products);
-    console.log(products);
+
+    const productsWithTotalQuantity = products.map(product => {
+      const total = product.size.reduce((sum, sizeObj) => sum + sizeObj.quantity, 0);
+      return { ...product._doc, totalQuantity: total }; // Assuming you are using Mongoose
+    });
+
+    res.send(productsWithTotalQuantity);
+    console.log(productsWithTotalQuantity);
   } catch (error) {
     next(error);
   }

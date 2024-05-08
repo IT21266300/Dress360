@@ -1,14 +1,13 @@
-import { Box, Button } from '@mui/material'
-import React, { useRef } from 'react'
+import { Box, Button } from '@mui/material';
+import React, { useRef } from 'react';
 import DownloadForOfflineIcon from '@mui/icons-material/DownloadForOffline';
-import { colorPalette } from '../../../theme';
+import { colorPalette } from '../../theme';
 import puppeteer from 'puppeteer';
 import fs from 'fs-extra';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-export default function DownloadReport({pdfRef}) {
-
+export default function DownloadReport({ pdfRef }) {
   // const pdfRef = useRef();
 
   const downloadPDF = () => {
@@ -23,28 +22,35 @@ export default function DownloadReport({pdfRef}) {
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
       const imgX = (pdfWidth - imgWidth * ratio) / 2;
       const imgY = 10;
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.addImage(
+        imgData,
+        'PNG',
+        imgX,
+        imgY,
+        imgWidth * ratio,
+        imgHeight * ratio
+      );
       pdf.save('invoic.pdf');
     });
-  }
+  };
 
   return (
     <Box>
-        <Button
-            variant="contained"
-            startIcon={<DownloadForOfflineIcon />}
-            size="large"
-            sx={{
-              background: colorPalette.accent1[500],
-              color: colorPalette.base[500],
-              '&:hover': {
-                background: colorPalette.accent1[400],
-              },
-            }}
-            onClick={downloadPDF}
-          >
-            Download Product List
-          </Button>
+      <Button
+        variant="contained"
+        startIcon={<DownloadForOfflineIcon />}
+        size="large"
+        sx={{
+          background: colorPalette.accent1[500],
+          color: colorPalette.base[500],
+          '&:hover': {
+            background: colorPalette.accent1[400],
+          },
+        }}
+        onClick={downloadPDF}
+      >
+        Download Product List
+      </Button>
     </Box>
-  )
+  );
 }

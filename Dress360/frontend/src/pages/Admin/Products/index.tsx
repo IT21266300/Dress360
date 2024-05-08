@@ -3,7 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../States/store';
 import { deleteProduct, fetchProducts } from '../../../States/ProductSlice';
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, Button, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { colorPalette } from '../../../theme';
 import {
   DataGrid,
@@ -26,7 +37,15 @@ import ActionButton from '../../../components/Admin/Products/ActionButton';
 import DeleteAlertBox from '../../../components/Admin/Products/DeleteAlertBox';
 import ViewProduct from '../../../components/Admin/Products/ViewProduct';
 import UpdateProduct from '../../../components/Admin/Products/UpdateProduct';
-import DownloadReport from './DownloadReport';
+import DownloadReport from '../../../components/Admin/DownloadReport';
+import Dress360 from '../../../assets/Dress360.png';
+import Sign1 from '../../../assets/signs/sign1.png';
+import Sign2 from '../../../assets/signs/sign2.png';
+import Sign3 from '../../../assets/signs/sign3.png';
+import BusinessIcon from '@mui/icons-material/Business';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import { Type } from 'react-toastify/dist/utils';
 
 export default function Products() {
   const navigate = useNavigate();
@@ -85,6 +104,16 @@ export default function Products() {
   console.log(loading);
   console.log(productData);
 
+  const [totalInventory, setTotalInventory] = useState(0);
+
+  useEffect(() => {
+    let total = 0;
+    productData.forEach((product) => {
+      total += product.totalQuantity;
+    });
+    setTotalInventory(total);
+  }, []);
+
   const productColumns: GridColDef[] = [
     {
       field: 'id',
@@ -117,6 +146,12 @@ export default function Products() {
       headerClassName: 'super-app-theme--header',
     },
     {
+      field: 'totalQuantity',
+      headerName: 'Total Quantity',
+      flex: 0.7,
+      headerClassName: 'super-app-theme--header',
+    },
+    {
       field: 'price',
       headerName: 'Product Price',
       flex: 1,
@@ -125,19 +160,19 @@ export default function Products() {
     {
       field: 'barcode',
       headerName: 'Bar Code',
-      flex: 1,
+      flex: 0.7,
       headerClassName: 'super-app-theme--header',
     },
     {
       field: 'sku',
       headerName: 'SKU',
-      flex: 1,
+      flex: 0.5,
       headerClassName: 'super-app-theme--header',
     },
     {
       field: 'action',
       headerName: 'Actions',
-      flex: 1,
+      flex: 0.7,
       sortable: false,
       filterable: false,
       headerClassName: 'super-app-theme--header',
@@ -155,6 +190,7 @@ export default function Products() {
     name: product.name,
     brand: product.brand,
     category: product.category,
+    totalQuantity: product.totalQuantity,
     price: product.price,
     barcode: product.barcode,
     sku: product.sku,
@@ -189,7 +225,7 @@ export default function Products() {
   return loading ? (
     <ProductsLoader />
   ) : (
-    <Box width="100%" sx={{ margin: '1rem 0' }} ref={pdfRef}>
+    <Box width="100%" sx={{ margin: '1rem 0' }}>
       <Box
         sx={{
           marginBottom: '2rem',
@@ -233,7 +269,7 @@ export default function Products() {
           </Typography>
         </Box>
         <Box>
-          <DownloadReport pdfRef={pdfRef}/>
+          <DownloadReport pdfRef={pdfRef} />
         </Box>
       </FlexBetween>
       <Box
@@ -317,6 +353,266 @@ export default function Products() {
         handleCloseAlert={handleCloseAlert}
         handleDelete={handleDelete}
       />
+
+      {/* report template */}
+      <Box sx={{height: '0', overflow: 'hidden'}}>
+        <Box ref={pdfRef} sx={{ padding: '0 3rem'}}>
+          <Box sx={{ borderTop: '10px solid #52b788', padding: '2rem 0' }}>
+            {/* heading */}
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'self-start',
+                marginBottom: '1rem',
+              }}
+            >
+              <Box sx={{ width: '100%' }}>
+                <img src={Dress360} alt="logo" width="150px" height="150px" />
+              </Box>
+              <Box
+                sx={{
+                  width: '31%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '0.5rem',
+                }}
+              >
+                <Box sx={{ width: '100%', display: 'flex', gap: '1rem' }}>
+                  <Box sx={{ color: '#52b788' }}>
+                    <BusinessIcon />
+                  </Box>
+                  <Box>
+                    <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                      Dress360 Group (PVT) LTD
+                    </Typography>
+                    <Typography variant="h5">No. 12/345, Nulla St.</Typography>
+                    <Typography variant="h5">Nuwara-Eliya</Typography>
+                    <Typography variant="h5">Sri Lanka</Typography>
+                  </Box>
+                </Box>
+                <Box sx={{ width: '100%', display: 'flex', gap: '1rem' }}>
+                  <Box sx={{ color: '#52b788' }}>
+                    <LocalPhoneIcon />
+                  </Box>
+                  <Typography variant="h5">+(94) 522 344 556</Typography>
+                </Box>
+                <Box sx={{ width: '100%', display: 'flex', gap: '1rem' }}>
+                  <Box sx={{ color: '#52b788' }}>
+                    <AlternateEmailIcon />
+                  </Box>
+                  <Typography variant="h5">dress360@mail.com</Typography>
+                </Box>
+              </Box>
+              <Box></Box>
+            </Box>
+
+            {/* title */}
+            <Box
+              sx={{
+                paddingBottom: '1rem',
+                margin: '2rem 0',
+                borderBottom: '2px solid #b0b0b0',
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Typography
+                variant="h3"
+                sx={{ fontWeight: 'bold', fontSize: '2rem', width: '100%' }}
+              >
+                Inventory List
+              </Typography>
+              <Box
+                sx={{
+                  width: '50%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography variant="h5">
+                  Date:{' '}
+                  {new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  }).format(new Date())}
+                </Typography>
+                <Typography variant="h5">
+                  Report Number: {Math.floor(Math.random() * 90000) + 10000}
+                </Typography>
+              </Box>
+            </Box>
+
+            {/* summary data */}
+            <Box
+              sx={{
+                paddingBottom: '1rem',
+                margin: '2rem 0',
+                width: '100%',
+                display: 'flex',
+                gap: '1.5rem',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: '0.6rem',
+                  color: '#fff',
+                  background: '#333333',
+                  padding: '0.8rem 1rem',
+                  borderRadius: '10px',
+                }}
+              >
+                <Typography variant="h5">Total Products: </Typography>
+                <Typography variant="h5">{productCount}</Typography>
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: '0.6rem',
+                  color: '#fff',
+                  background: '#333333',
+                  padding: '0.8rem 1rem',
+                  borderRadius: '10px',
+                }}
+              >
+                <Typography variant="h5">Total Inventories: </Typography>
+                <Typography variant="h5">{totalInventory}</Typography>
+              </Box>
+            </Box>
+
+            {/* content */}
+            <Box>
+              <table className="table">
+                <thead
+                  style={{
+                    background: '#52b788',
+                    color: '#fff',
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  <tr>
+                    {productColumns.map(
+                      (col, index) =>
+                        col.headerName !== 'MID' &&
+                        col.headerName !== 'Actions' && (
+                          <th key={index} style={{ padding: '1rem 0.5rem' }}>
+                            {col.headerName}
+                          </th>
+                        )
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {productData.map((row, index) => (
+                    <tr key={index}>
+                      <th
+                        style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}
+                        scope="row"
+                      >
+                        {index + 1}
+                      </th>
+                      <td style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}>
+                        {row.name}
+                      </td>
+                      <td style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}>
+                        {row.brand}
+                      </td>
+                      <td style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}>
+                        {row.category}
+                      </td>
+                      <td style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}>
+                        {row.totalQuantity}
+                      </td>
+                      <td style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}>
+                        {row.price.toFixed(2)}
+                      </td>
+                      <td style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}>
+                        {row.barcode}
+                      </td>
+                      <td style={{ padding: '0.8rem 0.5rem', fontSize: '0.9rem' }}>
+                        {row.sku}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Box>
+
+            {/* footer */}
+            <Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Box>
+                  <Box sx={{ width: '100%' }}>
+                    <img src={Sign1} alt="logo" width="100px" height="100px" />
+                  </Box>
+                  <Box>
+                    <Typography>Mr. R.L.R Fernando</Typography>
+                    <Typography>Inventory Manager</Typography>
+                    <Typography>Dress360 Group (PVT) LTD</Typography>
+                  </Box>
+                </Box>
+                <Box>
+                  <Box sx={{ width: '100%' }}>
+                    <img src={Sign2} alt="logo" width="100px" height="100px" />
+                  </Box>
+                  <Box>
+                    <Typography>Ms. W.E.S.D Jonson </Typography>
+                    <Typography>Vice Chairman (Finance)</Typography>
+                    <Typography>Dress360 Group (PVT) LTD</Typography>
+                  </Box>
+                </Box>
+                <Box>
+                  <Box sx={{ width: '100%' }}>
+                    <img src={Sign3} alt="logo" width="100px" height="100px" />
+                  </Box>
+                  <Box>
+                    <Typography>Mr. W.E.S.D Rahul</Typography>
+                    <Typography>CEO</Typography>
+                    <Typography>Dress360 Group (PVT) LTD</Typography>
+                  </Box>
+                </Box>
+              </Box>
+              <Box
+                sx={{
+                  marginTop: '2rem',
+                  borderTop: '1px solid #5c5c5c',
+                  padding: '1rem 0',
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Issued Date:{' '}
+                  {new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  }).format(new Date())}
+                </Typography>
+                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+                  Document Id: {Math.floor(Math.random() * 90000) + 10000}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   );
 }
