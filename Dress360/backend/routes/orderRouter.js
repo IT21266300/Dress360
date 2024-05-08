@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import asyncHandler from 'express-async-handler';
 import OrderModel  from '../models/orderModel.js'; // Assuming orderModel.js is converted
-// import { isAuth } from '../utils.js';
+import { isAuth } from '../utils.js';
 
 const router = Router();
 
 // Get logged-in user's orders
 router.get(
   '/mine',
-  // isAuth,
+  isAuth,
   asyncHandler(async (req, res) => {
     const orders = await OrderModel.find({ user: req.user._id });
     res.json(orders);
@@ -18,7 +18,7 @@ router.get(
 // Get order by ID
 router.get(
   '/:id',
-  // isAuth,
+  isAuth,
   asyncHandler(async (req, res) => {
     const order = await OrderModel.findById(req.params.id);
     if (order) {
@@ -32,7 +32,7 @@ router.get(
 // Create new order
 router.post(
   '/',
-  // isAuth,
+  isAuth,
   asyncHandler(async (req, res) => {
     if (req.body.orderItems.length === 0) {
       res.status(400).json({ message: 'Cart is empty' });
@@ -57,7 +57,7 @@ router.post(
 // Update order to paid
 router.put(
   '/:id/pay',
-  // isAuth,
+  isAuth,
   asyncHandler(async (req, res) => {
     const order = await OrderModel.findById(req.params.id);
     if (order) {
