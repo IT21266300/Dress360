@@ -5,6 +5,7 @@ import {
   Chip,
   CircularProgress,
   FormControl,
+  FormHelperText,
   IconButton,
   Input,
   InputAdornment,
@@ -32,6 +33,12 @@ import { AppDispatch, RootState } from '../../../../States/store';
 import { uploadImage } from '../../../../States/ProductSlice';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import { useNavigate } from 'react-router-dom';
+import {
+  validateProductDescription,
+  validateProductDiscount,
+  validateProductName,
+  validateProductPrice,
+} from './validations';
 
 const sizeList = [
   {
@@ -43,14 +50,28 @@ const sizeList = [
 export default function AddProduct() {
   const navigate = useNavigate();
 
-  // * states
+  // validations
+  const [productNameError, setProductNameError] = useState<string | null>(null);
+  const [productDescriptionError, setProductDescriptionError] = useState<
+    string | null
+  >(null);
+  const [productPriceError, setProductPriceError] = useState<string | null>(
+    null
+  );
+  const [productDiscountError, setProductDiscountError] = useState<
+    string | null
+  >(null);
+
+  // states
   const [fileInputState, setFileInputState] = useState('');
   const [previewSource, setPreviewSource] = useState();
   const [inputName, setInputName] = useState('');
   const [inputDescription, setInputDescription] = useState('');
   const [inputBrand, setInputBrand] = useState('');
-  const [inputPrice, setInputPrice] = useState();
-  const [inputDiscount, setInputDiscount] = useState();
+  const [inputPrice, setInputPrice] = useState<number | undefined>(undefined);
+  const [inputDiscount, setInputDiscount] = useState<number | undefined>(
+    undefined
+  );
   const [inputDiscountType, setInputDiscountType] = useState('');
   const [inputCategory, setInputCategory] = useState('');
   const [inputSize, setInputSize] = useState([{ sizeType: '', quantity: 0 }]);
@@ -141,6 +162,34 @@ export default function AddProduct() {
     setInputSize(e.target.value as string);
   };
 
+  const handleProductNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const productName = e.target.value;
+    setInputName(productName);
+    setProductNameError(validateProductName(productName));
+  };
+
+  const handleProductDescriptionChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const productDescription = e.target.value;
+    setInputDescription(productDescription);
+    setProductDescriptionError(validateProductDescription(productDescription));
+  };
+
+  const handleProductPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const productPrice = parseFloat(e.target.value);
+    setInputPrice(productPrice);
+    setProductPriceError(validateProductPrice(productPrice));
+  };
+
+  const handleProductDiscountChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const productDiscount = parseFloat(e.target.value);
+    setInputDiscount(productDiscount);
+    setProductDiscountError(validateProductDiscount(productDiscount));
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
       <form onSubmit={submitHandler}>
@@ -222,8 +271,16 @@ export default function AddProduct() {
                       fullWidth
                       name="inputName"
                       value={inputName}
-                      onChange={(e) => setInputName(e.target.value as string)}
+                      // onChange={(e) => setInputName(e.target.value as string)}
+                      onChange={handleProductNameChange}
+                      error={!!productNameError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productNameError}
+                    </FormHelperText>
                   </Box>
                   <Box sx={{ marginBottom: '2rem' }}>
                     <TextField
@@ -235,10 +292,18 @@ export default function AddProduct() {
                       name="inputDescription"
                       variant="filled"
                       value={inputDescription}
-                      onChange={(e) =>
-                        setInputDescription(e.target.value as string)
-                      }
+                      // onChange={(e) =>
+                      //   setInputDescription(e.target.value as string)
+                      // }
+                      onChange={handleProductDescriptionChange}
+                      error={!!productDescriptionError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productDescriptionError}
+                    </FormHelperText>
                   </Box>
                   <Box>
                     <TextField
@@ -280,8 +345,16 @@ export default function AddProduct() {
                           <InputAdornment position="start">LKR.</InputAdornment>
                         ),
                       }}
-                      onChange={(e) => setInputPrice(e.target.value)}
+                      // onChange={(e) => setInputPrice(e.target.value)}
+                      onChange={handleProductPriceChange}
+                      error={!!productPriceError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productPriceError}
+                    </FormHelperText>
                   </Box>
                   <Box
                     sx={{
@@ -291,31 +364,42 @@ export default function AddProduct() {
                       textAlign: 'left',
                     }}
                   >
-                    <TextField
-                      type="number"
-                      label="Discount (%)"
-                      fullWidth
-                      name="inputDiscount"
-                      variant="filled"
-                      value={inputDiscount}
-                      onChange={(e) => setInputDiscount(e.target.value)}
-                    />
-                    <FormControl fullWidth variant="filled">
-                      <InputLabel id="demo-simple-select-label">
-                        Discount Type
-                      </InputLabel>
-                      <Select
-                        value={inputDiscountType}
-                        label="Discount Type"
-                        onChange={handleChangeDiscountType}
+                    <Box sx={{width: '100%'}}>
+                      <TextField
+                        type="number"
+                        label="Discount (%)"
+                        fullWidth
+                        name="inputDiscount"
+                        variant="filled"
+                        value={inputDiscount}
+                        onChange={handleProductDiscountChange}
+                        error={!!productDiscountError}
+                      />
+                      <FormHelperText
+                        color="error"
+                        sx={{ fontSize: '0.8rem', color: '#c62828' }}
                       >
-                        {DiscountList.map((discount) => (
-                          <MenuItem key={discount.key} value={discount.type}>
-                            {discount.type}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                        {productDiscountError}
+                      </FormHelperText>
+                    </Box>
+                    <Box sx={{width: '100%'}}>
+                      <FormControl fullWidth variant="filled">
+                        <InputLabel id="demo-simple-select-label">
+                          Discount Type
+                        </InputLabel>
+                        <Select
+                          value={inputDiscountType}
+                          label="Discount Type"
+                          onChange={handleChangeDiscountType}
+                        >
+                          {DiscountList.map((discount) => (
+                            <MenuItem key={discount.key} value={discount.type}>
+                              {discount.type}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
