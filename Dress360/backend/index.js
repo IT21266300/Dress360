@@ -13,9 +13,9 @@ import { errorHandler } from './middleware/errorHandler.js';
 import keyRouter  from './routes/keyRouter.js';
 
 import orderRouter from './routes/orderRouter.js';
-// import { productRouter } from './routes/productRouter';
-// import { seedRouter } from './routes/seedRouter';
-// import { userRouter } from './routes/userRouter';
+import  productRouter  from './routes/productRouter.js';
+import  seedRouter  from './routes/seedRouter';
+import  userRouter  from './routes/userRouter';
 // import MeasurementRouter  from './routes/measurementRouter.js';
 
 // backend configs
@@ -47,10 +47,10 @@ app.use(allowCrossDomain);
 */
 app.use('/api/admin', admin);
 app.use('/api/product', ProductRouter);
-// app.use('/api/products', productRouter);
-// app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
+app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
-// app.use('/api/seed', seedRouter);
+app.use('/api/seed', seedRouter);
 app.use('/api/keys', keyRouter);
 // app.use('/api/measurements', MeasurementRouter);
 

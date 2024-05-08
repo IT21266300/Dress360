@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-// import { User } from './models/userModel'; // Assuming userModel.js is converted
+import { User } from './models/userModel'; // Assuming userModel.js is converted
 import jwt from 'jsonwebtoken';
 export function generateToken(user) {
   return sign(
