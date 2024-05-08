@@ -1,6 +1,8 @@
-import { hashSync } from 'bcryptjs';
-import { User } from './models/userModel.js'; // Assuming userModel.js is converted
-import { Product } from './models/productModel1.js'; // Assuming productModel.js is converted
+import pkg from 'bcryptjs';
+const { hashSync } = pkg;
+// import { hashSync } from 'bcryptjs';
+// import { User } from './models/userModel.js'; // Assuming userModel.js is converted
+// import { Product } from './models/productModel1.js'; // Assuming productModel.js is converted
 
 export const sampleProducts = [
   {

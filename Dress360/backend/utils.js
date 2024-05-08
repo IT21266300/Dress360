@@ -1,7 +1,14 @@
-import { sign, verify } from 'jsonwebtoken';
-import { User } from './models/userModel.js'; // Assuming userModel.js is converted
+// import { sign, verify } from 'jsonwebtoken';
+// import { User } from './models/userModel.js'; // Assuming userModel.js is converted
 import jwt from 'jsonwebtoken';
+
 export function generateToken(user) {
+  const payload = {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
+  };
   return sign(
     {
       _id: user._id,
