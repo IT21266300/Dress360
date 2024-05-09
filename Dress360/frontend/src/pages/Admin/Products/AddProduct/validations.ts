@@ -46,7 +46,8 @@ export const validateProductDiscount = (
 
 export const validateProductCategory = (productCategory: string): string | null => {
   if (!productCategory.trim()) {
-    return 'Product Category is required';
+    return 'Category is required';
   }
+
   return null;
 };

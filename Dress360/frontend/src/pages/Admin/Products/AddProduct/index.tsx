@@ -78,12 +78,12 @@ export default function AddProduct() {
   const [inputName, setInputName] = useState('');
   const [inputDescription, setInputDescription] = useState('');
   const [inputBrand, setInputBrand] = useState('');
-  const [inputPrice, setInputPrice] = useState<number>(undefined);
+  const [inputPrice, setInputPrice] = useState<number | undefined>(undefined);
   const [inputDiscount, setInputDiscount] = useState<number | undefined>(
     undefined
   );
   const [inputDiscountType, setInputDiscountType] = useState('');
-  const [inputCategory, setInputCategory] = useState('');
+  const [inputCategory, setInputCategory] = useState<string>('');
   const [inputSize, setInputSize] = useState([{ sizeType: '', quantity: 0 }]);
   const [inputTags, setInputTags] = useState('');
 
@@ -185,7 +185,7 @@ export default function AddProduct() {
   };
 
   const handleProductCategoryChange = (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: SelectChangeEvent<string>
   ) => {
     const productCategory = e.target.value;
     setInputCategory(productCategory);
@@ -197,7 +197,13 @@ export default function AddProduct() {
     const productNameValid = !validateProductName(inputName);
     const productBrandValid = !validateProductBrand(inputBrand);
     const productPriceValid = !validateProductPrice(inputPrice);
-    setFormValid(productNameValid && productBrandValid && productPriceValid);
+    const productCategoryValid = !validateProductCategory(inputCategory);
+    setFormValid(
+      productNameValid &&
+        productBrandValid &&
+        productPriceValid &&
+        productCategoryValid
+    );
   };
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -228,8 +234,8 @@ export default function AddProduct() {
         });
         console.log(error);
       }
-    }else{
-      toast.error("Validations failed. Try Again", {
+    } else {
+      toast.error('Validations failed. Try Again', {
         position: 'bottom-center',
       });
     }
@@ -269,6 +275,7 @@ export default function AddProduct() {
               <Button
                 variant="contained"
                 type="submit"
+                disabled={!formValid}
                 sx={{
                   background: colorPalette.accent1[500],
                   color: colorPalette.base[500],
