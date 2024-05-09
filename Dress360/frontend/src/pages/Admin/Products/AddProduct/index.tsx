@@ -34,6 +34,8 @@ import { uploadImage } from '../../../../States/ProductSlice';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import { useNavigate } from 'react-router-dom';
 import {
+  validateProductBrand,
+  validateProductCategory,
   validateProductDescription,
   validateProductDiscount,
   validateProductName,
@@ -61,6 +63,14 @@ export default function AddProduct() {
   const [productDiscountError, setProductDiscountError] = useState<
     string | null
   >(null);
+  const [productBrandError, setProductBrandError] = useState<string | null>(
+    null
+  );
+  const [productCategoryError, setProductCategoryError] = useState<
+    string | null
+  >(null);
+
+  const [formValid, setFormValid] = useState<boolean>(false);
 
   // states
   const [fileInputState, setFileInputState] = useState('');
@@ -68,7 +78,7 @@ export default function AddProduct() {
   const [inputName, setInputName] = useState('');
   const [inputDescription, setInputDescription] = useState('');
   const [inputBrand, setInputBrand] = useState('');
-  const [inputPrice, setInputPrice] = useState<number | undefined>(undefined);
+  const [inputPrice, setInputPrice] = useState<number>(undefined);
   const [inputDiscount, setInputDiscount] = useState<number | undefined>(
     undefined
   );
@@ -122,34 +132,6 @@ export default function AddProduct() {
     setInputSize(newSize);
   };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('http://localhost:4000/api/product/addProduct', {
-        inputName,
-        inputDescription,
-        inputBrand,
-        inputPrice,
-        inputDiscount,
-        inputDiscountType,
-        inputImage,
-        inputCategory,
-        inputSize,
-        inputTags,
-      });
-      toast.success('New data has been created successfully!', {
-        position: 'top-center',
-      });
-      navigate('/products');
-      window.location.reload();
-    } catch (error) {
-      toast.error(error, {
-        position: 'bottom-right',
-      });
-      console.log(error);
-    }
-  };
-
   const handleChangeDiscountType = (e: SelectChangeEvent) => {
     setInputDiscountType(e.target.value as string);
   };
@@ -162,10 +144,12 @@ export default function AddProduct() {
     setInputSize(e.target.value as string);
   };
 
+  // validate and on changes
   const handleProductNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const productName = e.target.value;
     setInputName(productName);
     setProductNameError(validateProductName(productName));
+    validateForm();
   };
 
   const handleProductDescriptionChange = (
@@ -174,12 +158,21 @@ export default function AddProduct() {
     const productDescription = e.target.value;
     setInputDescription(productDescription);
     setProductDescriptionError(validateProductDescription(productDescription));
+    validateForm();
+  };
+
+  const handleProductBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const productBrand = e.target.value;
+    setInputBrand(productBrand);
+    setProductBrandError(validateProductBrand(productBrand));
+    validateForm();
   };
 
   const handleProductPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const productPrice = parseFloat(e.target.value);
     setInputPrice(productPrice);
     setProductPriceError(validateProductPrice(productPrice));
+    validateForm();
   };
 
   const handleProductDiscountChange = (
@@ -188,6 +181,58 @@ export default function AddProduct() {
     const productDiscount = parseFloat(e.target.value);
     setInputDiscount(productDiscount);
     setProductDiscountError(validateProductDiscount(productDiscount));
+    validateForm();
+  };
+
+  const handleProductCategoryChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const productCategory = e.target.value;
+    setInputCategory(productCategory);
+    setProductCategoryError(validateProductCategory(productCategory));
+    validateForm();
+  };
+
+  const validateForm = () => {
+    const productNameValid = !validateProductName(inputName);
+    const productBrandValid = !validateProductBrand(inputBrand);
+    const productPriceValid = !validateProductPrice(inputPrice);
+    setFormValid(productNameValid && productBrandValid && productPriceValid);
+  };
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    validateForm();
+    if (formValid) {
+      try {
+        await axios.post('http://localhost:4000/api/product/addProduct', {
+          inputName,
+          inputDescription,
+          inputBrand,
+          inputPrice,
+          inputDiscount,
+          inputDiscountType,
+          inputImage,
+          inputCategory,
+          inputSize,
+          inputTags,
+        });
+        toast.success('New data has been created successfully!', {
+          position: 'top-center',
+        });
+        navigate('/products');
+        window.location.reload();
+      } catch (error) {
+        toast.error(error, {
+          position: 'bottom-center',
+        });
+        console.log(error);
+      }
+    }else{
+      toast.error("Validations failed. Try Again", {
+        position: 'bottom-center',
+      });
+    }
   };
 
   return (
@@ -265,7 +310,6 @@ export default function AddProduct() {
                 <Box sx={{ fontSize: '2rem' }}>
                   <Box sx={{ marginBottom: '2rem' }}>
                     <TextField
-                      required
                       label="Product Name"
                       variant="filled"
                       fullWidth
@@ -284,7 +328,6 @@ export default function AddProduct() {
                   </Box>
                   <Box sx={{ marginBottom: '2rem' }}>
                     <TextField
-                      required
                       label="Product Description"
                       multiline
                       rows={5}
@@ -307,14 +350,20 @@ export default function AddProduct() {
                   </Box>
                   <Box>
                     <TextField
-                      required
                       label="Product Brand"
                       variant="filled"
                       fullWidth
                       name="inputBrand"
                       value={inputBrand}
-                      onChange={(e) => setInputBrand(e.target.value as string)}
+                      onChange={handleProductBrandChange}
+                      error={!!productBrandError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productBrandError}
+                    </FormHelperText>
                   </Box>
                 </Box>
               </Box>
@@ -333,7 +382,6 @@ export default function AddProduct() {
                 <Box sx={{ fontSize: '2rem' }}>
                   <Box sx={{ marginBottom: '2rem' }}>
                     <TextField
-                      required
                       type="number"
                       label="Price"
                       value={inputPrice}
@@ -364,7 +412,7 @@ export default function AddProduct() {
                       textAlign: 'left',
                     }}
                   >
-                    <Box sx={{width: '100%'}}>
+                    <Box sx={{ width: '100%' }}>
                       <TextField
                         type="number"
                         label="Discount (%)"
@@ -382,7 +430,7 @@ export default function AddProduct() {
                         {productDiscountError}
                       </FormHelperText>
                     </Box>
-                    <Box sx={{width: '100%'}}>
+                    <Box sx={{ width: '100%' }}>
                       <FormControl fullWidth variant="filled">
                         <InputLabel id="demo-simple-select-label">
                           Discount Type
@@ -682,10 +730,10 @@ export default function AddProduct() {
                   <FormControl fullWidth variant="filled">
                     <InputLabel>Category</InputLabel>
                     <Select
-                      required
                       value={inputCategory}
                       label="Category"
-                      onChange={handleChangeCategory}
+                      onChange={handleProductCategoryChange}
+                      error={!!productCategoryError}
                     >
                       {CategoriesList.map((category) => (
                         <MenuItem key={category.key} value={category.type}>
@@ -693,6 +741,12 @@ export default function AddProduct() {
                         </MenuItem>
                       ))}
                     </Select>
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productCategoryError}
+                    </FormHelperText>
                   </FormControl>
                   {/* item sub 02 */}
                   <Box sx={{ width: '100%' }}>
