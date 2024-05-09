@@ -14,9 +14,14 @@ export const validateProductDescription = (
   return null;
 };
 
-export const validateProductPrice = (
-  productPrice: number
-): string | null => {
+export const validateProductBrand = (productBrand: string): string | null => {
+  if (!productBrand.trim()) {
+    return 'Product Brand is required';
+  }
+  return null;
+};
+
+export const validateProductPrice = (productPrice: number): string | null => {
   if (!productPrice && productPrice !== 0) {
     return 'Price is required';
   }
@@ -27,15 +32,21 @@ export const validateProductPrice = (
 };
 
 export const validateProductDiscount = (
-    productDiscount: number
-  ): string | null => {
-    if (productDiscount < 0) {
-      return 'Discount cannot be Negative';
-    }
-    if (productDiscount > 100) {
-        return 'Discount cannot be exceed 100 percent';
-      }
-    return null;
-  };
+  productDiscount: number
+): string | null => {
+  if (productDiscount < 0) {
+    return 'Discount cannot be Negative';
+  }
+  if (productDiscount > 100) {
+    return 'Discount cannot be exceed 100 percent';
+  }
+  return null;
+};
 
 
+export const validateProductCategory = (productCategory: string): string | null => {
+  if (!productCategory.trim()) {
+    return 'Product Category is required';
+  }
+  return null;
+};
