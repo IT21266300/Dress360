@@ -1,6 +1,2 @@
-/node_modules
-/build
-
-# System Files
-.DS_Store
-Thumbs.db
+node_modules
+.env
