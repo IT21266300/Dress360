@@ -31,12 +31,34 @@ function App() {
     state: { mode, cart, userInfo },
     dispatch,
   } = useContext(Store);
+  const [timeElapsed, setTimeElapsed] = useState(0);
+
+  useEffect(() => {
+    // Start timer on component mount
+    const timer = setInterval(() => {
+      setTimeElapsed((prevTime) => prevTime + 1); // Increment every second
+    }, 1000);
+
+    // Clear timer on component unmount
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${hours.toString().padStart(2, '0')}:${minutes
+      .toString()
+      .padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  };
 
   useEffect(() => {
     document.body.setAttribute('data-bs-theme', mode);
   }, [mode]);
 
   const switchModeHandler = () => {
+    
     dispatch({ type: 'SWITCH_MODE' });
   };
   const signoutHandler = () => {
@@ -72,6 +94,16 @@ function App() {
 
             <Navbar.Collapse>
               <Nav className="w-100 justify-content-end">
+              <div className="row">
+            <div className="col-md-8">
+              <li className="list-group-item">Time Spent on Dress360</li>
+            </div>
+            <div className="col-md-4">
+              <li className="list-group-item text-center">
+                {formatTime(timeElapsed)} 
+              </li> 
+            </div>
+          </div>
                 <Link
                   to="#"
                   className="nav-link header-link"
