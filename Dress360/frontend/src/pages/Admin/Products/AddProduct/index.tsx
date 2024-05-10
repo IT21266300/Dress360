@@ -78,7 +78,7 @@ export default function AddProduct() {
   const [inputName, setInputName] = useState('');
   const [inputDescription, setInputDescription] = useState('');
   const [inputBrand, setInputBrand] = useState('');
-  const [inputPrice, setInputPrice] = useState<number | undefined>(undefined);
+  const [inputPrice, setInputPrice] = useState('');
   const [inputDiscount, setInputDiscount] = useState<number | undefined>(
     undefined
   );
@@ -216,9 +216,15 @@ export default function AddProduct() {
   };
 
   const handleProductPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const productPrice = parseFloat(e.target.value);
-    setInputPrice(productPrice);
-    setProductPriceError(validateProductPrice(productPrice));
+    const productPrice = e.target.value;
+
+    const regex = /^\d*\.?\d{0,2}$/;
+    if (productPrice === '' || regex.test(productPrice)) {
+      setInputPrice(productPrice);
+      setProductPriceError(validateProductPrice(productPrice));
+    } else {
+      setProductPriceError('Invalid price format. Please enter a valid price.');
+    }
     validateForm();
   };
 
@@ -435,7 +441,7 @@ export default function AddProduct() {
                 <Box sx={{ fontSize: '2rem' }}>
                   <Box sx={{ marginBottom: '2rem' }}>
                     <TextField
-                      type="number"
+                      type="text"
                       label="Price"
                       value={inputPrice}
                       variant="filled"

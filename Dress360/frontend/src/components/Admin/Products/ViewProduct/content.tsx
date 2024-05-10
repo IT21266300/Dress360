@@ -124,7 +124,7 @@ export default function Content({
             variant="h3"
             sx={{ fontWeight: 'bold', color: colorPalette.accent2[500] }}
           >
-            LKR: {itemData && itemData.price}
+            LKR: {itemData.price && itemData.price.toFixed(2)}
           </Typography>
         </Box>
         <Box>

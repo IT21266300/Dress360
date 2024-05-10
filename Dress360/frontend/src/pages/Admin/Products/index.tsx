@@ -191,7 +191,7 @@ export default function Products() {
     brand: product.brand,
     category: product.category,
     totalQuantity: product.totalQuantity,
-    price: product.price,
+    price: product.price.toFixed(2),
     barcode: product.barcode,
     sku: product.sku,
   }));
