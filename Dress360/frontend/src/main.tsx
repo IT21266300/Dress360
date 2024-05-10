@@ -53,7 +53,7 @@ if (userDataString !== null) {
 
 // const isAdmin: boolean = userData ? userData.isAdmin : false;
 
-const isAdmin = false;
+const isAdmin = true;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -98,9 +98,9 @@ const adminRouter = createBrowserRouter(
       <Route path="/products" element={<Products />} />
       <Route path="/addProduct" element={<AddProduct />} />
       <Route path="/updateProduct" element={<UpdateProduct />} />
+      <Route path="/manageCategories" element={<ManageCategories />} />
       <Route path="" element={<ProtectedRoute />}>
         <Route path="/overview" element={<Overview />} />
-        <Route path="/manageCategories" element={<ManageCategories />} />
       </Route>
 
       {/* <Route path="dashboard" element={<Dashboard />} /> */}

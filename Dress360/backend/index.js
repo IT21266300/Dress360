@@ -8,15 +8,19 @@ import dotenv from 'dotenv';
 ======== import your router set here ========
 */
 import admin from './routes/admin.js';
-import ProductRouter from './routes/productRoutes.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import keyRouter  from './routes/keyRouter.js';
 
 import orderRouter from './routes/orderRouter.js';
-import  productRouter  from './routes/productRouter.js';
+// import  productRouter  from './routes/productRouter.js';
 import  seedRouter  from './routes/seedRouter.js';
 import  userRouter  from './routes/userRouter.js';
 // import MeasurementRouter  from './routes/measurementRouter.js';
+
+
+// admin-dumindu
+import ProductRouter from './routes/productRoutes.js';
+import CategoryRouter from './routes/categoryRoutes.js';
 
 // backend configs
 const app = express();
@@ -46,13 +50,16 @@ app.use(allowCrossDomain);
   ===== config your APIs here =====
 */
 app.use('/api/admin', admin);
-app.use('/api/product', ProductRouter);
-app.use('/api/products', productRouter);
+// app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/seed', seedRouter);
 app.use('/api/keys', keyRouter);
 // app.use('/api/measurements', MeasurementRouter);
+
+// admin-dumindu
+app.use('/api/product', ProductRouter);
+app.use('/api/category', CategoryRouter);
 
 const PORT = parseInt(process.env.PORT);
 const port = process.env.PORT || 4000;
