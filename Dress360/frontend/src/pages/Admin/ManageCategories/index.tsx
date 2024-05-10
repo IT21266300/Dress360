@@ -218,7 +218,7 @@ export default function ManageCategories() {
                           size="small"
                           onClick={() => deleteDiscountType(row._id)}
                         >
-                          Delete Category
+                          Delete
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -293,7 +293,7 @@ export default function ManageCategories() {
                           size="small"
                           onClick={() => deleteCategory(row._id)}
                         >
-                          Delete Category
+                          Delete
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -368,7 +368,7 @@ export default function ManageCategories() {
                           size="small"
                           onClick={() => deleteSizeType(row._id)}
                         >
-                          Delete Size
+                          Delete
                         </Button>
                       </TableCell>
                     </TableRow>
