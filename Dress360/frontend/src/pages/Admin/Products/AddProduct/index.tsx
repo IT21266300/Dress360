@@ -16,7 +16,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import FlexBetween from '../../../../components/Admin/FlexBetween';
 import { colorPalette } from '../../../../theme';
@@ -93,6 +93,53 @@ export default function AddProduct() {
     (state: RootState) => state.products.uploadState
   );
   const dispatch = useDispatch<AppDispatch>();
+
+
+  const [categoryData, setCategoryData] = useState();
+  const [typeData, setTypeData] = useState();
+  const [sizeData, setSizeData] = useState();
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/category/`);
+      setCategoryData(response.data);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchDiscountTypes = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/category/discountTypes`);
+      setTypeData(response.data);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    fetchDiscountTypes();
+  }, []);
+
+
+  const fetchSizeTypes = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/category/sizeTypes`);
+      setSizeData(response.data);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    fetchSizeTypes();
+  }, []);
+
+
 
   const handleFileInputChange = (e: SelectChangeEvent) => {
     const file = e.target.files[0];
@@ -446,8 +493,8 @@ export default function AddProduct() {
                           label="Discount Type"
                           onChange={handleChangeDiscountType}
                         >
-                          {DiscountList.map((discount) => (
-                            <MenuItem key={discount.key} value={discount.type}>
+                          {typeData && typeData.map((discount, index) => (
+                            <MenuItem key={index} value={discount.type}>
                               {discount.type}
                             </MenuItem>
                           ))}
@@ -488,8 +535,9 @@ export default function AddProduct() {
                         onChange={(e) =>
                           handleSizeChange(index, e.target.value)
                         }
+                        variant='filled'
                       >
-                        {commonSizes.map((s, i) => (
+                        {sizeData && sizeData.map((s, i) => (
                           <MenuItem key={i} value={s.size}>
                             {s.size}
                           </MenuItem>
@@ -741,9 +789,9 @@ export default function AddProduct() {
                       onChange={handleProductCategoryChange}
                       error={!!productCategoryError}
                     >
-                      {CategoriesList.map((category) => (
-                        <MenuItem key={category.key} value={category.type}>
-                          {category.type}
+                      {categoryData && categoryData.map((category, index) => (
+                        <MenuItem key={index} value={category.category}>
+                          {category.category}
                         </MenuItem>
                       ))}
                     </Select>
