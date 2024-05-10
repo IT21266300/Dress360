@@ -178,7 +178,7 @@ export default function ProductPage() {
                 variant="h3"
                 sx={{ fontWeight: 'bold', color: colorPalette.accent2[500] }}
               >
-                LKR: {itemData && itemData.price.toFixed(2)}
+                LKR: {itemData.price && itemData.price.toFixed(2)}
               </Typography>
             </Box>
             <Box>

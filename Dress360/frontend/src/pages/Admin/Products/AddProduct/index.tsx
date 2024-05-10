@@ -190,19 +190,18 @@ export default function AddProduct() {
     const productCategory = e.target.value;
     setInputCategory(productCategory);
     setProductCategoryError(validateProductCategory(productCategory));
-    validateForm();
+    // validateForm();
   };
 
   const validateForm = () => {
     const productNameValid = !validateProductName(inputName);
     const productBrandValid = !validateProductBrand(inputBrand);
     const productPriceValid = !validateProductPrice(inputPrice);
-    const productCategoryValid = !validateProductCategory(inputCategory);
+    // const productCategoryValid = !validateProductCategory(inputCategory);
     setFormValid(
       productNameValid &&
         productBrandValid &&
-        productPriceValid &&
-        productCategoryValid
+        productPriceValid
     );
   };
 
@@ -229,10 +228,10 @@ export default function AddProduct() {
         navigate('/products');
         window.location.reload();
       } catch (error) {
-        toast.error(error, {
+        toast.error(error.response.data.error, {
           position: 'bottom-center',
         });
-        console.log(error);
+        console.log("eroor", error.response.data.error);
       }
     } else {
       toast.error('Validations failed. Try Again', {
