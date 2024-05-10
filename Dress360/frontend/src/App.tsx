@@ -31,17 +31,30 @@ function App() {
     state: { mode, cart, userInfo },
     dispatch,
   } = useContext(Store);
-  const [timeElapsed, setTimeElapsed] = useState(0);
+  
+  const [timeElapsed, setTimeElapsed] = useState(() => {
+    // Get initial time from localStorage or start from 0
+    const storedTime = localStorage.getItem('timeElapsed');
+    return storedTime ? parseInt(storedTime, 10) : 0;
+  });
 
+  
   useEffect(() => {
     // Start timer on component mount
     const timer = setInterval(() => {
-      setTimeElapsed((prevTime) => prevTime + 1); // Increment every second
+      setTimeElapsed((prevTime) => {
+        const newTime = prevTime + 1;
+        // Store updated time in localStorage
+        localStorage.setItem('timeElapsed', newTime.toString());
+        return newTime;
+      });
     }, 1000);
 
     // Clear timer on component unmount
     return () => clearInterval(timer);
   }, []);
+
+  
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);

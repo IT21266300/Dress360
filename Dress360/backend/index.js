@@ -11,7 +11,7 @@ import admin from './routes/admin.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import keyRouter  from './routes/keyRouter.js';
 import orderRouter from './routes/orderRouter.js';
-// import  productRouter  from './routes/productRouter.js';
+import  productRouter  from './routes/productRouter.js';
 import  seedRouter  from './routes/seedRouter.js';
 import  userRouter  from './routes/userRouter.js';
 // import MeasurementRouter  from './routes/measurementRouter.js';
@@ -35,20 +35,26 @@ mongoose
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// CORS configuration
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  next();
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.sendStatus(200); // Respond with HTTP OK status
+  } else {
+    next();
+  }
 });
+
 
 /* 
   ========= APIs config ===========
   ===== config your APIs here =====
 */
 app.use('/api/admin', admin);
-// app.use('/api/products', productRouter);
+app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/seed', seedRouter);

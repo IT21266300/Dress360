@@ -53,7 +53,7 @@ if (userDataString !== null) {
 
 // const isAdmin: boolean = userData ? userData.isAdmin : false;
 
-const isAdmin = true;
+const isAdmin = false;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
