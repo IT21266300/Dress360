@@ -5,6 +5,7 @@ import {
   Chip,
   CircularProgress,
   FormControl,
+  FormHelperText,
   IconButton,
   Input,
   InputAdornment,
@@ -29,12 +30,18 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../States/store';
 import { Image } from 'cloudinary-react';
-import {
-  uploadImage,
-} from '../../../../States/ProductSlice';
+import { uploadImage } from '../../../../States/ProductSlice';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
+import {
+  validateProductBrand,
+  validateProductCategory,
+  validateProductDescription,
+  validateProductDiscount,
+  validateProductName,
+  validateProductPrice,
+} from './validations';
 
 const sizeList = [
   {
@@ -53,6 +60,25 @@ export default function UpdateProduct() {
   const searchParams = new URLSearchParams(location.search);
   const productId = searchParams.get('mongoID');
 
+  const [productNameError, setProductNameError] = useState<string | null>(null);
+  const [productDescriptionError, setProductDescriptionError] = useState<
+    string | null
+  >(null);
+  const [productPriceError, setProductPriceError] = useState<string | null>(
+    null
+  );
+  const [productDiscountError, setProductDiscountError] = useState<
+    string | null
+  >(null);
+  const [productBrandError, setProductBrandError] = useState<string | null>(
+    null
+  );
+  const [productCategoryError, setProductCategoryError] = useState<
+    string | null
+  >(null);
+
+  const [formValid, setFormValid] = useState<boolean>(false);
+
   // * states
   const [fileInputState, setFileInputState] = useState<string>('');
   const [previewSource, setPreviewSource] = useState<string>();
@@ -60,7 +86,7 @@ export default function UpdateProduct() {
   const [inputDescription, setInputDescription] = useState<string>('');
   const [inputBrand, setInputBrand] = useState<string>('');
   const [inputPrice, setInputPrice] = useState<number>();
-  const [inputDiscount, setInputDiscount] = useState<number>();
+  const [inputDiscount, setInputDiscount] = useState<number | undefined>();
   const [inputDiscountType, setInputDiscountType] = useState<string>('');
   const [inputCategory, setInputCategory] = useState<string>('');
   const [inputSize, setInputSize] = useState([{ sizeType: '', quantity: 0 }]);
@@ -69,6 +95,7 @@ export default function UpdateProduct() {
   const [inputImage, setInputImage] = useState<string>('');
   const [barcode, setBarcode] = useState<number>();
   const [sku, setSKU] = useState<number>();
+  const [discountCheck, setDiscountCheck] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -100,7 +127,6 @@ export default function UpdateProduct() {
   const dispatch = useDispatch<AppDispatch>();
 
   const newImage = useSelector((state: RootState) => state.products.imageID);
-
 
   const loading = useSelector((state: RootState) => state.products.loading);
   const uploadState = useSelector(
@@ -152,36 +178,8 @@ export default function UpdateProduct() {
       setInputImage(upImage);
     }
   }, [previewSource, newImage, upImage]);
-  
-  console.log(inputImage);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.put(`http://localhost:4000/api/product/updateProduct/${productId}`, {
-        inputName,
-        inputDescription,
-        inputBrand,
-        inputPrice,
-        inputDiscount,
-        inputDiscountType,
-        inputImage,
-        inputCategory,
-        inputSize,
-        inputTags,
-      });
-      toast.success('New data has been created successfully!', {
-        position: 'top-center',
-      });
-      navigate('/products');
-      window.location.reload();
-    } catch (error) {
-      toast.error(error, {
-        position: 'bottom-right',
-      });
-      console.log(error);
-    }
-  };
+  console.log(inputImage);
 
   const handleChangeDiscountType = (e: SelectChangeEvent) => {
     setInputDiscountType(e.target.value as string);
@@ -193,6 +191,104 @@ export default function UpdateProduct() {
 
   const handleChangeSize = (e: SelectChangeEvent) => {
     setInputSize(e.target.value as string);
+  };
+
+  const handleProductNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const productName = e.target.value;
+    setInputName(productName);
+    setProductNameError(validateProductName(productName));
+    validateForm();
+  };
+
+  const handleProductDescriptionChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const productDescription = e.target.value;
+    setInputDescription(productDescription);
+    setProductDescriptionError(validateProductDescription(productDescription));
+    validateForm();
+  };
+
+  const handleProductBrandChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const productBrand = e.target.value;
+    setInputBrand(productBrand);
+    setProductBrandError(validateProductBrand(productBrand));
+    validateForm();
+  };
+
+  const handleProductPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const productPrice = parseFloat(e.target.value);
+    setInputPrice(productPrice);
+    setProductPriceError(validateProductPrice(productPrice));
+    validateForm();
+  };
+
+  const handleProductDiscountChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const productDiscount = parseFloat(e.target.value);
+    setInputDiscount(productDiscount);
+    setProductDiscountError(validateProductDiscount(productDiscount));
+    validateForm();
+  };
+
+  const handleProductCategoryChange = (e: SelectChangeEvent<string>) => {
+    const productCategory = e.target.value;
+    setInputCategory(productCategory);
+    setProductCategoryError(validateProductCategory(productCategory));
+    // validateForm();
+  };
+
+  const validateForm = () => {
+    const productNameValid = !validateProductName(inputName);
+    const productBrandValid = !validateProductBrand(inputBrand);
+    const productPriceValid = !validateProductPrice(inputPrice);
+    const productDiscountValid = !validateProductDiscount(inputDiscount);
+    // const productCategoryValid = !validateProductCategory(inputCategory);
+    setFormValid(
+      productNameValid &&
+        productBrandValid &&
+        productPriceValid &&
+        productDiscountValid
+    );
+  };
+
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    validateForm();
+    if (formValid) {
+      try {
+        await axios.put(
+          `http://localhost:4000/api/product/updateProduct/${productId}`,
+          {
+            inputName,
+            inputDescription,
+            inputBrand,
+            inputPrice,
+            inputDiscount,
+            inputDiscountType,
+            inputImage,
+            inputCategory,
+            inputSize,
+            inputTags,
+          }
+        );
+        toast.success('New data has been created successfully!', {
+          position: 'top-center',
+        });
+        navigate('/products');
+        window.location.reload();
+      } catch (error) {
+        toast.error(error, {
+          position: 'bottom-right',
+        });
+        console.log(error);
+      }
+    } else {
+      toast.error('Validations failed. Try Again', {
+        position: 'bottom-center',
+      });
+    }
   };
 
   return (
@@ -247,6 +343,7 @@ export default function UpdateProduct() {
               <Button
                 variant="contained"
                 type="submit"
+                disabled={!formValid}
                 sx={{
                   background: colorPalette.accent1[500],
                   color: colorPalette.base[500],
@@ -294,8 +391,16 @@ export default function UpdateProduct() {
                       fullWidth
                       name="inputName"
                       value={inputName}
-                      onChange={(e) => setInputName(e.target.value as string)}
+                      // onChange={(e) => setInputName(e.target.value as string)}
+                      onChange={handleProductNameChange}
+                      error={!!productNameError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productNameError}
+                    </FormHelperText>
                   </Box>
                   <Box sx={{ marginBottom: '2rem' }}>
                     <TextField
@@ -307,10 +412,18 @@ export default function UpdateProduct() {
                       name="inputDescription"
                       variant="filled"
                       value={inputDescription}
-                      onChange={(e) =>
-                        setInputDescription(e.target.value as string)
-                      }
+                      // onChange={(e) =>
+                      //   setInputDescription(e.target.value as string)
+                      // }
+                      onChange={handleProductDescriptionChange}
+                      error={!!productDescriptionError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productDescriptionError}
+                    </FormHelperText>
                   </Box>
                   <Box>
                     <TextField
@@ -320,8 +433,16 @@ export default function UpdateProduct() {
                       fullWidth
                       name="inputBrand"
                       value={inputBrand}
-                      onChange={(e) => setInputBrand(e.target.value as string)}
+                      // onChange={(e) => setInputBrand(e.target.value as string)}
+                      onChange={handleProductBrandChange}
+                      error={!!productBrandError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productBrandError}
+                    </FormHelperText>
                   </Box>
                 </Box>
               </Box>
@@ -352,8 +473,15 @@ export default function UpdateProduct() {
                           <InputAdornment position="start">LKR.</InputAdornment>
                         ),
                       }}
-                      onChange={(e) => setInputPrice(e.target.value)}
+                      onChange={handleProductPriceChange}
+                      error={!!productPriceError}
                     />
+                    <FormHelperText
+                      color="error"
+                      sx={{ fontSize: '0.8rem', color: '#c62828' }}
+                    >
+                      {productPriceError}
+                    </FormHelperText>
                   </Box>
                   <Box
                     sx={{
@@ -363,31 +491,48 @@ export default function UpdateProduct() {
                       textAlign: 'left',
                     }}
                   >
-                    <TextField
-                      type="number"
-                      label="Discount (%)"
-                      fullWidth
-                      name="inputDiscount"
-                      variant="filled"
-                      value={inputDiscount}
-                      onChange={(e) => setInputDiscount(e.target.value)}
-                    />
-                    <FormControl fullWidth variant="filled">
-                      <InputLabel id="demo-simple-select-label">
-                        Discount Type
-                      </InputLabel>
-                      <Select
-                        value={inputDiscountType}
-                        label="Discount Type"
-                        onChange={handleChangeDiscountType}
+                    <Box sx={{ width: '100%' }}>
+                      <TextField
+                        type="number"
+                        label="Discount (%)"
+                        fullWidth
+                        name="inputDiscount"
+                        variant="filled"
+                        value={inputDiscount}
+                        // onChange={(e) => setInputDiscount(e.target.value)}
+                        onChange={handleProductDiscountChange}
+                        error={!!productDiscountError}
+                      />
+                      <FormHelperText
+                        color="error"
+                        sx={{ fontSize: '0.8rem', color: '#c62828' }}
                       >
-                        {DiscountList.map((discount) => (
-                          <MenuItem key={discount.key} value={discount.type}>
-                            {discount.type}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
+                        {productDiscountError}
+                      </FormHelperText>
+                    </Box>
+                    {inputDiscount > 0 && (
+                      <Box sx={{ width: '100%' }}>
+                        <FormControl fullWidth variant="filled">
+                          <InputLabel id="demo-simple-select-label">
+                            Discount Type
+                          </InputLabel>
+                          <Select
+                            value={inputDiscountType}
+                            label="Discount Type"
+                            onChange={handleChangeDiscountType}
+                          >
+                            {DiscountList.map((discount) => (
+                              <MenuItem
+                                key={discount.key}
+                                value={discount.type}
+                              >
+                                {discount.type}
+                              </MenuItem>
+                            ))}
+                          </Select>
+                        </FormControl>
+                      </Box>
+                    )}
                   </Box>
                 </Box>
               </Box>
@@ -443,7 +588,7 @@ export default function UpdateProduct() {
                       color="error"
                       onClick={() => handleRemoveSize(index)}
                     >
-                      <DeleteIcon/>
+                      <DeleteIcon />
                     </IconButton>
                   </Box>
                 ))}
@@ -464,7 +609,7 @@ export default function UpdateProduct() {
                         background: colorPalette.accent1[400],
                       },
                     }}
-                    startIcon={<AddIcon/>}
+                    startIcon={<AddIcon />}
                   >
                     Add New Stock
                   </Button>
@@ -607,7 +752,7 @@ export default function UpdateProduct() {
                   ) : (
                     <Box>
                       {upImage ? (
-                        <Box sx={{position: 'relative'}}>
+                        <Box sx={{ position: 'relative' }}>
                           <Image
                             cloudName="dypvbk20u"
                             publicId={upImage}
