@@ -20,7 +20,6 @@ export const createProduct = expressAsyncHandler(async (req, res, next) => {
       !inputBrand ||
       !inputPrice ||
       !inputCategory ||
-      !inputImage ||
       !inputSize
     ) {
       throw new Error('Missing required fields');
