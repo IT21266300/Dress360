@@ -85,7 +85,7 @@ export default function UpdateProduct() {
   const [inputName, setInputName] = useState<string>('');
   const [inputDescription, setInputDescription] = useState<string>('');
   const [inputBrand, setInputBrand] = useState<string>('');
-  const [inputPrice, setInputPrice] = useState<number>();
+  const [inputPrice, setInputPrice] = useState<string>();
   const [inputDiscount, setInputDiscount] = useState<number | undefined>();
   const [inputDiscountType, setInputDiscountType] = useState<string>('');
   const [inputCategory, setInputCategory] = useState<string>('');
@@ -96,6 +96,53 @@ export default function UpdateProduct() {
   const [barcode, setBarcode] = useState<number>();
   const [sku, setSKU] = useState<number>();
   const [discountCheck, setDiscountCheck] = useState<boolean>(false);
+
+  const [categoryData, setCategoryData] = useState();
+  const [typeData, setTypeData] = useState();
+  const [sizeData, setSizeData] = useState();
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/api/category/`);
+      setCategoryData(response.data);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchDiscountTypes = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/category/discountTypes`
+      );
+      setTypeData(response.data);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    fetchDiscountTypes();
+  }, []);
+
+  const fetchSizeTypes = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:4000/api/category/sizeTypes`
+      );
+      setSizeData(response.data);
+    } catch (error) {
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    fetchSizeTypes();
+  }, []);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -217,9 +264,14 @@ export default function UpdateProduct() {
   };
 
   const handleProductPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const productPrice = parseFloat(e.target.value);
-    setInputPrice(productPrice);
-    setProductPriceError(validateProductPrice(productPrice));
+    const productPrice = e.target.value;
+    const regex = /^\d*\.?\d{0,2}$/;
+    if (productPrice === '' || regex.test(productPrice)) {
+      setInputPrice(productPrice);
+      setProductPriceError(validateProductPrice(productPrice));
+    } else {
+      setProductPriceError('Invalid price format. Please enter a valid price.');
+    }
     validateForm();
   };
 
@@ -255,8 +307,6 @@ export default function UpdateProduct() {
 
   const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    validateForm();
-    if (formValid) {
       try {
         await axios.put(
           `http://localhost:4000/api/product/updateProduct/${productId}`,
@@ -284,11 +334,6 @@ export default function UpdateProduct() {
         });
         console.log(error);
       }
-    } else {
-      toast.error('Validations failed. Try Again', {
-        position: 'bottom-center',
-      });
-    }
   };
 
   return (
@@ -343,7 +388,6 @@ export default function UpdateProduct() {
               <Button
                 variant="contained"
                 type="submit"
-                disabled={!formValid}
                 sx={{
                   background: colorPalette.accent1[500],
                   color: colorPalette.base[500],
@@ -462,7 +506,7 @@ export default function UpdateProduct() {
                   <Box sx={{ marginBottom: '2rem' }}>
                     <TextField
                       required
-                      type="number"
+                      type="text"
                       label="Price"
                       value={inputPrice}
                       variant="filled"
@@ -521,14 +565,12 @@ export default function UpdateProduct() {
                             label="Discount Type"
                             onChange={handleChangeDiscountType}
                           >
-                            {DiscountList.map((discount) => (
-                              <MenuItem
-                                key={discount.key}
-                                value={discount.type}
-                              >
-                                {discount.type}
-                              </MenuItem>
-                            ))}
+                            {typeData &&
+                              typeData.map((discount, index) => (
+                                <MenuItem key={index} value={discount.type}>
+                                  {discount.type}
+                                </MenuItem>
+                              ))}
                           </Select>
                         </FormControl>
                       </Box>
@@ -568,11 +610,12 @@ export default function UpdateProduct() {
                           handleSizeChange(index, e.target.value)
                         }
                       >
-                        {commonSizes.map((s, i) => (
-                          <MenuItem key={i} value={s.size}>
-                            {s.size}
-                          </MenuItem>
-                        ))}
+                        {sizeData &&
+                          sizeData.map((s, i) => (
+                            <MenuItem key={i} value={s.size}>
+                              {s.size}
+                            </MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
                     <TextField
@@ -855,9 +898,9 @@ export default function UpdateProduct() {
                       label="Category"
                       onChange={handleChangeCategory}
                     >
-                      {CategoriesList.map((category) => (
-                        <MenuItem key={category.key} value={category.type}>
-                          {category.type}
+                      {categoryData && categoryData.map((category, index) => (
+                        <MenuItem key={index} value={category.category}>
+                          {category.category}
                         </MenuItem>
                       ))}
                     </Select>

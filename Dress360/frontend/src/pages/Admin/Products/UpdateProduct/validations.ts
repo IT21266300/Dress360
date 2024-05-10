@@ -21,7 +21,7 @@ export const validateProductName = (productName: string): string | null => {
     return null;
   };
   
-  export const validateProductPrice = (productPrice: number): string | null => {
+  export const validateProductPrice = (productPrice: string): string | null => {
     if (!productPrice && productPrice !== 0) {
       return 'Price is required';
     }
