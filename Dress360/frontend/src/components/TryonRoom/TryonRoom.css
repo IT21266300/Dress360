@@ -1,7 +1,33 @@
+.tryon-room-body {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items to the start (top) */
+}
+
 .tryon-room {
-    height: 14cm;
-    width: 12cm;
-    border: 1px solid black;
-    background-color: white;
-    border-radius: 20px;
-  }
+  height: 14cm;
+  width: 12cm;
+  border: 1px solid black;
+  background-color: #e6e6e6;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.model-top {
+  flex: 1; /* Take up remaining space */
+  display: flex;
+  justify-content: flex-end; /* Align content to the end (bottom) */
+  align-items: flex-end; /* Align items to the end (bottom) */
+  
+}
+
+.model-bottom {
+  height: 3cm; /* Adjust the height as needed */
+}
+
+.top-canva{
+  background-color: #e6e6e6;
+}
