@@ -7,8 +7,6 @@ import { CartItem } from '../types/Cart'
 import { Product } from '../types/Product'
 import { convertProductToCartItem } from '../utils'
 import Rating from './Rating'
-import { Image } from 'cloudinary-react';
-
 
 function ProductItem({ product }: { product: Product }) {
   const { state, dispatch } = useContext(Store)
@@ -32,17 +30,8 @@ function ProductItem({ product }: { product: Product }) {
 
   return (
     <Card>
-      <Link to={`/product/${product._id}`}>
-      <Image
-          cloudName="dypvbk20u"
-          publicId={product.image}
-          width="200"
-          height="200"
-          crop="scale"
-          alt="img"
-          className="rounded-full"
-          sx={{ objectFit: 'content' }}
-        />
+      <Link to={`/product/${product.slug}`}>
+        <img src={product.image} className="card-img-top" alt={product.name} />
         
       </Link>
       <Card.Body>
