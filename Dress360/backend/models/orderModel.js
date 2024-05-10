@@ -11,10 +11,10 @@ const shippingAddressSchema = new mongoose.Schema({
 });
 
 const itemSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  quantity: { type: String, required: true },
-  image: { type: Number, required: true },
-  price: { type: Number, required: true },
+  name: { type: String,  },
+  quantity: { type: String,  },
+  image: { type: String,  },
+  price: { type: Number,  },
   product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product", // Assuming your Product model is named 'Product'
@@ -36,15 +36,15 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Assuming your User model is named 'User'
     },
-    paymentMethod: { type: String, required: true },
+    paymentMethod: { type: String, },
     paymentResult: paymentResultSchema,
-    itemsPrice: { type: Number, required: true, default: 0 },
-    shippingPrice: { type: Number, required: true, default: 0 },
-    taxPrice: { type: Number, required: true, default: 0 },
-    totalPrice: { type: Number, required: true, default: 0 },
-    isPaid: { type: Boolean, required: true, default: false },
+    itemsPrice: { type: Number, default: 0 },
+    shippingPrice: { type: Number,  default: 0 },
+    taxPrice: { type: Number, default: 0 },
+    totalPrice: { type: Number,  default: 0 },
+    isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
-    isDelivered: { type: Boolean, required: true, default: false },
+    isDelivered: { type: Boolean, default: false },
     deliveredAt: { type: Date },
   },
   { timestamps: true } // Adds createdAt and updatedAt fields

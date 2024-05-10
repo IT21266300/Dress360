@@ -34,21 +34,26 @@ function App() {
   
   const [timeElapsed, setTimeElapsed] = useState(() => {
     // Get initial time from localStorage or start from 0
-    const storedTime = localStorage.getItem('timeElapsed');
-    return storedTime ? parseInt(storedTime, 10) : 0;
+    if (userInfo) {
+      const storedTime = localStorage.getItem(`timeElapsed-${userInfo.name}`); // Use user ID for key
+      return storedTime ? parseInt(storedTime, 10) : 0;
+    }
+    return 0;
   });
 
   
   useEffect(() => {
-    // Start timer on component mount
-    const timer = setInterval(() => {
-      setTimeElapsed((prevTime) => {
-        const newTime = prevTime + 1;
-        // Store updated time in localStorage
-        localStorage.setItem('timeElapsed', newTime.toString());
-        return newTime;
-      });
-    }, 1000);
+    // Start timer only if user is logged in
+    let timer: NodeJS.Timer | null = null;
+    if (userInfo) {
+      timer = setInterval(() => {
+        setTimeElapsed((prevTime) => {
+          const newTime = prevTime + 1;
+          localStorage.setItem(`timeElapsed-${userInfo.name}`, newTime.toString()); // Use user ID for key
+          return newTime;
+        });
+      }, 1000);
+    }
 
     // Clear timer on component unmount
     return () => clearInterval(timer);
@@ -80,6 +85,8 @@ function App() {
     localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
+   
+    
     window.location.href = '/signin';
   };
 
