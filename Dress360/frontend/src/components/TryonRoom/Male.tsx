@@ -16,7 +16,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
   const { nodes } = useGLTF("../../../blenderStuff/male.gltf") as any;
 
   // Create a new material with dark gray color
-  const darkGrayMaterial = new THREE.MeshBasicMaterial({ color: "#343435" });
+  const darkGrayMaterial = new THREE.MeshBasicMaterial({ color: "#565657" });
 
   return (
     <group {...props} dispose={null}>
