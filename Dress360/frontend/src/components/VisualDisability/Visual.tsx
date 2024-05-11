@@ -15,6 +15,7 @@ const Visual = ({ handleClose }: { handleClose: () => void }) => {
   return (
     <div className="visual-popup">
       <h2>Visual Disability Assistance</h2>
+      <hr />
       <p ref={textRef}>
       The color of the item of clothing you have chosen is blue and the entire dress is dark blue. Also, this dress has light blue stripes like the sky.
       </p>

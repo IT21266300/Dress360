@@ -38,8 +38,8 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
 
   // Change the color of short03 to blue
   materials["short03.001"].color = new THREE.Color('black');
-  materials["female_elegantsuit01.001"].color = new THREE.Color('blue');
-  materials["shoes03.001"].color = new THREE.Color('brown');
+  materials["female_elegantsuit01.001"].color = new THREE.Color('red');
+  materials["shoes03.001"].color = new THREE.Color('pink');
 
   return (
     <group {...props} dispose={null} position={[0, -2, 0]} scale={[0.58, 0.58, 0.58]}>

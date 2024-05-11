@@ -41,7 +41,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
     "../../../blenderStuff/femaleModal/Female.glb"
   ) as GLTFResult;
 
-  materials.Body.color = new THREE.Color(0x4656);
+  materials.Body.color = new THREE.Color(0x857d7d);
   return (
     <group
       {...props}

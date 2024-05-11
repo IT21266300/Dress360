@@ -3,7 +3,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  align-items: flex-start; /* Align items to the start (top) */
+  align-items: flex-start;
 }
 
 .tryon-room {
@@ -17,17 +17,51 @@
 }
 
 .model-top {
-  flex: 1; /* Take up remaining space */
+  flex: 1;
   display: flex;
-  justify-content: flex-end; /* Align content to the end (bottom) */
-  align-items: flex-end; /* Align items to the end (bottom) */
-  
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .model-bottom {
-  height: 3cm; /* Adjust the height as needed */
+  /* height: 5cm; */
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  gap: 5px;
+  padding:0.5rem 1rem;
 }
 
-.top-canva{
-  background-color: #e6e6e6;
+.color-buttons {
+  display: flex;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+}
+
+.color-buttons button {
+  border-radius: 20px; /* Adjust the border radius for rounded buttons */
+  padding: 5px 10px; /* Adjust padding to reduce button size */
+}
+
+.model-bottom select {
+  margin-top: 10px;
+}
+
+.model-bottom label {
+  margin-bottom: 5px;
+}
+
+.model-bottom select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+
+.model-bottom select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
