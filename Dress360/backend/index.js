@@ -2,6 +2,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 /* 
 ============== routers set ================== 
@@ -14,7 +15,7 @@ import orderRouter from './routes/orderRouter.js';
 import  productRouter  from './routes/productRouter.js';
 import  seedRouter  from './routes/seedRouter.js';
 import  userRouter  from './routes/userRouter.js';
-// import MeasurementRouter  from './routes/measurementRouter.js';
+import MeasurementRouter  from './routes/measurementRouter.js';
 
 
 // admin-dumindu
@@ -49,6 +50,8 @@ app.use((req, res, next) => {
 });
 
 
+app.use(cors());
+
 /* 
   ========= APIs config ===========
   ===== config your APIs here =====
@@ -59,7 +62,7 @@ app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/seed', seedRouter);
 app.use('/api/keys', keyRouter);
-// app.use('/api/measurements', MeasurementRouter);
+app.use('/api/measurements', MeasurementRouter);
 
 // admin-dumindu
 app.use('/api/product', ProductRouter);

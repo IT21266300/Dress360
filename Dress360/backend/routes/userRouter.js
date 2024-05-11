@@ -73,4 +73,19 @@ userRouter.put(
   })
 );
 
+// DELETE /api/users/:id
+userRouter.delete(
+  '/:id',
+  isAuth,
+  asyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const user = await User.findByIdAndDelete(userId);
+    if (user) {
+      res.json({ message: 'User removed' });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  })
+);
+
 export default userRouter;

@@ -21,7 +21,7 @@ export function isAuth(req, res, next) {
   const authorization = req.headers.authorization;
   if (authorization) {
     const token = authorization.slice(7, authorization.length); // Bearer xxxxx
-    verify(
+    jwt.verify(
       token,
       process.env.JWT_SECRET || 'somethingsecret',
       (err, decode) => {

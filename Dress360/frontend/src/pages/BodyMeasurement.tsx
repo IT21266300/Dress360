@@ -14,8 +14,15 @@ export default function measurements() {
 
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
-  const [name, setName] = useState(userInfo!.name);
-  const [email, setEmail] = useState(userInfo!.email);
+  const [height, setHeight] = useState(userInfo!.name);
+  const [chest, setChest ] = useState(userInfo!.name);
+  const [hip, setHip ] = useState(userInfo!.email);
+  const [waist , setWaist  ] = useState(userInfo!.email);
+  const [thigh, setThigh  ] = useState(userInfo!.email);
+  const [outerleg, setOuterleg ] = useState(userInfo!.email);
+  const [innerleg, setInnerleg ] = useState(userInfo!.email);
+  const [nekHip, setNeckHip ] = useState(userInfo!.email);
+  const [shoulder, setShoulder  ] = useState(userInfo!.email);
   
   const { mutateAsync: updateProfile, isLoading } = useUpdateProfileMutation();
 
@@ -61,7 +68,7 @@ export default function measurements() {
                         className="form-control"
                         defaultValue="170"
                         style={{ width: "60px" }} 
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setHeight(e.target.value)}
                         required
                       />
                     </div>
@@ -81,7 +88,7 @@ export default function measurements() {
                         style={{ width: "60px" }} 
                         // value={email}
                         defaultValue="100"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setChest(e.target.value)}
                         required
                       />
                     </div>
@@ -101,7 +108,7 @@ export default function measurements() {
                         style={{ width: "60px" }} 
                         // value={email}
                         defaultValue="110"
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setHip(e.target.value)}
                         required
                       />
                     </div>
@@ -121,7 +128,7 @@ export default function measurements() {
                         style={{ width: "60px" }} 
                         // value={email}
                         defaultValue="80"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setWaist(e.target.value)}
                         required
                       />
                     </div>
@@ -141,7 +148,7 @@ export default function measurements() {
                         // value={email}
                         style={{ width: "60px" }} 
                         defaultValue="50"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setThigh(e.target.value)}
                         required
                       />
                     </div>
@@ -161,7 +168,7 @@ export default function measurements() {
                         style={{ width: "60px" }} 
                         // value={email}
                         defaultValue="150"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setOuterleg(e.target.value)}
                         required
                       />
                     </div>
@@ -181,7 +188,7 @@ export default function measurements() {
                         style={{ width: "60px" }} 
                         // value={email}
                         defaultValue="130"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setInnerleg(e.target.value)}
                         required
                       />
                     </div>
@@ -201,7 +208,7 @@ export default function measurements() {
                         style={{ width: "60px" }} 
                         // value={email}
                         defaultValue="23"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setNeckHip(e.target.value)}
                         required
                       />
                     </div>
@@ -221,7 +228,7 @@ export default function measurements() {
                         // value={email}
                         style={{ width: "60px" }} 
                         defaultValue="20"
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setShoulder(e.target.value)}
                         required
                       />
                     </div>

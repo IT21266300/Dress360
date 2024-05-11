@@ -1,6 +1,6 @@
-import { useMutation } from '@tanstack/react-query'
-import apiClient from '../apiClient'
-import { UserInfo } from '../types/UserInfo'
+import { useMutation } from "@tanstack/react-query";
+import apiClient from "../apiClient";
+import { UserInfo } from "../types/UserInfo";
 
 export const useSigninMutation = () =>
   useMutation({
@@ -8,8 +8,8 @@ export const useSigninMutation = () =>
       email,
       password,
     }: {
-      email: string
-      password: string
+      email: string;
+      password: string;
     }) =>
       (
         await apiClient.post<UserInfo>(`api/users/signin`, {
@@ -17,7 +17,7 @@ export const useSigninMutation = () =>
           password,
         })
       ).data,
-  })
+  });
 
 export const useSignupMutation = () =>
   useMutation({
@@ -26,9 +26,9 @@ export const useSignupMutation = () =>
       email,
       password,
     }: {
-      name: string
-      email: string
-      password: string
+      name: string;
+      email: string;
+      password: string;
     }) =>
       (
         await apiClient.post<UserInfo>(`api/users/signup`, {
@@ -37,24 +37,38 @@ export const useSignupMutation = () =>
           password,
         })
       ).data,
-  })
+  });
 
 export const useUpdateProfileMutation = () =>
   useMutation({
     mutationFn: async ({
       name,
       email,
+      mobile,
       password,
     }: {
-      name: string
-      email: string
-      password: string
+      name: string;
+      email: string;
+      mobile: string;
+      password: string;
     }) =>
       (
         await apiClient.put<UserInfo>(`api/users/profile`, {
           name,
           email,
+          mobile,
           password,
         })
       ).data,
-  })
+  });
+
+  // export const useDeleteUserMutation = () => {
+  //   return useMutation({
+  //     mutationFn: async (userId: string) => { // Pass userId as an argument
+  //       console.log('User ID:', userId); // Log the userId value
+  //       const response = await apiClient.delete(`api/users/${userId}`);
+  //       console.log('User ID:', userId);
+  //       return response; // Consider returning the response for potential data handling
+  //     },
+  //   });
+  // };

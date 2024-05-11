@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Modal } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import LoadingBox from "../components/LoadingBox";
@@ -8,15 +8,21 @@ import { Store } from "../Store";
 import { ApiError } from "../types/ApiError";
 import { getError } from "../utils";
 import "./userProfile.css";
+import axios from "axios";
+import apiClient from "../apiClient";
 //import 'bootstrap/dist/css/bootstrap.css';
 
 export default function userProfile() {
   const { state, dispatch } = useContext(Store);
   const { userInfo } = state;
   const [name, setName] = useState(userInfo!.name);
+  const [mobile, setMobile] = useState(userInfo!.mobile);
   const [email, setEmail] = useState(userInfo!.email);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false); // State to control the visibility of the confirmation modal
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const { mutateAsync: updateProfile, isLoading } = useUpdateProfileMutation();
 
@@ -30,6 +36,7 @@ export default function userProfile() {
       const data = await updateProfile({
         name,
         email,
+        mobile,
         password,
       });
       dispatch({ type: "USER_SIGNIN", payload: data });
@@ -40,8 +47,48 @@ export default function userProfile() {
     }
   };
 
+  const handleMeasument = () => {
+    window.location.href = "/measurements";
+  };
+
+  const userID = localStorage.getItem("userInfo");
+
+  let userData: { _id: string } | null = null;
+
+  if (userID !== null) {
+    userData = JSON.parse(userID);
+  }
+
+  const mID: string = userData && userData._id;
+
+  console.log(mID);
+
+
+  const deleteHandler = async () => {
+    try {
+      setIsDeleting(true);
+
+      // Make sure you have the correct API endpoint and method
+      await apiClient.delete(`/api/users/${userInfo!.id}`);
+
+      setIsDeleting(false);
+      toast.success("Profile deleted successfully");
+
+      // Sign out the user
+      dispatch({ type: 'USER_SIGNOUT' });
+      localStorage.removeItem('userInfo');
+
+      // Redirect to the home page (or any other appropriate page)
+      window.location.href = '/'; 
+    } catch (error) {
+      setIsDeleting(false);
+      toast.error("Failed to delete profile");
+      console.error("Error deleting profile:", error);
+    }
+  };
+
   const handleClick = () => {
-    window.location.href = '/measurements'; 
+    setShowConfirmModal(true); // Show the confirmation modal when the "Delete Profile" button is clicked
   };
 
   return (
@@ -63,7 +110,10 @@ export default function userProfile() {
                     {/* <p className="text-secondary mb-1">Full Stack Developer</p> */}
 
                     {/* <button className="btn btn-primary">Follow</button> */}
-                    <button className="btn btn-outline-primary mx-3 mb-3" onClick={handleClick}>
+                    <button
+                      className="btn btn-outline-primary mx-3 mb-3"
+                      onClick={handleMeasument}
+                    >
                       Add Body measurements
                     </button>
                   </div>
@@ -122,7 +172,7 @@ export default function userProfile() {
                         className="form-control"
                         // value={email}
                         defaultValue="0708989221"
-                        onChange={(e) => setName(e.target.value)}
+                        onChange={(e) => setMobile(e.target.value)}
                         required
                       />
                     </div>
@@ -136,7 +186,7 @@ export default function userProfile() {
                     </div>
                     <div className="col-sm-9">
                       <input
-                        type="text"
+                        type="password"
                         className="form-control"
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -152,16 +202,16 @@ export default function userProfile() {
                     </div>
                     <div className="col-sm-9">
                       <input
-                        type="text"
+                        type="password"
                         className="form-control"
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                       />
                     </div>
                   </div>
-                  <hr/>
+                  <hr />
                   <div className="row">
-                    <div className="col-sm-12">
+                    <div className="col-sm-6">
                       <Button
                         disabled={isLoading}
                         type="submit"
@@ -175,9 +225,49 @@ export default function userProfile() {
                 </div>
               </div>
             </form>
+            <div className="col-sm-3">
+              <Button
+                disabled={isLoading}
+                type="submit"
+                className="btn btn-danger "
+                style={{
+                  backgroundColor: "#dc3545",
+                  borderColor: "#dc3545",
+                  color: "#fff",
+                }}
+                onClick={() => deleteHandler(mID)}
+              >
+                Delete Profile
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <Modal show={showConfirmModal} onHide={() => setShowConfirmModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete Profile</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h6>Are you sure you want to delete your profile?</h6>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowConfirmModal(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="danger"
+            onClick={() => deleteHandler(mID)}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "Deleting..." : "Delete"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
