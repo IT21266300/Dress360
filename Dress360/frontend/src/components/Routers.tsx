@@ -14,16 +14,12 @@ const isAdmin: boolean = true;
 
 const routesConfig = [
   {
-    path: '/admin',
+    path: '/',
     element: <LayoutAdmin />,
     children: [
       {
-        path: '/admin',
-        element: <Navigate to="/overview" replace />,
-      },
-      {
-        path: '/overview',
-        element: <Overview />,
+        path: '/',
+        element: <Navigate to="/products" replace />,
       },
       {
         path: '/products',

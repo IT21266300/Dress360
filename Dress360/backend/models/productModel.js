@@ -91,7 +91,7 @@ const productSchema = new mongoose.Schema(
 
 productSchema.plugin(AutoIncrement, {
   inc_field: 'barcode',
-  start_seq: 100100,
+  start_seq: 110100,
 });
 productSchema.plugin(AutoIncrement, { inc_field: 'sku', start_seq: 1000 });
 

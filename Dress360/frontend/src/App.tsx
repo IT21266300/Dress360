@@ -11,7 +11,7 @@ import {
   Navbar,
   NavDropdown,
 } from 'react-bootstrap';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,15 +23,17 @@ import { getError } from './utils';
 import { ApiError } from './types/ApiError';
 import SearchBox from './components/SearchBox';
 import DressTimeReward from './pages/DressTimeReward';
-import Dress360 from './assets/Dress360.png'
-
+import Dress360 from './assets/Dress360.png';
 
 function App() {
   const {
     state: { mode, cart, userInfo },
     dispatch,
   } = useContext(Store);
-  
+
+
+  const navigate = useNavigate();
+
   const [timeElapsed, setTimeElapsed] = useState(() => {
     // Get initial time from localStorage or start from 0
     if (userInfo) {
@@ -41,7 +43,6 @@ function App() {
     return 0;
   });
 
-  
   useEffect(() => {
     // Start timer only if user is logged in
     let timer: NodeJS.Timer | null = null;
@@ -49,7 +50,10 @@ function App() {
       timer = setInterval(() => {
         setTimeElapsed((prevTime) => {
           const newTime = prevTime + 1;
-          localStorage.setItem(`timeElapsed-${userInfo.name}`, newTime.toString()); // Use user ID for key
+          localStorage.setItem(
+            `timeElapsed-${userInfo.name}`,
+            newTime.toString()
+          ); // Use user ID for key
           return newTime;
         });
       }, 1000);
@@ -58,8 +62,6 @@ function App() {
     // Clear timer on component unmount
     return () => clearInterval(timer);
   }, []);
-
-  
 
   const formatTime = (seconds: number) => {
     const hours = Math.floor(seconds / 3600);
@@ -76,7 +78,6 @@ function App() {
   }, [mode]);
 
   const switchModeHandler = () => {
-    
     dispatch({ type: 'SWITCH_MODE' });
   };
   const signoutHandler = () => {
@@ -85,14 +86,24 @@ function App() {
     localStorage.removeItem('cartItems');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
-   
-    
+
     window.location.href = '/signin';
   };
 
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
 
   const { data: categories, isLoading, error } = useGetCategoriesQuery();
+
+  const userDataString = localStorage.getItem('userInfo');
+
+  let userData: { isAdmin: boolean } | null = null;
+
+  if (userDataString !== null) {
+    userData = JSON.parse(userDataString);
+  }
+
+  const isAdmin: boolean = userData ? userData.isAdmin : false;
+  console.log(isAdmin);
 
   return (
     <div className="d-flex flex-column vh-100">
@@ -114,16 +125,23 @@ function App() {
 
             <Navbar.Collapse>
               <Nav className="w-100 justify-content-end">
-              <div className="row">
-            <div className="col-md-8">
-              <li className="list-group-item">Time Spent on Dress360</li>
-            </div>
-            <div className="col-md-4">
-              <li className="list-group-item text-center">
-                {formatTime(timeElapsed)} 
-              </li> 
-            </div>
-          </div>
+                {isAdmin && (
+                  <div className="row" style={{marginRight: '1rem'}}>
+                    <div className="col-md-8">
+                      <Button id="basic-button" onClick={() => navigate('/products')}>Admin Login</Button>
+                    </div>
+                  </div>
+                ) }
+                <div className="row">
+                  <div className="col-md-8">
+                    <li className="list-group-item">Time Spent on Dress360</li>
+                  </div>
+                  <div className="col-md-4">
+                    <li className="list-group-item text-center">
+                      {formatTime(timeElapsed)}
+                    </li>
+                  </div>
+                </div>
                 <Link
                   to="#"
                   className="nav-link header-link"

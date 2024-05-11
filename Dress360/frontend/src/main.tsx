@@ -51,9 +51,10 @@ if (userDataString !== null) {
   userData = JSON.parse(userDataString);
 }
 
-// const isAdmin: boolean = userData ? userData.isAdmin : false;
+const isAdmin: boolean = userData ? userData.isAdmin : false;
+console.log(isAdmin);
 
-const isAdmin = true;
+// const isAdmin = true;
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -93,13 +94,14 @@ const router = createBrowserRouter(
 const adminRouter = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<LayoutAdmin />}>
+      <Route index={true} element={<Products />} />
       <Route path="signin" element={<SigninPage />} />
       <Route path="signup" element={<SignupPage />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/addProduct" element={<AddProduct />} />
-      <Route path="/updateProduct" element={<UpdateProduct />} />
-      <Route path="/manageCategories" element={<ManageCategories />} />
       <Route path="" element={<ProtectedRoute />}>
+        <Route path="/products" element={<Products />} />
+        <Route path="/addProduct" element={<AddProduct />} />
+        <Route path="/updateProduct" element={<UpdateProduct />} />
+        <Route path="/manageCategories" element={<ManageCategories />} />
         <Route path="/overview" element={<Overview />} />
       </Route>
 

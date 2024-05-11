@@ -313,11 +313,6 @@ export default function MiniDrawer() {
 
   const navItems = [
     {
-      text: 'Overview',
-      op: 'overview',
-      icon: <DashboardIcon />,
-    },
-    {
       text: 'Products',
       op: 'products',
       icon: <InventoryIcon />,
@@ -376,9 +371,9 @@ export default function MiniDrawer() {
                   aria-controls={openProfile ? 'basic-menu' : undefined}
                   aria-haspopup="true"
                   aria-expanded={openProfile ? 'true' : undefined}
-                  onClick={handleClick}
+                  onClick={signoutHandler}
                 >
-                  Dashboard
+                  Log out
                 </Button>
                 <Menu
                   id="basic-menu"
