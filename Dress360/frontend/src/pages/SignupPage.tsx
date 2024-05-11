@@ -30,25 +30,55 @@ export default function SignupPage() {
 
   const { mutateAsync: signup, isLoading } = useSignupMutation()
 
+  // const submitHandler = async (e: React.SyntheticEvent) => {
+  //   e.preventDefault()
+  //   if (password !== confirmPassword) {
+  //     toast.error('Passwords do not match')
+  //     return
+  //   }
+  //   try {
+  //     const data = await signup({
+  //       name,
+  //       email,
+  //       password,
+  //     })
+  //     dispatch({ type: 'USER_SIGNIN', payload: data })
+  //     localStorage.setItem('userInfo', JSON.stringify(data))
+  //     navigate(redirect)
+  //   } catch (err) {
+  //     toast.error(getError(err as ApiError))
+  //   }
+  // }
+
   const submitHandler = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match')
-      return
+    e.preventDefault();
+    
+    // Password validation rules
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Password should contain at least one letter, one number, and be at least 8 characters long
+    
+    if (!passwordRegex.test(password)) {
+      toast.error('Password should contain at least one letter, one number, and be at least 8 characters long');
+      return;
     }
+  
+    if (password !== confirmPassword) {
+      toast.error('Passwords do not match');
+      return;
+    }
+    
     try {
       const data = await signup({
         name,
         email,
         password,
-      })
-      dispatch({ type: 'USER_SIGNIN', payload: data })
-      localStorage.setItem('userInfo', JSON.stringify(data))
-      navigate(redirect)
+      });
+      dispatch({ type: 'USER_SIGNIN', payload: data });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      navigate(redirect);
     } catch (err) {
-      toast.error(getError(err as ApiError))
+      toast.error(getError(err as ApiError));
     }
-  }
+  };
 
   return (
     <Container className="small-container">
