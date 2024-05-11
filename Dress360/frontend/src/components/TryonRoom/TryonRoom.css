@@ -1,7 +1,67 @@
+.tryon-room-body {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .tryon-room {
-    height: 14cm;
-    width: 12cm;
-    border: 1px solid black;
-    background-color: white;
-    border-radius: 20px;
-  }
+  height: 14cm;
+  width: 12cm;
+  border: 1px solid black;
+  background-color: #e6e6e6;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.model-top {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.model-bottom {
+  /* height: 5cm; */
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  gap: 5px;
+  padding:0.5rem 1rem;
+}
+
+.color-buttons {
+  display: flex;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+}
+
+.color-buttons button {
+  border-radius: 20px; /* Adjust the border radius for rounded buttons */
+  padding: 5px 10px; /* Adjust padding to reduce button size */
+}
+
+.model-bottom select {
+  margin-top: 10px;
+}
+
+.model-bottom label {
+  margin-bottom: 5px;
+}
+
+.model-bottom select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 16px;
+  outline: none;
+}
+
+.model-bottom select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
